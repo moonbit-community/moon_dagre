@@ -13,9 +13,18 @@ fn order_two_layer_cross_count(
   north_layer : Array[String],
   south_layer : Array[String],
 ) -> Double {
-  let south_pos = zip_object(south_layer, range(south_layer.length()))
+  let south_pos : Map[String, Int] = Map::new()
+  for i = 0; i < south_layer.length(); i = i + 1 {
+    let v = south_layer[i]
+    if !order_cross_is_layer_hole(v) {
+      south_pos.set(v, i)
+    }
+  }
   let south_entries : Array[(Int, Double)] = []
   for v in north_layer {
+    if order_cross_is_layer_hole(v) {
+      continue
+    }
     let entries : Array[(Int, Double)] = []
     for e in g.out_edges(v) {
       if south_pos.get(e.w) is Some(pos) {
@@ -65,4 +74,9 @@ fn order_cross_weight(label : Value?) -> Double {
   } else {
     1.0
   }
+}
+
+///|
+fn order_cross_is_layer_hole(v : String) -> Bool {
+  v == ""
 }

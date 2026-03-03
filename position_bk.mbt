@@ -79,6 +79,9 @@ pub fn position_bk_find_type1_conflicts(
     }
     for i = 0; i < layer.length(); i = i + 1 {
       let v = layer[i]
+      if position_bk_is_layer_hole(v) {
+        continue
+      }
       let w = position_bk_find_other_inner_segment_node(g, v)
       let k1 = if w is Some(w) {
         g.node(w).get_int_or("order", 0)
@@ -95,6 +98,9 @@ pub fn position_bk_find_type1_conflicts(
       if is_boundary {
         for j = scan_pos; j <= i; j = j + 1 {
           let scan_node = layer[j]
+          if position_bk_is_layer_hole(scan_node) {
+            continue
+          }
           for u in g.predecessors(scan_node) {
             let u_label = g.node(u)
             let scan_label = g.node(scan_node)
@@ -135,6 +141,9 @@ pub fn position_bk_find_type2_conflicts(
         south_lookahead < south.length()
         south_lookahead = south_lookahead + 1 {
       let v = south[south_lookahead]
+      if position_bk_is_layer_hole(v) {
+        continue
+      }
       if g.node(v).get_string("dummy") is Some(dummy) {
         if dummy == "border" {
           let predecessors = g.predecessors(v)
@@ -184,6 +193,9 @@ fn position_bk_scan_type2_conflicts(
 ) -> Unit {
   for i = south_pos; i < south_end; i = i + 1 {
     let v = south[i]
+    if position_bk_is_layer_hole(v) {
+      continue
+    }
     let v_node = g.node(v)
     if position_bk_is_dummy(v_node) {
       for u in g.predecessors(v) {
@@ -280,6 +292,9 @@ pub fn position_bk_vertical_alignment(
   for layer in layering {
     for order = 0; order < layer.length(); order = order + 1 {
       let v = layer[order]
+      if position_bk_is_layer_hole(v) {
+        continue
+      }
       root.set(v, v)
       align.set(v, v)
       pos.set(v, order)
@@ -288,6 +303,9 @@ pub fn position_bk_vertical_alignment(
   for layer in layering {
     let mut prev_idx = -1
     for v in layer {
+      if position_bk_is_layer_hole(v) {
+        continue
+      }
       let ws = neighbor_fn(v).copy()
       if !ws.is_empty() {
         ws.sort_by((a, b) => pos.get_or_default(a, 0) - pos.get_or_default(b, 0))
@@ -407,6 +425,9 @@ fn position_bk_build_block_graph(
   for layer in layering {
     let mut u : String? = None
     for v in layer {
+      if position_bk_is_layer_hole(v) {
+        continue
+      }
       let v_root = root.get_or_default(v, v)
       block_graph.set_node(v_root)
       if u is Some(u) {
@@ -580,6 +601,11 @@ fn position_bk_is_dummy(node : Attrs) -> Bool {
 }
 
 ///|
+fn position_bk_is_layer_hole(v : String) -> Bool {
+  v == ""
+}
+
+///|
 fn position_bk_numeric(value : Value?) -> Double {
   if value_as_float(value) is Some(v) {
     v
@@ -618,7 +644,10 @@ fn position_bk_reverse_each_layer(
   for layer in layering {
     let reversed = []
     for i = layer.length() - 1; i >= 0; i = i - 1 {
-      reversed.push(layer[i])
+      let v = layer[i]
+      if !position_bk_is_layer_hole(v) {
+        reversed.push(v)
+      }
     }
     out.push(reversed)
   }

@@ -134,6 +134,14 @@ test "build_layer_matrix creates matrix from rank and order" {
 }
 
 ///|
+test "build_layer_matrix preserves sparse order indexes" {
+  let g = Graph::new()
+  g.set_node("a", label=util_rank_order(0, 0))
+  g.set_node("c", label=util_rank_order(0, 2))
+  inspect(build_layer_matrix(g), content="[[\"a\", \"\", \"c\"]]")
+}
+
+///|
 test "time returns value from thunk" {
   assert_eq(time("foo", () => "bar"), "bar")
 }

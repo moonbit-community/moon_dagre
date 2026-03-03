@@ -154,7 +154,11 @@ fn order_sweep_layer_graphs(
 fn order_assign_order(g : Graph, layering : Array[Array[String]]) -> Unit {
   for layer in layering {
     for i = 0; i < layer.length(); i = i + 1 {
-      g.node(layer[i]).set_int("order", i)
+      let v = layer[i]
+      if v == "" {
+        continue
+      }
+      g.node(v).set_int("order", i)
     }
   }
 }

@@ -204,7 +204,6 @@ pub fn[T] zip_object(Array[String], Array[T]) -> Map[String, T]
 
 // Types and methods
 pub enum Attr {
-  Null
   Bool(Bool)
   Int(Int)
   Float(Double)

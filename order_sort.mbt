@@ -56,18 +56,19 @@ fn order_consume_unsortable(
 
 ///|
 fn order_compare_with_bias(bias : Bool) -> (OrderEntry, OrderEntry) -> Int {
-  (entry_v : OrderEntry, entry_w : OrderEntry) => match
-    (entry_v.barycenter, entry_w.barycenter) {
-    (Some(v), Some(w)) =>
-      if v < w {
-        -1
-      } else if v > w {
-        1
-      } else if !bias {
-        entry_v.i - entry_w.i
-      } else {
-        entry_w.i - entry_v.i
-      }
-    _ => 0
+  (entry_v : OrderEntry, entry_w : OrderEntry) => {
+    match (entry_v.barycenter, entry_w.barycenter) {
+      (Some(v), Some(w)) =>
+        if v < w {
+          -1
+        } else if v > w {
+          1
+        } else if !bias {
+          entry_v.i - entry_w.i
+        } else {
+          entry_w.i - entry_v.i
+        }
+      _ => 0
+    }
   }
 }

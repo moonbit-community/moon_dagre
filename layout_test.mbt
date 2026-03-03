@@ -522,6 +522,150 @@ test "layout keeps all coordinates in bounding box across rankdirs" {
 }
 
 ///|
+test "layout handles edges between parent nodes in compound graph" {
+  let g = Graph::new(multigraph=true, compound=true)
+  let graph = empty_attrs()
+  graph.set_float("nodesep", 60.0)
+  graph.set_float("ranksep", 100.0)
+  graph.set_float("edgesep", 20.0)
+  graph.set_float("marginx", 0.0)
+  graph.set_float("marginy", 0.0)
+  graph.set_string("rankdir", "tb")
+  g.set_graph(graph)
+
+  let parent_sizes : Array[(String, Double, Double)] = [
+    ("p0", 304.0, 180.0),
+    ("p1", 280.0, 216.0),
+    ("p2", 187.0, 180.0),
+  ]
+  for entry in parent_sizes {
+    let id = entry.0
+    let w = entry.1
+    let h = entry.2
+    let node = empty_attrs()
+    node.set_float("width", w)
+    node.set_float("height", h)
+    g.set_node(id, label=node)
+  }
+
+  let child_sizes : Array[(String, Double, Double, String)] = [
+    ("p0_a", 65.0, 66.0, "p0"),
+    ("p0_b", 136.0, 66.0, "p0"),
+    ("p0_c", 136.0, 66.0, "p0"),
+    ("p0_d", 122.0, 66.0, "p0"),
+    ("p1_a", 65.0, 66.0, "p1"),
+    ("p1_b", 65.0, 66.0, "p1"),
+    ("p1_c", 136.0, 66.0, "p1"),
+    ("p1_d", 74.0, 66.0, "p1"),
+    ("p1_e", 102.0, 66.0, "p1"),
+    ("p2_a", 65.0, 66.0, "p2"),
+    ("p2_b", 65.0, 66.0, "p2"),
+    ("p2_c", 65.0, 66.0, "p2"),
+    ("p2_d", 74.0, 66.0, "p2"),
+  ]
+  for entry in child_sizes {
+    let id = entry.0
+    let w = entry.1
+    let h = entry.2
+    let parent = entry.3
+    let node = empty_attrs()
+    node.set_float("width", w)
+    node.set_float("height", h)
+    g.set_node(id, label=node)
+    g.set_parent(id, parent~)
+  }
+
+  for entry in [("p0", "p1", "e0"), ("p0", "p2", "e1"), ("p1", "p2", "e2")] {
+    let v = entry.0
+    let w = entry.1
+    let name = entry.2
+    let e = empty_attrs()
+    e.set_float("weight", 1.0)
+    e.set_string("labelpos", "c")
+    g.set_edge(v, w, label=attrs_value(e), name~)
+  }
+
+  ignore(layout(g))
+  assert_eq(g.node("p0").get_float("x") is Some(_), true)
+  assert_eq(g.node("p1").get_float("x") is Some(_), true)
+  assert_eq(g.node("p2").get_float("x") is Some(_), true)
+}
+
+///|
+test "layout handles issue #1 exact compound graph input" {
+  let g = Graph::new(multigraph=true, compound=true)
+  let graph = empty_attrs()
+  graph.set_float("nodesep", 60.0)
+  graph.set_float("ranksep", 100.0)
+  graph.set_float("edgesep", 20.0)
+  graph.set_float("marginx", 0.0)
+  graph.set_float("marginy", 0.0)
+  graph.set_string("rankdir", "tb")
+  g.set_graph(graph)
+
+  for
+    entry in [
+      ("0", 304.0, 180.0),
+      ("1", 65.0, 66.0),
+      ("2", 136.0, 66.0),
+      ("3", 136.0, 66.0),
+      ("4", 122.0, 66.0),
+      ("5", 280.0, 216.0),
+      ("6", 65.0, 66.0),
+      ("7", 65.0, 66.0),
+      ("8", 136.0, 66.0),
+      ("9", 74.0, 66.0),
+      ("10", 102.0, 66.0),
+      ("11", 187.0, 180.0),
+      ("12", 65.0, 66.0),
+      ("13", 65.0, 66.0),
+      ("14", 65.0, 66.0),
+      ("15", 74.0, 66.0),
+    ] {
+    let node = empty_attrs()
+    node.set_float("width", entry.1)
+    node.set_float("height", entry.2)
+    g.set_node(entry.0, label=node)
+  }
+
+  for
+    parent in [
+      ("1", "0"),
+      ("2", "0"),
+      ("3", "0"),
+      ("4", "0"),
+      ("6", "5"),
+      ("7", "5"),
+      ("8", "5"),
+      ("9", "5"),
+      ("10", "5"),
+      ("12", "11"),
+      ("13", "11"),
+      ("14", "11"),
+      ("15", "11"),
+    ] {
+    g.set_parent(parent.0, parent=parent.1)
+  }
+
+  for
+    edge in [
+      ("0", "5", "(users.id <-> posts.user_id)[0]"),
+      ("0", "11", "(users.id <-> comments.user_id)[2]"),
+      ("5", "11", "(posts.id <-> comments.post_id)[1]"),
+    ] {
+    let attrs = empty_attrs()
+    attrs.set_float("weight", 1.0)
+    attrs.set_string("labelpos", "c")
+    g.set_edge(edge.0, edge.1, label=attrs_value(attrs), name=edge.2)
+  }
+
+  ignore(layout(g))
+  assert_eq(g.node("0").get_float("x") is Some(_), true)
+  assert_eq(g.node("5").get_float("x") is Some(_), true)
+  assert_eq(g.node("11").get_float("x") is Some(_), true)
+}
+
+///|
 test "layout treats attributes with case-insensitivity" {
   let g = Graph::new(multigraph=true, compound=true)
   let graph = empty_attrs()

@@ -61,14 +61,16 @@ fn check_fas(g : Graph, fas : Array[EdgeObj]) -> Bool {
 
 ///|
 fn edge_weight_fn(g : Graph) -> (EdgeObj) -> Double {
-  (e : EdgeObj) => if value_as_float(g.edge_obj(e)) is Some(v) {
-    v
-  } else if value_as_int(g.edge_obj(e)) is Some(v) {
-    v.to_double()
-  } else if value_as_attrs(g.edge_obj(e)) is Some(attrs) {
-    attrs.get_float_or("weight", 1.0)
-  } else {
-    1.0
+  (e : EdgeObj) => {
+    if value_as_float(g.edge_obj(e)) is Some(v) {
+      v
+    } else if value_as_int(g.edge_obj(e)) is Some(v) {
+      v.to_double()
+    } else if value_as_attrs(g.edge_obj(e)) is Some(attrs) {
+      attrs.get_float_or("weight", 1.0)
+    } else {
+      1.0
+    }
   }
 }
 

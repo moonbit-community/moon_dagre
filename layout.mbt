@@ -339,6 +339,9 @@ fn layout_insert_self_edges(
     let mut order_shift = 0
     for i = 0; i < layer.length(); i = i + 1 {
       let v = layer[i]
+      if v == "" {
+        continue
+      }
       let node = g.node(v)
       node.set_int("order", i + order_shift)
       for self_edge in self_edges.get_or_default(v, []) {

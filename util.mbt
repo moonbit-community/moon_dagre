@@ -175,6 +175,7 @@ fn ensure_index(arr : Array[String], idx : Int) -> Unit {
   if arr.length() <= idx {
     let mut i = arr.length()
     while i <= idx {
+      // Keep placeholder holes so indexes stay aligned with JS sparse arrays.
       arr.push("")
       i = i + 1
     }
