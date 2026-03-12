@@ -30,6 +30,8 @@ pub struct Graph {
   mut child_seq : Int
   child_add_index : Map[String, Int]
   mut default_edge_label_fn : () -> Value
+
+  fn new(directed? : Bool, multigraph? : Bool, compound? : Bool) -> Graph
 }
 
 ///|

@@ -1,6 +1,8 @@
 ///|
 pub struct List[T] {
   items : Array[T]
+
+  fn[T] new() -> List[T]
 }
 
 ///|
