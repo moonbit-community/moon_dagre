@@ -120,13 +120,11 @@ fn order_merge_entries(
     weight = weight + source_weight
   }
   target.vs = source.vs + target.vs
-  if weight > 0.0 {
-    target.barycenter = Some(sum / weight)
-    target.weight = Some(weight)
-  } else {
-    target.barycenter = None
-    target.weight = None
-  }
+  // Match dagre-reference: merged entries keep a barycenter property even when
+  // the aggregated weight is zero, which yields NaN and keeps the entry
+  // sortable in the next phase.
+  target.barycenter = Some(sum / weight)
+  target.weight = Some(weight)
   if source.i < target.i {
     target.i = source.i
   }

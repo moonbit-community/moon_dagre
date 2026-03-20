@@ -46,11 +46,11 @@ pub fn greedy_fas(Graph, weight_fn? : (EdgeObj) -> Double) -> Array[EdgeObj]
 
 pub fn intersect_rect(Rect, Point) -> Point
 
-pub fn layout(Graph, debug_timing? : Bool) -> Graph
+pub fn layout(Graph, debug_timing? : Bool, constraints? : Array[OrderConstraint]) -> Graph
 
-pub fn layout_layout_graph_debug(Graph, stop_before_remove_border_nodes? : Bool, stop_after_rank? : Bool, stop_after_order? : Bool, stop_after_normalize_undo? : Bool, stop_after_coordinate_undo? : Bool, stop_after_translate_graph? : Bool) -> Graph
+pub fn layout_layout_graph_debug(Graph, stop_before_remove_border_nodes? : Bool, stop_after_rank? : Bool, stop_after_order? : Bool, stop_after_normalize_undo? : Bool, stop_after_coordinate_undo? : Bool, stop_after_translate_graph? : Bool, constraints? : Array[OrderConstraint]) -> Graph
 
-pub fn layout_run(Graph, debug_timing? : Bool) -> Graph
+pub fn layout_run(Graph, debug_timing? : Bool, constraints? : Array[OrderConstraint]) -> Graph
 
 pub fn[V, U] map_values(Map[String, V], (V, String) -> U) -> Map[String, U]
 

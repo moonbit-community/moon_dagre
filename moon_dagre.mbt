@@ -8,6 +8,10 @@ pub fn new_graph(
 }
 
 ///|
-pub fn layout(g : Graph, debug_timing? : Bool = false) -> Graph {
-  layout_run(g, debug_timing~)
+pub fn layout(
+  g : Graph,
+  debug_timing? : Bool = false,
+  constraints? : Array[OrderConstraint] = [],
+) -> Graph {
+  layout_run(g, debug_timing~, constraints~)
 }

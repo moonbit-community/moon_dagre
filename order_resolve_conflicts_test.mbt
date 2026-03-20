@@ -107,6 +107,22 @@ test "order_resolve_conflicts ignores unrelated edges" {
 }
 
 ///|
+test "order_resolve_conflicts keeps merged zero-weight entries sortable" {
+  let cg = Graph::new()
+  let input = [
+    order_bary_entry("a"),
+    order_bary_entry("b"),
+    order_bary_entry("c"),
+  ]
+  cg.set_edge("a", "b")
+  let out = order_resolve_conflicts(input, cg)
+  let sorted = order_sort(out)
+  assert_eq(sorted.vs, ["a", "b", "c"])
+  assert_eq(sorted.barycenter, None)
+  assert_eq(sorted.weight, None)
+}
+
+///|
 fn order_resolve_conflicts_sort_by_first_vs(
   a : OrderEntry,
   b : OrderEntry,
