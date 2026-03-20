@@ -21,12 +21,6 @@ pub struct OrderResult {
 }
 
 ///|
-pub struct OrderConstraint {
-  left : String
-  right : String
-}
-
-///|
 pub fn order_bary_entry(
   v : String,
   barycenter? : Double? = None,
@@ -52,9 +46,4 @@ pub fn order_result(
   weight? : Double? = None,
 ) -> OrderResult {
   { vs, barycenter, weight }
-}
-
-///|
-pub fn order_constraint(left : String, right : String) -> OrderConstraint {
-  { left, right }
 }

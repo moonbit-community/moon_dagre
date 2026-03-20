@@ -5,7 +5,6 @@ pub fn rank(g : Graph) -> Unit {
     "longest-path" => rank_longest_path(g)
     "tight-tree" => tight_tree_ranker(g)
     "network-simplex" => rank_network_simplex(g)
-    "none" => ()
     _ => rank_network_simplex(g)
   }
 }

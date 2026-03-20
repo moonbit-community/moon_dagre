@@ -46,11 +46,11 @@ pub fn greedy_fas(Graph, weight_fn? : (EdgeObj) -> Double) -> Array[EdgeObj]
 
 pub fn intersect_rect(Rect, Point) -> Point
 
-pub fn layout(Graph, debug_timing? : Bool, constraints? : Array[OrderConstraint]) -> Graph
+pub fn layout(Graph, debug_timing? : Bool) -> Graph
 
-pub fn layout_layout_graph_debug(Graph, stop_before_remove_border_nodes? : Bool, stop_after_rank? : Bool, stop_after_order? : Bool, stop_after_normalize_undo? : Bool, stop_after_coordinate_undo? : Bool, stop_after_translate_graph? : Bool, constraints? : Array[OrderConstraint]) -> Graph
+pub fn layout_layout_graph_debug(Graph, stop_before_remove_border_nodes? : Bool, stop_after_rank? : Bool, stop_after_order? : Bool, stop_after_normalize_undo? : Bool, stop_after_coordinate_undo? : Bool, stop_after_translate_graph? : Bool) -> Graph
 
-pub fn layout_run(Graph, debug_timing? : Bool, constraints? : Array[OrderConstraint]) -> Graph
+pub fn layout_run(Graph, debug_timing? : Bool) -> Graph
 
 pub fn[V, U] map_values(Map[String, V], (V, String) -> U) -> Map[String, U]
 
@@ -78,9 +78,7 @@ pub fn order_bary_entry(String, barycenter? : Double?, weight? : Double?) -> Ord
 
 pub fn order_barycenter(Graph, movable? : Array[String]) -> Array[OrderBarycenterEntry]
 
-pub fn order_build_layer_graph(Graph, Int, String, nodes_with_rank? : Array[String]?) -> Graph
-
-pub fn order_constraint(String, String) -> OrderConstraint
+pub fn order_build_layer_graph(Graph, Int, String) -> Graph
 
 pub fn order_cross_count(Graph, Array[Array[String]]) -> Double
 
@@ -92,7 +90,7 @@ pub fn order_resolve_conflicts(Array[OrderBarycenterEntry], Graph) -> Array[Orde
 
 pub fn order_result(Array[String], barycenter? : Double?, weight? : Double?) -> OrderResult
 
-pub fn order_run(Graph, disable_optimal_order_heuristic? : Bool, constraints? : Array[OrderConstraint]) -> Unit
+pub fn order_run(Graph) -> Unit
 
 pub fn order_sort(Array[OrderEntry], bias_right? : Bool) -> OrderResult
 
@@ -171,10 +169,6 @@ pub fn simplify(Graph) -> Graph
 pub fn successor_weights(Graph) -> Map[String, Map[String, Double]]
 
 pub fn[T] time(String, () -> T) -> T
-
-pub fn unique_id(String) -> String
-
-pub fn unique_id_for_graph(Graph, String) -> String
 
 pub fn value_as_attrs(Value?) -> Attrs?
 
@@ -334,11 +328,6 @@ pub struct OrderBarycenterEntry {
   v : String
   mut barycenter : Double?
   mut weight : Double?
-}
-
-pub struct OrderConstraint {
-  left : String
-  right : String
 }
 
 pub struct OrderEntry {

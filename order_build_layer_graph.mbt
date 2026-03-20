@@ -3,19 +3,13 @@ pub fn order_build_layer_graph(
   g : Graph,
   rank : Int,
   relationship : String,
-  nodes_with_rank? : Array[String]? = None,
 ) -> Graph {
-  let selected_nodes = if nodes_with_rank is Some(nodes_with_rank) {
-    nodes_with_rank
-  } else {
-    g.nodes()
-  }
   let root = order_create_root_node(g)
   let result = Graph::new(compound=true)
   let graph_label = empty_attrs()
   graph_label.set_string("root", root)
   result.set_graph(graph_label)
-  for v in selected_nodes {
+  for v in g.nodes() {
     let node = g.node(v)
     let node_rank = node.get_int("rank")
     let min_rank = node.get_int("minRank")

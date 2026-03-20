@@ -7,19 +7,6 @@ priv struct Counter {
 let id_counter : Counter = { value: 0 }
 
 ///|
-let graph_id_counter_key = "__moon_dagre_uid"
-
-///|
-// Internal helper: generate deterministic ids per graph instance so repeated
-// layouts in the same process don't depend on global counter state.
-pub fn unique_id_for_graph(g : Graph, prefix : String) -> String {
-  let graph = g.graph()
-  let next = graph.get_int_or(graph_id_counter_key, 0) + 1
-  graph.set_int(graph_id_counter_key, next)
-  prefix + "\{next}"
-}
-
-///|
 pub struct Partition[T] {
   lhs : Array[T]
   rhs : Array[T]
@@ -312,7 +299,7 @@ pub fn[T] notime(name : String, thunk : () -> T) -> T {
 }
 
 ///|
-pub fn unique_id(prefix : String) -> String {
+fn unique_id(prefix : String) -> String {
   id_counter.value = id_counter.value + 1
   prefix + "\{id_counter.value}"
 }

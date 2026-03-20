@@ -5,19 +5,13 @@ priv struct LayoutSelfEdge {
 }
 
 ///|
-pub fn layout_run(
-  g : Graph,
-  debug_timing? : Bool = false,
-  constraints? : Array[OrderConstraint] = [],
-) -> Graph {
+pub fn layout_run(g : Graph, debug_timing? : Bool = false) -> Graph {
   if debug_timing {
     time("layout", () => {
       let layout_graph = time("  buildLayoutGraph", () => {
         layout_build_layout_graph(g)
       })
-      ignore(
-        time("  runLayout", () => layout_run_pipeline(layout_graph, constraints)),
-      )
+      ignore(time("  runLayout", () => layout_run_pipeline(layout_graph)))
       ignore(
         time("  updateInputGraph", () => {
           layout_update_input_graph(g, layout_graph)
@@ -30,11 +24,7 @@ pub fn layout_run(
       let layout_graph = notime("  buildLayoutGraph", () => {
         layout_build_layout_graph(g)
       })
-      ignore(
-        notime("  runLayout", () => {
-          layout_run_pipeline(layout_graph, constraints)
-        }),
-      )
+      ignore(notime("  runLayout", () => layout_run_pipeline(layout_graph)))
       ignore(
         notime("  updateInputGraph", () => {
           layout_update_input_graph(g, layout_graph)
@@ -46,7 +36,7 @@ pub fn layout_run(
 }
 
 ///|
-fn layout_run_pipeline(g : Graph, constraints : Array[OrderConstraint]) -> Unit {
+fn layout_run_pipeline(g : Graph) -> Unit {
   layout_make_space_for_edge_labels(g)
   let self_edges = layout_remove_self_edges(g)
   acyclic_run(g)
@@ -61,7 +51,7 @@ fn layout_run_pipeline(g : Graph, constraints : Array[OrderConstraint]) -> Unit 
   normalize_run(g)
   parent_dummy_chains(g)
   add_border_segments(g)
-  order_run(g, constraints~)
+  order_run(g)
   layout_insert_self_edges(g, self_edges)
   coordinate_adjust(g)
   position(g)
@@ -87,7 +77,6 @@ pub fn layout_layout_graph_debug(
   stop_after_normalize_undo? : Bool = false,
   stop_after_coordinate_undo? : Bool = false,
   stop_after_translate_graph? : Bool = false,
-  constraints? : Array[OrderConstraint] = [],
 ) -> Graph {
   let g = layout_build_layout_graph(input_graph)
   layout_make_space_for_edge_labels(g)
@@ -107,7 +96,7 @@ pub fn layout_layout_graph_debug(
   normalize_run(g)
   parent_dummy_chains(g)
   add_border_segments(g)
-  order_run(g, constraints~)
+  order_run(g)
   layout_insert_self_edges(g, self_edges)
   if stop_after_order {
     return g
@@ -148,12 +137,6 @@ fn layout_update_input_graph(input_graph : Graph, layout_graph : Graph) -> Unit 
       }
       if layout_label.get_float("y") is Some(y) {
         input_label.set_float("y", y)
-      }
-      if layout_label.get_int("order") is Some(order) {
-        input_label.set_int("order", order)
-      }
-      if layout_label.get_int("rank") is Some(rank) {
-        input_label.set_int("rank", rank)
       }
       if !layout_graph.children(v~).is_empty() {
         if layout_label.get_float("width") is Some(width) {
@@ -603,7 +586,7 @@ fn layout_graph_attrs() -> Array[String] {
 
 ///|
 fn layout_node_num_attrs() -> Array[String] {
-  ["width", "height", "rank"]
+  ["width", "height"]
 }
 
 ///|

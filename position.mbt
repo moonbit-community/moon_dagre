@@ -15,7 +15,6 @@ pub fn position(g : Graph) -> Unit {
 pub fn position_y(g : Graph) -> Unit {
   let layering = build_layer_matrix(g)
   let rank_sep = g.graph().get_float_or("ranksep", 50.0)
-  let rank_align = g.graph().get_string_or("rankalign", "center")
   let mut prev_y = 0.0
   for layer in layering {
     let mut max_height = 0.0
@@ -33,16 +32,7 @@ pub fn position_y(g : Graph) -> Unit {
         continue
       }
       let node = g.node(v)
-      if rank_align == "top" {
-        node.set_float("y", prev_y + node.get_float_or("height", 0.0) / 2.0)
-      } else if rank_align == "bottom" {
-        node.set_float(
-          "y",
-          prev_y + max_height - node.get_float_or("height", 0.0) / 2.0,
-        )
-      } else {
-        node.set_float("y", prev_y + max_height / 2.0)
-      }
+      node.set_float("y", prev_y + max_height / 2.0)
     }
     prev_y = prev_y + max_height + rank_sep
   }

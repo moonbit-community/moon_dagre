@@ -9,8 +9,6 @@ pub fn position_bk_x(g : Graph) -> Map[String, Double] {
   let layering = build_layer_matrix(g)
   let conflicts = position_bk_find_type1_conflicts(g, layering)
   let type2 = position_bk_find_type2_conflicts(g, layering)
-  // dagre JS uses `Object.assign(type1, type2)` (shallow overwrite), not a deep union.
-  // This matters because each conflict map is keyed by the first endpoint.
   position_bk_assign_conflicts(conflicts, type2)
   let xss : Map[String, Map[String, Double]] = Map::new()
   for vert in ["u", "d"] {
@@ -167,16 +165,16 @@ pub fn position_bk_find_type2_conflicts(
           }
         }
       }
-      position_bk_scan_type2_conflicts(
-        g,
-        conflicts,
-        south,
-        south_pos,
-        south.length(),
-        next_north_pos,
-        Some(north.length()),
-      )
     }
+    position_bk_scan_type2_conflicts(
+      g,
+      conflicts,
+      south,
+      south_pos,
+      south.length(),
+      Some(prev_north_pos),
+      Some(north.length()),
+    )
   }
   conflicts
 }
@@ -592,7 +590,15 @@ fn position_bk_assign_conflicts(
   target : Map[String, Set[String]],
   source : Map[String, Set[String]],
 ) -> Unit {
-  source.each((v, ws) => target.set(v, ws))
+  source.each((v, ws) => {
+    if target.get(v) is Some(target_ws) {
+      ws.each(w => target_ws.add(w))
+    } else {
+      let merged = Set::new()
+      ws.each(w => merged.add(w))
+      target.set(v, merged)
+    }
+  })
 }
 
 ///|

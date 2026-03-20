@@ -51,25 +51,6 @@ test "order_run can minimize crossings" {
 }
 
 ///|
-test "order_run can skip optimal ordering heuristic" {
-  let g = order_order_graph()
-  g.set_node("a", label=order_order_rank(1))
-  for v in ["b", "d"] {
-    g.set_node(v, label=order_order_rank(2))
-  }
-  for v in ["c", "e"] {
-    g.set_node(v, label=order_order_rank(3))
-  }
-  g.set_path(["a", "b", "c"])
-  g.set_path(["a", "d"])
-  g.set_edge("b", "e")
-  g.set_edge("d", "c")
-  order_run(g, disable_optimal_order_heuristic=true)
-  let layering = build_layer_matrix(g)
-  assert_eq(order_cross_count(g, layering).to_int(), 1)
-}
-
-///|
 fn order_order_graph() -> Graph {
   let g = Graph::new()
   g.set_default_edge_label(() => {

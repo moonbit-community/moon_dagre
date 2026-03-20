@@ -1,5 +1,5 @@
 ///|
 // Upstream: dagre-reference/test/version-test.js
 test "version matches pinned upstream" {
-  inspect(version(), content="2.0.3")
+  inspect(version(), content="0.8.5")
 }
