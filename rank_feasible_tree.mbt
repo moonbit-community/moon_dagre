@@ -45,7 +45,7 @@ fn tight_tree(t : Graph, g : Graph) -> Int {
 ///|
 fn find_min_slack_edge(t : Graph, g : Graph) -> EdgeObj? {
   let mut best_edge : EdgeObj? = None
-  let mut best_slack = @int.max_value
+  let mut best_slack = @int.MAX_VALUE
   for edge in g.edges() {
     if t.has_node(edge.v) != t.has_node(edge.w) {
       let s = rank_slack(g, edge)

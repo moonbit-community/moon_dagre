@@ -10,7 +10,7 @@ pub fn rank_longest_path(g : Graph) -> Unit {
       let mut rank = 0
       let out_edges = g.out_edges(v)
       if !out_edges.is_empty() {
-        rank = @int.max_value
+        rank = @int.MAX_VALUE
         for e in out_edges {
           let w_rank = dfs(g, e.w, visited)
           let candidate = w_rank - edge_minlen(g.edge_obj(e))

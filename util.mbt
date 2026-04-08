@@ -171,7 +171,7 @@ fn ensure_index(arr : Array[String], idx : Int) -> Unit {
 
 ///|
 pub fn normalize_ranks(g : Graph) -> Unit {
-  let ranks = g.nodes().map(v => g.node(v).get_int_or("rank", @int.max_value))
+  let ranks = g.nodes().map(v => g.node(v).get_int_or("rank", @int.MAX_VALUE))
   let min_rank = apply_with_chunking_min(ranks)
   for v in g.nodes() {
     let node = g.node(v)
@@ -236,7 +236,7 @@ pub fn add_border_node(
 ///|
 pub fn apply_with_chunking_min(values : Array[Int]) -> Int {
   if values.is_empty() {
-    @int.max_value
+    @int.MAX_VALUE
   } else {
     let mut out = values[0]
     for i = 1; i < values.length(); i = i + 1 {
@@ -251,7 +251,7 @@ pub fn apply_with_chunking_min(values : Array[Int]) -> Int {
 ///|
 pub fn apply_with_chunking_max(values : Array[Int]) -> Int {
   if values.is_empty() {
-    @int.min_value
+    @int.MIN_VALUE
   } else {
     let mut out = values[0]
     for i = 1; i < values.length(); i = i + 1 {
@@ -265,7 +265,7 @@ pub fn apply_with_chunking_max(values : Array[Int]) -> Int {
 
 ///|
 pub fn max_rank(g : Graph) -> Int {
-  let ranks = g.nodes().map(v => g.node(v).get_int_or("rank", @int.min_value))
+  let ranks = g.nodes().map(v => g.node(v).get_int_or("rank", @int.MIN_VALUE))
   apply_with_chunking_max(ranks)
 }
 

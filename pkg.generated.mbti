@@ -312,18 +312,6 @@ pub fn Graph::sinks(Self) -> Array[String]
 pub fn Graph::sources(Self) -> Array[String]
 pub fn Graph::successors(Self, String) -> Array[String]
 
-pub struct List[T] {
-  items : Array[T]
-
-  fn[T] new() -> List[T]
-}
-pub fn[T] List::dequeue(Self[T]) -> T?
-pub fn[T : Eq] List::enqueue(Self[T], T) -> Unit
-pub fn[T] List::is_empty(Self[T]) -> Bool
-pub fn[T] List::new() -> Self[T]
-pub fn[T] List::to_array(Self[T]) -> Array[T]
-pub fn[T : Show] List::to_string(Self[T]) -> String
-
 pub struct OrderBarycenterEntry {
   v : String
   mut barycenter : Double?
