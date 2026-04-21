@@ -1,0 +1,186 @@
+///|
+fn coordinate_model_swap_width_height(
+  x : Int,
+  y : Int,
+  width : Int,
+  height : Int,
+) -> (Int, Int, Int, Int) {
+  (x, y, height, width)
+}
+
+///|
+fn coordinate_model_swap_xy(
+  x : Int,
+  y : Int,
+  width : Int,
+  height : Int,
+) -> (Int, Int, Int, Int) {
+  (y, x, width, height)
+}
+
+///|
+fn coordinate_model_reverse_y(
+  x : Int,
+  y : Int,
+  width : Int,
+  height : Int,
+) -> (Int, Int, Int, Int) {
+  (x, -y, width, height)
+}
+
+///|
+fn coordinate_model_adjust_lr(
+  x : Int,
+  y : Int,
+  width : Int,
+  height : Int,
+) -> (Int, Int, Int, Int) {
+  coordinate_model_swap_width_height(x, y, width, height)
+}
+
+///|
+fn coordinate_model_undo_lr(
+  x : Int,
+  y : Int,
+  width : Int,
+  height : Int,
+) -> (Int, Int, Int, Int) {
+  match coordinate_model_swap_xy(x, y, width, height) {
+    (sx, sy, sw, sh) => coordinate_model_swap_width_height(sx, sy, sw, sh)
+  }
+}
+
+///|
+fn coordinate_model_undo_after_adjust_lr(
+  x : Int,
+  y : Int,
+  width : Int,
+  height : Int,
+) -> (Int, Int, Int, Int) {
+  match coordinate_model_adjust_lr(x, y, width, height) {
+    (ax, ay, aw, ah) => coordinate_model_undo_lr(ax, ay, aw, ah)
+  }
+}
+
+///|
+fn coordinate_model_undo_after_adjust_bt(
+  x : Int,
+  y : Int,
+  width : Int,
+  height : Int,
+) -> (Int, Int, Int, Int) {
+  coordinate_model_reverse_y(x, y, width, height)
+}
+
+///|
+fn coordinate_model_undo_after_adjust_rl(
+  x : Int,
+  y : Int,
+  width : Int,
+  height : Int,
+) -> (Int, Int, Int, Int) {
+  // Closed form of adjust(LR) + reverse_y + swap_xy + swap_width_height.
+  (-y, x, width, height)
+}
+
+///|
+predicate undo_after_adjust_lr_post(
+  x : Int,
+  y : Int,
+  width : Int,
+  height : Int,
+  result : (Int, Int, Int, Int),
+) {
+  match result {
+    (rx, ry, rw, rh) =>
+      rx == y &&
+      ry == x &&
+      rw == width &&
+      rh == height
+  }
+}
+
+///|
+predicate undo_after_adjust_bt_post(
+  x : Int,
+  y : Int,
+  width : Int,
+  height : Int,
+  result : (Int, Int, Int, Int),
+) {
+  match result {
+    (rx, ry, rw, rh) =>
+      rx == x &&
+      ry == -y &&
+      rw == width &&
+      rh == height
+  }
+}
+
+///|
+predicate undo_after_adjust_rl_post(
+  x : Int,
+  y : Int,
+  width : Int,
+  height : Int,
+  result : (Int, Int, Int, Int),
+) {
+  match result {
+    (rx, ry, rw, rh) =>
+      rx == -y &&
+      ry == x &&
+      rw == width &&
+      rh == height
+  }
+}
+
+///|
+lemma coordinate_adjust_then_undo_lr(
+  x : Int,
+  y : Int,
+  width : Int,
+  height : Int,
+) where {
+  proof_ensure: undo_after_adjust_lr_post(
+    x,
+    y,
+    width,
+    height,
+    coordinate_model_undo_after_adjust_lr(x, y, width, height),
+  ),
+} {
+}
+
+///|
+lemma coordinate_adjust_then_undo_bt(
+  x : Int,
+  y : Int,
+  width : Int,
+  height : Int,
+) where {
+  proof_ensure: undo_after_adjust_bt_post(
+    x,
+    y,
+    width,
+    height,
+    coordinate_model_undo_after_adjust_bt(x, y, width, height),
+  ),
+} {
+}
+
+///|
+lemma coordinate_adjust_then_undo_rl(
+  x : Int,
+  y : Int,
+  width : Int,
+  height : Int,
+) where {
+  proof_ensure: undo_after_adjust_rl_post(
+    x,
+    y,
+    width,
+    height,
+    coordinate_model_undo_after_adjust_rl(x, y, width, height),
+  ),
+} {
+}
