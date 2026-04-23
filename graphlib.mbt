@@ -30,12 +30,10 @@ pub struct Graph {
   mut child_seq : Int
   child_add_index : Map[String, Int]
   mut default_edge_label_fn : () -> Value
-
-  fn new(directed? : Bool, multigraph? : Bool, compound? : Bool) -> Graph
 }
 
 ///|
-pub fn Graph::new(
+pub fn Graph::Graph(
   directed? : Bool = true,
   multigraph? : Bool = false,
   compound? : Bool = false,
@@ -64,6 +62,15 @@ pub fn Graph::new(
     child_add_index,
     default_edge_label_fn: () => Value::VNull,
   }
+}
+
+///|
+pub fn Graph::new(
+  directed? : Bool = true,
+  multigraph? : Bool = false,
+  compound? : Bool = false,
+) -> Graph {
+  Graph::Graph(directed~, multigraph~, compound~)
 }
 
 ///|
