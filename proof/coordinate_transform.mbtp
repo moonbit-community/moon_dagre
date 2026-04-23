@@ -1,5 +1,5 @@
 ///|
-fn coordinate_model_swap_width_height(
+fn swap_width_height(
   x : Int,
   y : Int,
   width : Int,
@@ -9,82 +9,94 @@ fn coordinate_model_swap_width_height(
 }
 
 ///|
-fn coordinate_model_swap_xy(
-  x : Int,
-  y : Int,
-  width : Int,
-  height : Int,
-) -> (Int, Int, Int, Int) {
+fn swap_xy(x : Int, y : Int, width : Int, height : Int) -> (Int, Int, Int, Int) {
   (y, x, width, height)
 }
 
 ///|
-fn coordinate_model_reverse_y(
-  x : Int,
-  y : Int,
-  width : Int,
-  height : Int,
-) -> (Int, Int, Int, Int) {
+fn reverse_y(x : Int, y : Int, width : Int, height : Int) -> (Int, Int, Int, Int) {
   (x, -y, width, height)
 }
 
 ///|
-fn coordinate_model_adjust_lr(
+fn apply_adjust_swap_width_height(
   x : Int,
   y : Int,
   width : Int,
   height : Int,
 ) -> (Int, Int, Int, Int) {
-  coordinate_model_swap_width_height(x, y, width, height)
+  swap_width_height(x, y, width, height)
 }
 
 ///|
-fn coordinate_model_undo_lr(
+fn apply_undo_swap_xy_and_swap_width_height(
   x : Int,
   y : Int,
   width : Int,
   height : Int,
 ) -> (Int, Int, Int, Int) {
-  match coordinate_model_swap_xy(x, y, width, height) {
-    (sx, sy, sw, sh) => coordinate_model_swap_width_height(sx, sy, sw, sh)
+  match swap_xy(x, y, width, height) {
+    (sx, sy, sw, sh) => swap_width_height(sx, sy, sw, sh)
   }
 }
 
 ///|
-fn coordinate_model_undo_after_adjust_lr(
+fn apply_undo_reverse_y(x : Int, y : Int, width : Int, height : Int) -> (
+  Int,
+  Int,
+  Int,
+  Int,
+) {
+  reverse_y(x, y, width, height)
+}
+
+///|
+fn apply_undo_reverse_y_swap_xy_and_swap_width_height(
   x : Int,
   y : Int,
   width : Int,
   height : Int,
 ) -> (Int, Int, Int, Int) {
-  match coordinate_model_adjust_lr(x, y, width, height) {
-    (ax, ay, aw, ah) => coordinate_model_undo_lr(ax, ay, aw, ah)
+  (-y, x, height, width)
+}
+
+///|
+fn apply_lr_selected_plans(
+  x : Int,
+  y : Int,
+  width : Int,
+  height : Int,
+) -> (Int, Int, Int, Int) {
+  match apply_adjust_swap_width_height(x, y, width, height) {
+    (ax, ay, aw, ah) => apply_undo_swap_xy_and_swap_width_height(ax, ay, aw, ah)
   }
 }
 
 ///|
-fn coordinate_model_undo_after_adjust_bt(
+fn apply_bt_selected_plans(
   x : Int,
   y : Int,
   width : Int,
   height : Int,
 ) -> (Int, Int, Int, Int) {
-  coordinate_model_reverse_y(x, y, width, height)
+  apply_undo_reverse_y(x, y, width, height)
 }
 
 ///|
-fn coordinate_model_undo_after_adjust_rl(
+fn apply_rl_selected_plans(
   x : Int,
   y : Int,
   width : Int,
   height : Int,
 ) -> (Int, Int, Int, Int) {
-  // Closed form of adjust(LR) + reverse_y + swap_xy + swap_width_height.
-  (-y, x, width, height)
+  match apply_adjust_swap_width_height(x, y, width, height) {
+    (ax, ay, aw, ah) =>
+      apply_undo_reverse_y_swap_xy_and_swap_width_height(ax, ay, aw, ah)
+  }
 }
 
 ///|
-predicate undo_after_adjust_lr_post(
+predicate adjust_then_undo_lr_post(
   x : Int,
   y : Int,
   width : Int,
@@ -101,7 +113,7 @@ predicate undo_after_adjust_lr_post(
 }
 
 ///|
-predicate undo_after_adjust_bt_post(
+predicate adjust_then_undo_bt_post(
   x : Int,
   y : Int,
   width : Int,
@@ -118,7 +130,7 @@ predicate undo_after_adjust_bt_post(
 }
 
 ///|
-predicate undo_after_adjust_rl_post(
+predicate adjust_then_undo_rl_post(
   x : Int,
   y : Int,
   width : Int,
@@ -135,52 +147,52 @@ predicate undo_after_adjust_rl_post(
 }
 
 ///|
-lemma coordinate_adjust_then_undo_lr(
+lemma selected_plan_algebra_lr(
   x : Int,
   y : Int,
   width : Int,
   height : Int,
 ) where {
-  proof_ensure: undo_after_adjust_lr_post(
+  proof_ensure: adjust_then_undo_lr_post(
     x,
     y,
     width,
     height,
-    coordinate_model_undo_after_adjust_lr(x, y, width, height),
+    apply_lr_selected_plans(x, y, width, height),
   ),
 } {
 }
 
 ///|
-lemma coordinate_adjust_then_undo_bt(
+lemma selected_plan_algebra_bt(
   x : Int,
   y : Int,
   width : Int,
   height : Int,
 ) where {
-  proof_ensure: undo_after_adjust_bt_post(
+  proof_ensure: adjust_then_undo_bt_post(
     x,
     y,
     width,
     height,
-    coordinate_model_undo_after_adjust_bt(x, y, width, height),
+    apply_bt_selected_plans(x, y, width, height),
   ),
 } {
 }
 
 ///|
-lemma coordinate_adjust_then_undo_rl(
+lemma selected_plan_algebra_rl(
   x : Int,
   y : Int,
   width : Int,
   height : Int,
 ) where {
-  proof_ensure: undo_after_adjust_rl_post(
+  proof_ensure: adjust_then_undo_rl_post(
     x,
     y,
     width,
     height,
-    coordinate_model_undo_after_adjust_rl(x, y, width, height),
+    apply_rl_selected_plans(x, y, width, height),
   ),
 } {
 }

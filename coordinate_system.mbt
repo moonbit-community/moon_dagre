@@ -1,20 +1,42 @@
 ///|
+using @coord {type CoordinateAdjustPlan, type CoordinateUndoPlan, type RankDir}
+
+///|
 pub fn coordinate_adjust(g : Graph) -> Unit {
-  let rank_dir = g.graph().get_string_or("rankdir", "tb").to_lower()
-  if rank_dir == "lr" || rank_dir == "rl" {
-    swap_width_height(g)
+  match @coord.coordinate_adjust_plan(coordinate_rank_dir(g)) {
+    CoordinateAdjustPlan::AdjustIdentity => ()
+    CoordinateAdjustPlan::AdjustSwapWidthHeight => swap_width_height(g)
   }
 }
 
 ///|
 pub fn coordinate_undo(g : Graph) -> Unit {
-  let rank_dir = g.graph().get_string_or("rankdir", "tb").to_lower()
-  if rank_dir == "bt" || rank_dir == "rl" {
-    reverse_y(g)
+  match @coord.coordinate_undo_plan(coordinate_rank_dir(g)) {
+    CoordinateUndoPlan::UndoIdentity => ()
+    CoordinateUndoPlan::UndoReverseY => reverse_y(g)
+    CoordinateUndoPlan::UndoSwapXYAndSwapWidthHeight => {
+      swap_xy(g)
+      swap_width_height(g)
+    }
+    CoordinateUndoPlan::UndoReverseYSwapXYAndSwapWidthHeight => {
+      reverse_y(g)
+      swap_xy(g)
+      swap_width_height(g)
+    }
   }
-  if rank_dir == "lr" || rank_dir == "rl" {
-    swap_xy(g)
-    swap_width_height(g)
+}
+
+///|
+fn coordinate_rank_dir(g : Graph) -> RankDir {
+  let rank_dir = g.graph().get_string_or("rankdir", "tb").to_lower()
+  if rank_dir == "bt" {
+    RankDir::BT
+  } else if rank_dir == "lr" {
+    RankDir::LR
+  } else if rank_dir == "rl" {
+    RankDir::RL
+  } else {
+    RankDir::TB
   }
 }
 

@@ -1,0 +1,34 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Milky2018/moon_dagre/coordinate_transform"
+
+// Values
+pub fn coordinate_adjust_plan(RankDir) -> CoordinateAdjustPlan
+
+pub fn coordinate_undo_plan(RankDir) -> CoordinateUndoPlan
+
+// Errors
+
+// Types and methods
+pub(all) enum CoordinateAdjustPlan {
+  AdjustIdentity
+  AdjustSwapWidthHeight
+}
+
+pub(all) enum CoordinateUndoPlan {
+  UndoIdentity
+  UndoReverseY
+  UndoSwapXYAndSwapWidthHeight
+  UndoReverseYSwapXYAndSwapWidthHeight
+}
+
+pub(all) enum RankDir {
+  TB
+  BT
+  LR
+  RL
+}
+
+// Type aliases
+
+// Traits
+

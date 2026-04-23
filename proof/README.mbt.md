@@ -1,47 +1,46 @@
 # Milky2018/moon_dagre/proof
 
-This package contains proof-only models for selected properties of the
-`moon_dagre` layout engine.
+This proof-only package verifies selected properties of the coordinate-transform
+planning code used by the runtime `moon_dagre` package.
 
-## Scope
+## Connection To Runtime Code
 
-The current proof work focuses on the coordinate-system transforms used by
-`coordinate_adjust` and `coordinate_undo`.
+The root package implementation of `coordinate_adjust` and `coordinate_undo`
+calls the shared `Milky2018/moon_dagre/coordinate_transform` package to choose
+its transform plans.
 
-Instead of proving the mutable `Graph` implementation directly, this package
-uses a small integer model `(x, y, width, height)` and proves the effect of the
-same transform sequence on that abstract state.
+The actual exported functions `coordinate_adjust_plan` and
+`coordinate_undo_plan` are proved in the `coordinate_transform` package. This
+package proves the algebraic effect of the selected plans.
 
 ## Verified Properties
 
-The package proves the non-trivial rank-direction cases:
+The proof establishes two layers of facts:
 
-- `LR`: applying adjust, then undo, produces `(y, x, width, height)`.
-- `BT`: applying adjust, then undo, produces `(x, -y, width, height)`.
-- `RL`: applying adjust, then undo, produces `(-y, x, width, height)`.
+- Plan selection: the shared runtime functions select the expected adjust/undo
+  plans for `LR`, `BT`, and `RL`.
+- Plan algebra: applying those selected plans to an abstract coordinate state
+  `(x, y, width, height)` produces the expected final mapping.
 
-These statements mean:
+The non-trivial rank-direction results are:
 
-- the final coordinate mapping is mathematically consistent with the intended
-  rank-direction transform;
-- width and height are preserved after the full adjust/undo pipeline;
-- the proof covers the algebraic effect of the transformation, not just a set
-  of examples.
+- `LR`: adjust followed by undo produces `(y, x, width, height)`.
+- `BT`: adjust followed by undo produces `(x, -y, width, height)`.
+- `RL`: adjust followed by undo produces `(-y, x, width, height)`.
+
+These properties verify that the production-selected adjust/undo plan has the
+expected coordinate mapping and preserves `width` and `height` after the full
+pipeline.
 
 ## Limits
 
-This package does not yet prove:
-
-- the imperative mutation over `Graph`, `Attrs`, or edge point arrays;
-- that every call site in the runtime package uses the model in exactly the
-  same way;
-- the trivial `TB` case, whose effect is the identity transform.
-
-In other words, the proof currently establishes the transform law, not full
-end-to-end correctness of the mutable layout implementation.
+The proof does not yet verify the mutable `Graph`, `Attrs`, or edge-point update
+loops in the root package. It verifies the shared plan selection and the
+algebraic coordinate effect of the selected plans.
 
 ## Run
 
 ```bash
+moon prove coordinate_transform
 moon prove proof
 ```
