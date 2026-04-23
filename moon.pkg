@@ -1,4 +1,3 @@
 import {
-  "Milky2018/moon_dagre/coordinate_transform" @coord,
   "moonbitlang/core/int" @int,
 }
