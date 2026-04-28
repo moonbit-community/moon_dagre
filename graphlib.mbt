@@ -33,7 +33,7 @@ pub struct Graph {
 }
 
 ///|
-pub fn Graph::Graph(
+pub fn Graph::new(
   directed? : Bool = true,
   multigraph? : Bool = false,
   compound? : Bool = false,
@@ -62,15 +62,6 @@ pub fn Graph::Graph(
     child_add_index,
     default_edge_label_fn: () => Value::VNull,
   }
-}
-
-///|
-pub fn Graph::new(
-  directed? : Bool = true,
-  multigraph? : Bool = false,
-  compound? : Bool = false,
-) -> Graph {
-  Graph::Graph(directed~, multigraph~, compound~)
 }
 
 ///|
