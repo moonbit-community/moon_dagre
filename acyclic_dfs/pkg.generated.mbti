@@ -1,0 +1,36 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Milky2018/moon_dagre/acyclic_dfs"
+
+// Values
+pub fn dfs_fas_edge_ids(DfsIntList, DfsEdgeList) -> DfsIntList
+
+pub fn dfs_fas_run(DfsIntList, DfsEdgeList) -> DfsRun
+
+// Errors
+
+// Types and methods
+pub(all) struct DfsEdge {
+  id : Int
+  v : Int
+  w : Int
+} derive(Compare, Eq)
+
+pub(all) enum DfsEdgeList {
+  NoDfsEdges
+  MoreDfsEdge(DfsEdge, DfsEdgeList)
+}
+
+pub(all) enum DfsIntList {
+  NoDfsInts
+  MoreDfsInt(Int, DfsIntList)
+} derive(Eq)
+
+pub(all) struct DfsRun {
+  fas : DfsIntList
+  topo_order : DfsIntList
+}
+
+// Type aliases
+
+// Traits
+

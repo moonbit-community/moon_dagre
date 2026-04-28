@@ -1,3 +1,4 @@
 import {
+  "Milky2018/moon_dagre/acyclic_dfs" @acyclic_dfs,
   "moonbitlang/core/int" @int,
 }

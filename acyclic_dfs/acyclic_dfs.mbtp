@@ -1,0 +1,701 @@
+///|
+predicate dfs_int_list_mem(xs : DfsIntList, x : Int) {
+  match xs {
+    NoDfsInts => false
+    MoreDfsInt(y, rest) => y == x || dfs_int_list_mem(rest, x)
+  }
+}
+
+///|
+predicate dfs_int_list_subset(xs : DfsIntList, ys : DfsIntList) {
+  ∀ x : Int, dfs_int_list_mem(xs, x) → dfs_int_list_mem(ys, x)
+}
+
+///|
+predicate dfs_int_list_empty(xs : DfsIntList) {
+  match xs {
+    NoDfsInts => true
+    MoreDfsInt(_x, _rest) => false
+  }
+}
+
+///|
+predicate dfs_int_list_same(xs : DfsIntList, ys : DfsIntList) {
+  match (xs, ys) {
+    (NoDfsInts, NoDfsInts) => true
+    (MoreDfsInt(x, xs1), MoreDfsInt(y, ys1)) =>
+      x == y && dfs_int_list_same(xs1, ys1)
+    _ => false
+  }
+}
+
+///|
+fn dfs_edge_list_length_model(edges : DfsEdgeList) -> Int {
+  match edges {
+    NoDfsEdges => 0
+    MoreDfsEdge(_, rest) => 1 + dfs_edge_list_length_model(rest)
+  }
+}
+
+///|
+fn dfs_unvisited_count(nodes : DfsIntList, visited : DfsIntList) -> Int {
+  match nodes {
+    NoDfsInts => 0
+    MoreDfsInt(node, rest) =>
+      if dfs_int_list_mem(visited, node) {
+        dfs_unvisited_count(rest, visited)
+      } else {
+        1 + dfs_unvisited_count(rest, visited)
+      }
+  }
+}
+
+///|
+fn dfs_unvisited_budget(
+  nodes : DfsIntList,
+  visited : DfsIntList,
+  budget : Int
+) -> Int {
+  match nodes {
+    NoDfsInts => 0
+    MoreDfsInt(node, rest) =>
+      if dfs_int_list_mem(visited, node) {
+        dfs_unvisited_budget(rest, visited, budget)
+      } else {
+        budget + dfs_unvisited_budget(rest, visited, budget)
+      }
+  }
+}
+
+///|
+fn dfs_visit_measure(
+  nodes : DfsIntList,
+  edges : DfsEdgeList,
+  state : DfsState
+) -> Int {
+  dfs_unvisited_budget(
+    nodes,
+    state.visited,
+    dfs_edge_list_length_model(edges) + 2,
+  )
+}
+
+///|
+fn dfs_visit_out_edges_measure(
+  nodes : DfsIntList,
+  all_edges : DfsEdgeList,
+  remaining_edges : DfsEdgeList,
+  state : DfsState
+) -> Int {
+  dfs_unvisited_budget(
+    nodes,
+    state.visited,
+    dfs_edge_list_length_model(all_edges) + 2,
+  ) +
+  dfs_edge_list_length_model(remaining_edges) +
+  1
+}
+
+///|
+predicate dfs_int_list_before(xs : DfsIntList, x : Int, y : Int) {
+  match xs {
+    NoDfsInts => false
+    MoreDfsInt(z, rest) =>
+      if z == x {
+        dfs_int_list_mem(rest, y)
+      } else {
+        dfs_int_list_before(rest, x, y)
+      }
+  }
+}
+
+///|
+predicate dfs_edge_list_endpoints_in(edges : DfsEdgeList, nodes : DfsIntList) {
+  match edges {
+    NoDfsEdges => true
+    MoreDfsEdge(edge, rest) =>
+      dfs_int_list_mem(nodes, edge.v) &&
+      dfs_int_list_mem(nodes, edge.w) &&
+      dfs_edge_list_endpoints_in(rest, nodes)
+  }
+}
+
+///|
+predicate dfs_kept_edges_topological(
+  edges : DfsEdgeList,
+  fas : DfsIntList,
+  order : DfsIntList
+) {
+  match edges {
+    NoDfsEdges => true
+    MoreDfsEdge(edge, rest) =>
+      (
+        dfs_int_list_mem(fas, edge.id) ||
+        dfs_int_list_before(order, edge.v, edge.w)
+      ) &&
+      dfs_kept_edges_topological(rest, fas, order)
+  }
+}
+
+///|
+predicate dfs_finished_edges_topological(
+  edges : DfsEdgeList,
+  fas : DfsIntList,
+  finished : DfsIntList
+) {
+  match edges {
+    NoDfsEdges => true
+    MoreDfsEdge(edge, rest) =>
+      (
+        !dfs_int_list_mem(finished, edge.v) ||
+        dfs_int_list_mem(fas, edge.id) ||
+        dfs_int_list_before(finished, edge.v, edge.w)
+      ) &&
+      dfs_finished_edges_topological(rest, fas, finished)
+  }
+}
+
+///|
+predicate dfs_active_partition_lists(
+  visited : DfsIntList,
+  stack : DfsIntList,
+  finished : DfsIntList
+) {
+  ∀ x : Int,
+    dfs_int_list_mem(visited, x) →
+    dfs_int_list_mem(stack, x) || dfs_int_list_mem(finished, x)
+}
+
+///|
+predicate dfs_active_partition(state : DfsState) {
+  dfs_active_partition_lists(state.visited, state.stack, state.finished)
+}
+
+///|
+predicate dfs_out_edges_targets_finished(
+  v : Int,
+  edges : DfsEdgeList,
+  fas : DfsIntList,
+  finished : DfsIntList
+) {
+  match edges {
+    NoDfsEdges => true
+    MoreDfsEdge(edge, rest) =>
+      (
+        edge.v != v ||
+        dfs_int_list_mem(fas, edge.id) ||
+        dfs_int_list_mem(finished, edge.w)
+      ) &&
+      dfs_out_edges_targets_finished(v, rest, fas, finished)
+  }
+}
+
+///|
+lemma dfs_int_list_subset_refl(xs : DfsIntList) where {
+  proof_ensure: dfs_int_list_subset(xs, xs),
+} {
+}
+
+///|
+lemma dfs_int_list_same_refl(xs : DfsIntList) where {
+  proof_decrease: xs,
+  proof_ensure: dfs_int_list_same(xs, xs),
+} {
+  match xs {
+    NoDfsInts => ()
+    MoreDfsInt(_, rest) => dfs_int_list_same_refl(rest)
+  }
+}
+
+///|
+lemma dfs_int_list_same_trans(
+  xs : DfsIntList,
+  ys : DfsIntList,
+  zs : DfsIntList
+) where {
+  proof_decrease: xs,
+  proof_require: dfs_int_list_same(xs, ys),
+  proof_require: dfs_int_list_same(ys, zs),
+  proof_ensure: dfs_int_list_same(xs, zs),
+} {
+  match xs {
+    NoDfsInts => ()
+    MoreDfsInt(_, rest) =>
+      match ys {
+        NoDfsInts => ()
+        MoreDfsInt(_, ys_rest) =>
+          match zs {
+            NoDfsInts => ()
+            MoreDfsInt(_, zs_rest) =>
+              dfs_int_list_same_trans(rest, ys_rest, zs_rest)
+          }
+      }
+  }
+}
+
+///|
+lemma dfs_int_list_same_mem_left(
+  xs : DfsIntList,
+  ys : DfsIntList,
+  x : Int
+) where {
+  proof_decrease: xs,
+  proof_require: dfs_int_list_same(xs, ys),
+  proof_require: dfs_int_list_mem(xs, x),
+  proof_ensure: dfs_int_list_mem(ys, x),
+} {
+  match xs {
+    NoDfsInts => ()
+    MoreDfsInt(y, rest) =>
+      match ys {
+        NoDfsInts => ()
+        MoreDfsInt(_, ys_rest) =>
+          if x == y {
+            ()
+          } else {
+            proof_assert dfs_int_list_mem(rest, x)
+            dfs_int_list_same_mem_left(rest, ys_rest, x)
+          }
+      }
+  }
+}
+
+///|
+lemma dfs_int_list_before_cons_other(
+  front : Int,
+  xs : DfsIntList,
+  x : Int,
+  y : Int
+) where {
+  proof_require: front != x,
+  proof_require: dfs_int_list_before(xs, x, y),
+  proof_ensure: dfs_int_list_before(MoreDfsInt(front, xs), x, y),
+} {
+}
+
+///|
+lemma dfs_active_partition_same_stack(
+  visited : DfsIntList,
+  stack1 : DfsIntList,
+  stack2 : DfsIntList,
+  finished : DfsIntList
+) where {
+  proof_require: dfs_active_partition_lists(visited, stack1, finished),
+  proof_require: dfs_int_list_same(stack1, stack2),
+  proof_ensure: dfs_active_partition_lists(visited, stack2, finished),
+} {
+}
+
+///|
+lemma dfs_int_list_subset_trans(
+  xs : DfsIntList,
+  ys : DfsIntList,
+  zs : DfsIntList,
+) where {
+  proof_require: dfs_int_list_subset(xs, ys),
+  proof_require: dfs_int_list_subset(ys, zs),
+  proof_ensure: dfs_int_list_subset(xs, zs),
+} {
+}
+
+///|
+lemma dfs_int_list_subset_cons_same(
+  x : Int,
+  xs : DfsIntList,
+  ys : DfsIntList
+) where {
+  proof_require: dfs_int_list_subset(xs, ys),
+  proof_ensure: dfs_int_list_subset(MoreDfsInt(x, xs), MoreDfsInt(x, ys)),
+} {
+}
+
+///|
+lemma dfs_int_list_subset_tail(
+  x : Int,
+  xs : DfsIntList,
+  ys : DfsIntList
+) where {
+  proof_require: dfs_int_list_subset(MoreDfsInt(x, xs), ys),
+  proof_ensure: dfs_int_list_subset(xs, ys),
+} {
+}
+
+///|
+lemma dfs_int_list_subset_cons_left(
+  x : Int,
+  xs : DfsIntList,
+  ys : DfsIntList
+) where {
+  proof_require: dfs_int_list_mem(ys, x),
+  proof_require: dfs_int_list_subset(xs, ys),
+  proof_ensure: dfs_int_list_subset(MoreDfsInt(x, xs), ys),
+} {
+}
+
+///|
+lemma dfs_finished_edges_topological_to_kept(
+  edges : DfsEdgeList,
+  fas : DfsIntList,
+  finished : DfsIntList
+) where {
+  proof_decrease: edges,
+  proof_require: dfs_finished_edges_topological(edges, fas, finished),
+  proof_require: dfs_edge_list_endpoints_in(edges, finished),
+  proof_ensure: dfs_kept_edges_topological(edges, fas, finished),
+} {
+  match edges {
+    NoDfsEdges => ()
+    MoreDfsEdge(edge, rest) => {
+      dfs_finished_edges_topological_to_kept(rest, fas, finished)
+      proof_assert dfs_int_list_mem(finished, edge.v)
+      if dfs_int_list_mem(fas, edge.id) {
+        ()
+      } else {
+        proof_assert dfs_int_list_before(finished, edge.v, edge.w)
+      }
+      proof_assert dfs_kept_edges_topological(edges, fas, finished)
+    }
+  }
+}
+
+///|
+lemma dfs_edge_list_endpoints_in_subset(
+  edges : DfsEdgeList,
+  xs : DfsIntList,
+  ys : DfsIntList
+) where {
+  proof_decrease: edges,
+  proof_require: dfs_edge_list_endpoints_in(edges, xs),
+  proof_require: dfs_int_list_subset(xs, ys),
+  proof_ensure: dfs_edge_list_endpoints_in(edges, ys),
+} {
+  match edges {
+    NoDfsEdges => ()
+    MoreDfsEdge(_, rest) => {
+      dfs_edge_list_endpoints_in_subset(rest, xs, ys)
+      proof_assert dfs_edge_list_endpoints_in(edges, ys)
+    }
+  }
+}
+
+///|
+lemma dfs_finished_edges_topological_empty(edges : DfsEdgeList) where {
+  proof_decrease: edges,
+  proof_ensure:
+    dfs_finished_edges_topological(edges, NoDfsInts, NoDfsInts),
+} {
+  match edges {
+    NoDfsEdges => ()
+    MoreDfsEdge(_, rest) => dfs_finished_edges_topological_empty(rest)
+  }
+}
+
+///|
+lemma dfs_finished_edges_topological_fas_cons(
+  edges : DfsEdgeList,
+  id : Int,
+  fas : DfsIntList,
+  finished : DfsIntList
+) where {
+  proof_decrease: edges,
+  proof_require: dfs_finished_edges_topological(edges, fas, finished),
+  proof_ensure:
+    dfs_finished_edges_topological(edges, MoreDfsInt(id, fas), finished),
+} {
+  match edges {
+    NoDfsEdges => ()
+    MoreDfsEdge(edge, rest) => {
+      dfs_finished_edges_topological_fas_cons(rest, id, fas, finished)
+      if dfs_int_list_mem(finished, edge.v) {
+        if dfs_int_list_mem(fas, edge.id) {
+          ()
+        } else {
+          proof_assert dfs_int_list_before(finished, edge.v, edge.w)
+        }
+      }
+      proof_assert
+        dfs_finished_edges_topological(edges, MoreDfsInt(id, fas), finished)
+    }
+  }
+}
+
+///|
+lemma dfs_finish_source_topological(
+  edges : DfsEdgeList,
+  fas : DfsIntList,
+  finished : DfsIntList,
+  v : Int
+) where {
+  proof_decrease: edges,
+  proof_require: dfs_finished_edges_topological(edges, fas, finished),
+  proof_require: dfs_out_edges_targets_finished(v, edges, fas, finished),
+  proof_ensure:
+    dfs_finished_edges_topological(edges, fas, MoreDfsInt(v, finished)),
+} {
+  match edges {
+    NoDfsEdges => ()
+    MoreDfsEdge(edge, rest) => {
+      if dfs_int_list_mem(MoreDfsInt(v, finished), edge.v) {
+        if edge.v == v {
+          if dfs_int_list_mem(fas, edge.id) {
+            ()
+          } else {
+            proof_assert dfs_int_list_mem(finished, edge.w)
+            proof_assert dfs_int_list_before(
+              MoreDfsInt(v, finished),
+              edge.v,
+              edge.w,
+            )
+          }
+        } else {
+          proof_assert v != edge.v
+          proof_assert dfs_int_list_mem(finished, edge.v)
+          if dfs_int_list_mem(fas, edge.id) {
+            ()
+          } else {
+            proof_assert dfs_int_list_before(finished, edge.v, edge.w)
+            proof_assert dfs_int_list_before(
+              MoreDfsInt(v, finished),
+              edge.v,
+              edge.w,
+            )
+          }
+        }
+      }
+      dfs_finish_source_topological(rest, fas, finished, v)
+      proof_assert
+        dfs_finished_edges_topological(edges, fas, MoreDfsInt(v, finished))
+    }
+  }
+}
+
+///|
+lemma dfs_active_partition_finish(
+  visited : DfsIntList,
+  stack : DfsIntList,
+  finished : DfsIntList,
+  v : Int
+) where {
+  proof_require:
+    dfs_active_partition_lists(visited, MoreDfsInt(v, stack), finished),
+  proof_ensure:
+    dfs_active_partition_lists(visited, stack, MoreDfsInt(v, finished)),
+} {
+}
+
+///|
+lemma dfs_edge_list_length_model_nonnegative(edges : DfsEdgeList) where {
+  proof_decrease: edges,
+  proof_ensure: 0 <= dfs_edge_list_length_model(edges),
+} {
+  match edges {
+    NoDfsEdges => ()
+    MoreDfsEdge(_, rest) => dfs_edge_list_length_model_nonnegative(rest)
+  }
+}
+
+///|
+lemma dfs_unvisited_count_nonnegative(
+  nodes : DfsIntList,
+  visited : DfsIntList
+) where {
+  proof_decrease: nodes,
+  proof_ensure: 0 <= dfs_unvisited_count(nodes, visited),
+} {
+  match nodes {
+    NoDfsInts => ()
+    MoreDfsInt(_, rest) => dfs_unvisited_count_nonnegative(rest, visited)
+  }
+}
+
+///|
+lemma dfs_unvisited_count_prepend_le(
+  nodes : DfsIntList,
+  visited : DfsIntList,
+  node : Int
+) where {
+  proof_decrease: nodes,
+  proof_ensure:
+    dfs_unvisited_count(nodes, MoreDfsInt(node, visited)) <=
+    dfs_unvisited_count(nodes, visited),
+} {
+  match nodes {
+    NoDfsInts => ()
+    MoreDfsInt(x, rest) =>
+      if x == node {
+        dfs_unvisited_count_nonnegative(rest, visited)
+        dfs_unvisited_count_prepend_le(rest, visited, node)
+      } else {
+        dfs_unvisited_count_prepend_le(rest, visited, node)
+      }
+  }
+}
+
+///|
+lemma dfs_unvisited_budget_nonnegative(
+  nodes : DfsIntList,
+  visited : DfsIntList,
+  budget : Int
+) where {
+  proof_decrease: nodes,
+  proof_require: budget >= 0,
+  proof_ensure: 0 <= dfs_unvisited_budget(nodes, visited, budget),
+} {
+  match nodes {
+    NoDfsInts => ()
+    MoreDfsInt(_, rest) => dfs_unvisited_budget_nonnegative(rest, visited, budget)
+  }
+}
+
+///|
+lemma dfs_unvisited_budget_prepend_le(
+  nodes : DfsIntList,
+  visited : DfsIntList,
+  node : Int,
+  budget : Int
+) where {
+  proof_decrease: nodes,
+  proof_require: budget >= 0,
+  proof_ensure:
+    dfs_unvisited_budget(nodes, MoreDfsInt(node, visited), budget) <=
+    dfs_unvisited_budget(nodes, visited, budget),
+} {
+  match nodes {
+    NoDfsInts => ()
+    MoreDfsInt(x, rest) =>
+      if x == node {
+        dfs_unvisited_budget_nonnegative(rest, visited, budget)
+        dfs_unvisited_budget_prepend_le(rest, visited, node, budget)
+      } else {
+        dfs_unvisited_budget_prepend_le(rest, visited, node, budget)
+      }
+  }
+}
+
+///|
+lemma dfs_unvisited_budget_add_decreases(
+  nodes : DfsIntList,
+  visited : DfsIntList,
+  node : Int,
+  budget : Int
+) where {
+  proof_decrease: nodes,
+  proof_require: budget > 0,
+  proof_require: dfs_int_list_mem(nodes, node),
+  proof_require: dfs_int_list_mem(visited, node) == false,
+  proof_ensure:
+    dfs_unvisited_budget(nodes, MoreDfsInt(node, visited), budget) + budget <=
+    dfs_unvisited_budget(nodes, visited, budget),
+} {
+  match nodes {
+    NoDfsInts => ()
+    MoreDfsInt(x, rest) =>
+      if x == node {
+        dfs_unvisited_budget_prepend_le(rest, visited, node, budget)
+        dfs_unvisited_budget_nonnegative(rest, visited, budget)
+      } else {
+        proof_assert dfs_int_list_mem(rest, node)
+        dfs_unvisited_budget_add_decreases(rest, visited, node, budget)
+      }
+  }
+}
+
+///|
+lemma dfs_unvisited_count_add_decreases(
+  nodes : DfsIntList,
+  visited : DfsIntList,
+  node : Int
+) where {
+  proof_decrease: nodes,
+  proof_require: dfs_int_list_mem(nodes, node),
+  proof_require: dfs_int_list_mem(visited, node) == false,
+  proof_ensure:
+    (
+      dfs_unvisited_count(nodes, MoreDfsInt(node, visited)) <
+      dfs_unvisited_count(nodes, visited)
+    ),
+} {
+  match nodes {
+    NoDfsInts => ()
+    MoreDfsInt(x, rest) =>
+      if x == node {
+        dfs_unvisited_count_prepend_le(rest, visited, node)
+        dfs_unvisited_count_nonnegative(rest, visited)
+      } else {
+        proof_assert dfs_int_list_mem(rest, node)
+        dfs_unvisited_count_add_decreases(rest, visited, node)
+      }
+  }
+}
+
+///|
+lemma dfs_visit_measure_nonnegative(
+  nodes : DfsIntList,
+  edges : DfsEdgeList,
+  state : DfsState
+) where {
+  proof_ensure: 0 <= dfs_visit_measure(nodes, edges, state),
+} {
+  dfs_unvisited_count_nonnegative(nodes, state.visited)
+  dfs_edge_list_length_model_nonnegative(edges)
+  proof_assert 0 <= dfs_edge_list_length_model(edges) + 2
+  proof_assert 0 <= dfs_unvisited_budget(
+    nodes,
+    state.visited,
+    dfs_edge_list_length_model(edges) + 2,
+  )
+}
+
+///|
+lemma dfs_visit_out_edges_measure_nonnegative(
+  nodes : DfsIntList,
+  all_edges : DfsEdgeList,
+  remaining_edges : DfsEdgeList,
+  state : DfsState
+) where {
+  proof_ensure:
+    0 <= dfs_visit_out_edges_measure(nodes, all_edges, remaining_edges, state),
+} {
+  dfs_unvisited_count_nonnegative(nodes, state.visited)
+  dfs_edge_list_length_model_nonnegative(all_edges)
+  dfs_edge_list_length_model_nonnegative(remaining_edges)
+  proof_assert 0 <= dfs_edge_list_length_model(all_edges) + 2
+  proof_assert 0 <= dfs_unvisited_budget(
+    nodes,
+    state.visited,
+    dfs_edge_list_length_model(all_edges) + 2,
+  )
+}
+
+///|
+lemma dfs_out_edges_rest_measure_decreases(
+  nodes : DfsIntList,
+  all_edges : DfsEdgeList,
+  edge : DfsEdge,
+  rest : DfsEdgeList,
+  before : DfsState,
+  state : DfsState
+) where {
+  proof_require:
+    dfs_unvisited_budget(
+      nodes,
+      state.visited,
+      dfs_edge_list_length_model(all_edges) + 2,
+    ) <=
+    dfs_unvisited_budget(
+      nodes,
+      before.visited,
+      dfs_edge_list_length_model(all_edges) + 2,
+    ),
+  proof_ensure:
+    dfs_visit_out_edges_measure(nodes, all_edges, rest, state) <
+    dfs_visit_out_edges_measure(
+      nodes,
+      all_edges,
+      MoreDfsEdge(edge, rest),
+      before,
+    ),
+} {
+  dfs_edge_list_length_model_nonnegative(rest)
+  dfs_edge_list_length_model_nonnegative(all_edges)
+}

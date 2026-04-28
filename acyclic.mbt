@@ -4,7 +4,7 @@ pub fn acyclic_run(g : Graph) -> Unit {
   let fas = if acyclicer == "greedy" {
     greedy_fas(g, weight_fn=weight_fn(g))
   } else {
-    dfs_fas(g)
+    dfs_fas_core(g)
   }
   for e in fas {
     if g.edge_obj(e) is Some(label) {
@@ -32,36 +32,66 @@ fn weight_fn(g : Graph) -> (EdgeObj) -> Double {
 }
 
 ///|
-fn dfs_fas(g : Graph) -> Array[EdgeObj] {
-  let fas = []
-  let stack = Set::new()
-  let visited = Set::new()
-  fn dfs(
-    g : Graph,
-    v : String,
-    stack : Set[String],
-    visited : Set[String],
-    fas : Array[EdgeObj],
-  ) -> Unit {
-    if visited.contains(v) {
-      return
-    }
-    visited.add(v)
-    stack.add(v)
-    for e in g.out_edges(v) {
-      if stack.contains(e.w) {
-        fas.push(e)
-      } else {
-        dfs(g, e.w, stack, visited, fas)
+fn dfs_fas_core(g : Graph) -> Array[EdgeObj] {
+  let node_ids : Map[String, Int] = Map::new()
+  let mut nodes = @acyclic_dfs.DfsIntList::NoDfsInts
+  let graph_nodes = g.nodes()
+  for i in 0..<graph_nodes.length() {
+    let v = graph_nodes[i]
+    node_ids.set(v, i)
+    nodes = dfs_int_list_push_local(nodes, i)
+  }
+  let graph_edges = g.edges()
+  let mut edges = @acyclic_dfs.DfsEdgeList::NoDfsEdges
+  for i in 0..<graph_edges.length() {
+    let e = graph_edges[i]
+    if node_ids.get(e.v) is Some(v) {
+      if node_ids.get(e.w) is Some(w) {
+        edges = dfs_edge_list_push_local(edges, { id: i, v, w })
       }
     }
-    stack.remove(v)
   }
+  let fas_ids = @acyclic_dfs.dfs_fas_edge_ids(nodes, edges)
+  dfs_edge_ids_to_edge_objs(fas_ids, graph_edges)
+}
 
-  for v in g.nodes() {
-    dfs(g, v, stack, visited, fas)
+///|
+fn dfs_int_list_push_local(
+  xs : @acyclic_dfs.DfsIntList,
+  x : Int,
+) -> @acyclic_dfs.DfsIntList {
+  match xs {
+    NoDfsInts => MoreDfsInt(x, NoDfsInts)
+    MoreDfsInt(y, rest) => MoreDfsInt(y, dfs_int_list_push_local(rest, x))
   }
-  fas
+}
+
+///|
+fn dfs_edge_list_push_local(
+  xs : @acyclic_dfs.DfsEdgeList,
+  edge : @acyclic_dfs.DfsEdge,
+) -> @acyclic_dfs.DfsEdgeList {
+  match xs {
+    NoDfsEdges => MoreDfsEdge(edge, NoDfsEdges)
+    MoreDfsEdge(e, rest) => MoreDfsEdge(e, dfs_edge_list_push_local(rest, edge))
+  }
+}
+
+///|
+fn dfs_edge_ids_to_edge_objs(
+  ids : @acyclic_dfs.DfsIntList,
+  graph_edges : Array[EdgeObj],
+) -> Array[EdgeObj] {
+  match ids {
+    NoDfsInts => []
+    MoreDfsInt(id, rest) => {
+      let out = dfs_edge_ids_to_edge_objs(rest, graph_edges)
+      if id >= 0 && id < graph_edges.length() {
+        out.push(graph_edges[id])
+      }
+      out
+    }
+  }
 }
 
 ///|
