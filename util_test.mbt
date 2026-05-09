@@ -89,11 +89,11 @@ test "successor_weights maps node to successors with weights" {
   g.set_edge("b", "c", label=util_edge_label(weight=2), name="multi")
   g.set_edge("b", "d", label=util_edge_label(weight=1), name="multi")
   let ws = successor_weights(g)
-  assert_eq(ws.get_or_default("a", Map::new()).get_or_default("b", 0.0), 2.0)
-  assert_eq(ws.get_or_default("b", Map::new()).get_or_default("c", 0.0), 3.0)
-  assert_eq(ws.get_or_default("b", Map::new()).get_or_default("d", 0.0), 1.0)
-  assert_eq(ws.get_or_default("c", Map::new()).length(), 0)
-  assert_eq(ws.get_or_default("d", Map::new()).length(), 0)
+  assert_eq(ws.get_or_default("a", Map([])).get_or_default("b", 0.0), 2.0)
+  assert_eq(ws.get_or_default("b", Map([])).get_or_default("c", 0.0), 3.0)
+  assert_eq(ws.get_or_default("b", Map([])).get_or_default("d", 0.0), 1.0)
+  assert_eq(ws.get_or_default("c", Map([])).length(), 0)
+  assert_eq(ws.get_or_default("d", Map([])).length(), 0)
 }
 
 ///|
@@ -104,10 +104,10 @@ test "predecessor_weights maps node to predecessors with weights" {
   g.set_edge("b", "c", label=util_edge_label(weight=2), name="multi")
   g.set_edge("b", "d", label=util_edge_label(weight=1), name="multi")
   let ws = predecessor_weights(g)
-  assert_eq(ws.get_or_default("a", Map::new()).length(), 0)
-  assert_eq(ws.get_or_default("b", Map::new()).get_or_default("a", 0.0), 2.0)
-  assert_eq(ws.get_or_default("c", Map::new()).get_or_default("b", 0.0), 3.0)
-  assert_eq(ws.get_or_default("d", Map::new()).get_or_default("b", 0.0), 1.0)
+  assert_eq(ws.get_or_default("a", Map([])).length(), 0)
+  assert_eq(ws.get_or_default("b", Map([])).get_or_default("a", 0.0), 2.0)
+  assert_eq(ws.get_or_default("c", Map([])).get_or_default("b", 0.0), 3.0)
+  assert_eq(ws.get_or_default("d", Map([])).get_or_default("b", 0.0), 1.0)
 }
 
 ///|
@@ -244,7 +244,7 @@ test "range builds array with negative step" {
 
 ///|
 test "map_values creates map with same keys" {
-  let users : Map[String, Int] = Map::new()
+  let users : Map[String, Int] = Map([])
   users.set("fred", 40)
   users.set("pebbles", 1)
   let ages = map_values(users, (age, _) => age)

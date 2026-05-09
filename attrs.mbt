@@ -53,7 +53,7 @@ pub fn edge_obj(v : String, w : String, name? : String) -> EdgeObj {
 
 ///|
 pub fn empty_attrs() -> Attrs {
-  { map: Map::new() }
+  { map: Map([]) }
 }
 
 ///|

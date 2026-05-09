@@ -4,7 +4,7 @@ pub fn order_add_subgraph_constraints(
   cg : Graph,
   vs : Array[String],
 ) -> Unit {
-  let prev : Map[String, String] = Map::new()
+  let prev : Map[String, String] = Map([])
   let mut root_prev : String? = None
   for v in vs {
     let mut child = g.parent(v)

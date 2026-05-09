@@ -1,6 +1,6 @@
 ///|
 pub fn order_init_order(g : Graph) -> Array[Array[String]] {
-  let visited : Set[String] = Set::new()
+  let visited : Set[String] = Set([])
   let simple_nodes = g.nodes().filter(v => g.children(v~).is_empty())
   if simple_nodes.is_empty() {
     return []
@@ -28,7 +28,7 @@ pub fn order_init_order(g : Graph) -> Array[Array[String]] {
 
   // JS uses a stable sort when ordering by rank only. Preserve the original
   // `simple_nodes` order as a tiebreaker to match upstream behavior.
-  let index_by_node : Map[String, Int] = Map::new()
+  let index_by_node : Map[String, Int] = Map([])
   for i = 0; i < simple_nodes.length(); i = i + 1 {
     index_by_node.set(simple_nodes[i], i)
   }

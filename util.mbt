@@ -88,9 +88,9 @@ pub fn as_non_compound_graph(g : Graph) -> Graph {
 
 ///|
 pub fn successor_weights(g : Graph) -> Map[String, Map[String, Double]] {
-  let out = Map::new()
+  let out = Map([])
   for v in g.nodes() {
-    let sucs = Map::new()
+    let sucs = Map([])
     for e in g.out_edges(v) {
       let weight = edge_weight(g.edge_obj(e))
       sucs.set(e.w, sucs.get_or_default(e.w, 0.0) + weight)
@@ -102,9 +102,9 @@ pub fn successor_weights(g : Graph) -> Map[String, Map[String, Double]] {
 
 ///|
 pub fn predecessor_weights(g : Graph) -> Map[String, Map[String, Double]] {
-  let out = Map::new()
+  let out = Map([])
   for v in g.nodes() {
-    let preds = Map::new()
+    let preds = Map([])
     for e in g.in_edges(v) {
       let weight = edge_weight(g.edge_obj(e))
       preds.set(e.v, preds.get_or_default(e.v, 0.0) + weight)
@@ -344,7 +344,7 @@ pub fn[V, U] map_values(
   obj : Map[String, V],
   f : (V, String) -> U,
 ) -> Map[String, U] {
-  let out : Map[String, U] = Map::new()
+  let out : Map[String, U] = Map([])
   obj.each((k, v) => out.set(k, f(v, k)))
   out
 }
@@ -354,7 +354,7 @@ pub fn map_values_prop(
   obj : Map[String, Attrs],
   prop : String,
 ) -> Map[String, Attr] {
-  let out : Map[String, Attr] = Map::new()
+  let out : Map[String, Attr] = Map([])
   obj.each((k, v) => if v.get(prop) is Some(value) { out.set(k, value) })
   out
 }
@@ -364,7 +364,7 @@ pub fn[T] zip_object(
   props : Array[String],
   values : Array[T],
 ) -> Map[String, T] {
-  let out : Map[String, T] = Map::new()
+  let out : Map[String, T] = Map([])
   for i = 0; i < props.length() && i < values.length(); i = i + 1 {
     out.set(props[i], values[i])
   }

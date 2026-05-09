@@ -103,7 +103,7 @@ pub fn rank_network_simplex_init_low_lim_values(
     return
   }
   let start = if root is Some(root) { root } else { tree.nodes()[0] }
-  ignore(rank_network_simplex_dfs_assign_low_lim(tree, Set::new(), 1, start))
+  ignore(rank_network_simplex_dfs_assign_low_lim(tree, Set([]), 1, start))
 }
 
 ///|

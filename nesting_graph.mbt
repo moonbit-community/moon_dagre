@@ -83,7 +83,7 @@ fn nesting_dfs(
 
 ///|
 fn nesting_tree_depths(g : Graph) -> Map[String, Int] {
-  let depths : Map[String, Int] = Map::new()
+  let depths : Map[String, Int] = Map([])
   fn dfs(
     g : Graph,
     depths : Map[String, Int],

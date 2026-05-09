@@ -10,7 +10,7 @@ pub fn position_bk_x(g : Graph) -> Map[String, Double] {
   let conflicts = position_bk_find_type1_conflicts(g, layering)
   let type2 = position_bk_find_type2_conflicts(g, layering)
   position_bk_assign_conflicts(conflicts, type2)
-  let xss : Map[String, Map[String, Double]] = Map::new()
+  let xss : Map[String, Map[String, Double]] = Map([])
   for vert in ["u", "d"] {
     let base_layering = if vert == "u" {
       position_bk_copy_layering(layering)
@@ -39,7 +39,7 @@ pub fn position_bk_x(g : Graph) -> Map[String, Double] {
         reverse_sep=horiz == "r",
       )
       if horiz == "r" {
-        let mirrored : Map[String, Double] = Map::new()
+        let mirrored : Map[String, Double] = Map([])
         xs.each((v, x) => mirrored.set(v, -x))
         xs = mirrored
       }
@@ -60,7 +60,7 @@ pub fn position_bk_find_type1_conflicts(
   g : Graph,
   layering : Array[Array[String]],
 ) -> Map[String, Set[String]] {
-  let conflicts : Map[String, Set[String]] = Map::new()
+  let conflicts : Map[String, Set[String]] = Map([])
   if layering.length() <= 1 {
     return conflicts
   }
@@ -125,7 +125,7 @@ pub fn position_bk_find_type2_conflicts(
   g : Graph,
   layering : Array[Array[String]],
 ) -> Map[String, Set[String]] {
-  let conflicts : Map[String, Set[String]] = Map::new()
+  let conflicts : Map[String, Set[String]] = Map([])
   if layering.length() <= 1 {
     return conflicts
   }
@@ -250,7 +250,7 @@ pub fn position_bk_add_conflict(
   if conflicts.get(lhs) is Some(conflicts_v) {
     conflicts_v.add(rhs)
   } else {
-    let conflicts_v = Set::new()
+    let conflicts_v = Set([])
     conflicts_v.add(rhs)
     conflicts.set(lhs, conflicts_v)
   }
@@ -284,9 +284,9 @@ pub fn position_bk_vertical_alignment(
   neighbor_fn : (String) -> Array[String],
 ) -> PositionBkAlignment {
   ignore(g)
-  let root : Map[String, String] = Map::new()
-  let align : Map[String, String] = Map::new()
-  let pos : Map[String, Int] = Map::new()
+  let root : Map[String, String] = Map([])
+  let align : Map[String, String] = Map([])
+  let pos : Map[String, Int] = Map([])
   for layer in layering {
     for order = 0; order < layer.length(); order = order + 1 {
       let v = layer[order]
@@ -337,7 +337,7 @@ pub fn position_bk_horizontal_compaction(
   align : Map[String, String],
   reverse_sep? : Bool = false,
 ) -> Map[String, Double] {
-  let xs : Map[String, Double] = Map::new()
+  let xs : Map[String, Double] = Map([])
   let block_g = position_bk_build_block_graph(g, layering, root, reverse_sep)
   let border_type = if reverse_sep { "borderLeft" } else { "borderRight" }
   position_bk_iterate(
@@ -388,7 +388,7 @@ fn position_bk_iterate(
   next_nodes_func : (String) -> Array[String],
 ) -> Unit {
   let stack = block_g.nodes().copy()
-  let visited : Map[String, Bool] = Map::new()
+  let visited : Map[String, Bool] = Map([])
   while true {
     if stack.pop() is Some(elem) {
       if visited.get_or_default(elem, false) {
@@ -450,7 +450,7 @@ pub fn position_bk_find_smallest_width_alignment(
   xss : Map[String, Map[String, Double]],
 ) -> Map[String, Double] {
   let mut best_width = 9_999_999_999.0
-  let mut best : Map[String, Double] = Map::new()
+  let mut best : Map[String, Double] = Map([])
   // Match JS iteration order (`Object.values(xss)` on insertion order):
   // ul -> ur -> dl -> dr. This also guarantees deterministic tie-breaking.
   for key in ["ul", "ur", "dl", "dr"] {
@@ -488,7 +488,7 @@ pub fn position_bk_align_coordinates(
           delta = align_to_max - position_bk_map_max(xs)
         }
         if delta != 0.0 {
-          let shifted : Map[String, Double] = Map::new()
+          let shifted : Map[String, Double] = Map([])
           xs.each((v, x) => shifted.set(v, x + delta))
           xss.set(alignment, shifted)
         }
@@ -502,8 +502,8 @@ pub fn position_bk_balance(
   xss : Map[String, Map[String, Double]],
   align? : String,
 ) -> Map[String, Double] {
-  let out : Map[String, Double] = Map::new()
-  let ul = xss.get_or_default("ul", Map::new())
+  let out : Map[String, Double] = Map([])
+  let ul = xss.get_or_default("ul", Map([]))
   ul.each((v, _) => {
     if align is Some(align) {
       let key = align.to_lower()
@@ -514,10 +514,10 @@ pub fn position_bk_balance(
       }
     } else {
       let values = [
-        xss.get_or_default("ul", Map::new()).get_or_default(v, 0.0),
-        xss.get_or_default("ur", Map::new()).get_or_default(v, 0.0),
-        xss.get_or_default("dl", Map::new()).get_or_default(v, 0.0),
-        xss.get_or_default("dr", Map::new()).get_or_default(v, 0.0),
+        xss.get_or_default("ul", Map([])).get_or_default(v, 0.0),
+        xss.get_or_default("ur", Map([])).get_or_default(v, 0.0),
+        xss.get_or_default("dl", Map([])).get_or_default(v, 0.0),
+        xss.get_or_default("dr", Map([])).get_or_default(v, 0.0),
       ]
       values.sort_by(position_bk_compare_double)
       out.set(v, (values[1] + values[2]) / 2.0)
@@ -594,7 +594,7 @@ fn position_bk_assign_conflicts(
     if target.get(v) is Some(target_ws) {
       ws.each(w => target_ws.add(w))
     } else {
-      let merged = Set::new()
+      let merged = Set([])
       ws.each(w => merged.add(w))
       target.set(v, merged)
     }

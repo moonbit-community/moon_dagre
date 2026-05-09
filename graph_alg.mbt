@@ -5,7 +5,7 @@ priv struct TarjanIndex {
 
 ///|
 pub fn components(g : Graph) -> Array[Array[String]] {
-  let visited = Set::new()
+  let visited = Set([])
   let result = []
   for v in g.nodes() {
     if !visited.contains(v) {
@@ -59,9 +59,9 @@ fn is_cycle_component(g : Graph, component : Array[String]) -> Bool {
 fn tarjan_scc(g : Graph) -> Array[Array[String]] {
   let index : TarjanIndex = { value: 0 }
   let stack = []
-  let on_stack = Set::new()
-  let indices = Map::new()
-  let lowlinks = Map::new()
+  let on_stack = Set([])
+  let indices = Map([])
+  let lowlinks = Map([])
   let result = []
   for v in g.nodes() {
     if !indices.contains(v) {
@@ -120,7 +120,7 @@ fn pop_component(
 
 ///|
 pub fn preorder(g : Graph, roots : Array[String]) -> Array[String] {
-  let visited = Set::new()
+  let visited = Set([])
   let order = []
   for root in roots {
     preorder_dfs(g, root, visited, order)
@@ -148,7 +148,7 @@ fn preorder_dfs(
 
 ///|
 pub fn postorder(g : Graph, roots : Array[String]) -> Array[String] {
-  let visited = Set::new()
+  let visited = Set([])
   let order = []
   for root in roots {
     postorder_dfs(g, root, visited, order)

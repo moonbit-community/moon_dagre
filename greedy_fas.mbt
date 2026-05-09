@@ -104,7 +104,7 @@ fn remove_node(
 ///|
 fn build_state(g : Graph, weight_fn : (EdgeObj) -> Double) -> GreedyState {
   let fas_graph = Graph::new()
-  let entries : Map[String, GreedyEntry] = Map::new()
+  let entries : Map[String, GreedyEntry] = Map([])
   for v in g.nodes() {
     fas_graph.set_node(v)
     entries.set(v, { v, in_w: 0.0, out_w: 0.0 })
@@ -131,7 +131,7 @@ fn build_state(g : Graph, weight_fn : (EdgeObj) -> Double) -> GreedyState {
   }
   let bucket_len = max_out.to_int() + max_in.to_int() + 3
   let buckets = range(bucket_len).map(_ => [])
-  let bucket_of : Map[String, Int] = Map::new()
+  let bucket_of : Map[String, Int] = Map([])
   let state : GreedyState = {
     graph: fas_graph,
     entries,

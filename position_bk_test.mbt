@@ -147,7 +147,7 @@ test "position_bk findType2 marks favoring border segments #2" {
 
 ///|
 test "position_bk hasConflict works with orientation and multiple" {
-  let conflicts : Map[String, Set[String]] = Map::new()
+  let conflicts : Map[String, Set[String]] = Map([])
   position_bk_add_conflict(conflicts, "b", "a")
   position_bk_add_conflict(conflicts, "a", "c")
   assert_eq(position_bk_has_conflict(conflicts, "a", "b"), true)
@@ -164,7 +164,7 @@ test "position_bk verticalAlignment aligns node with itself when no adjacencies"
   let result = position_bk_vertical_alignment(
     g,
     build_layer_matrix(g),
-    Map::new(),
+    Map([]),
     v => g.predecessors(v),
   )
   assert_eq(result.root.get_or_default("a", ""), "a")
@@ -183,7 +183,7 @@ test "position_bk verticalAlignment aligns with sole adjacency" {
   let result = position_bk_vertical_alignment(
     g,
     build_layer_matrix(g),
-    Map::new(),
+    Map([]),
     v => g.predecessors(v),
   )
   assert_eq(result.root.get_or_default("a", ""), "a")
@@ -204,7 +204,7 @@ test "position_bk verticalAlignment uses left median when possible" {
   let result = position_bk_vertical_alignment(
     g,
     build_layer_matrix(g),
-    Map::new(),
+    Map([]),
     v => g.predecessors(v),
   )
   assert_eq(result.root.get_or_default("c", ""), "a")
@@ -223,7 +223,7 @@ test "position_bk verticalAlignment sorts candidates by position" {
   let result = position_bk_vertical_alignment(
     g,
     build_layer_matrix(g),
-    Map::new(),
+    Map([]),
     v => g.predecessors(v),
   )
   assert_eq(result.root.get_or_default("z", ""), "z")
@@ -243,7 +243,7 @@ test "position_bk verticalAlignment uses right median when left blocked" {
   g.set_node("c", label=position_bk_node(50.0, 1, 0))
   g.set_edge("a", "c", label=attrs_value(empty_attrs()))
   g.set_edge("b", "c", label=attrs_value(empty_attrs()))
-  let conflicts : Map[String, Set[String]] = Map::new()
+  let conflicts : Map[String, Set[String]] = Map([])
   position_bk_add_conflict(conflicts, "a", "c")
   let result = position_bk_vertical_alignment(
     g,
@@ -269,7 +269,7 @@ test "position_bk verticalAlignment aligns with neither median if both unavailab
   let result = position_bk_vertical_alignment(
     g,
     build_layer_matrix(g),
-    Map::new(),
+    Map([]),
     v => g.predecessors(v),
   )
   assert_eq(result.root.get_or_default("a", ""), "a")
@@ -296,7 +296,7 @@ test "position_bk verticalAlignment aligns odd adjacencies to single median" {
   let result = position_bk_vertical_alignment(
     g,
     build_layer_matrix(g),
-    Map::new(),
+    Map([]),
     v => g.predecessors(v),
   )
   assert_eq(result.root.get_or_default("d", ""), "b")
@@ -316,7 +316,7 @@ test "position_bk verticalAlignment aligns blocks across multiple layers" {
   let result = position_bk_vertical_alignment(
     g,
     build_layer_matrix(g),
-    Map::new(),
+    Map([]),
     v => g.predecessors(v),
   )
   assert_eq(result.root.get_or_default("a", ""), "a")
@@ -334,9 +334,9 @@ test "position_bk horizontalCompaction single node at origin" {
   let g = Graph::new()
   g.set_graph(empty_attrs())
   g.set_node("a", label=position_bk_node(100.0, 0, 0))
-  let root : Map[String, String] = Map::new()
+  let root : Map[String, String] = Map([])
   root.set("a", "a")
-  let align : Map[String, String] = Map::new()
+  let align : Map[String, String] = Map([])
   align.set("a", "a")
   let xs = position_bk_horizontal_compaction(
     g,
@@ -355,10 +355,10 @@ test "position_bk horizontalCompaction separates nodes by nodesep" {
   g.set_graph(graph)
   g.set_node("a", label=position_bk_node(100.0, 0, 0))
   g.set_node("b", label=position_bk_node(200.0, 0, 1))
-  let root : Map[String, String] = Map::new()
+  let root : Map[String, String] = Map([])
   root.set("a", "a")
   root.set("b", "b")
-  let align : Map[String, String] = Map::new()
+  let align : Map[String, String] = Map([])
   align.set("a", "a")
   align.set("b", "b")
   let xs = position_bk_horizontal_compaction(
@@ -383,10 +383,10 @@ test "position_bk horizontalCompaction separates dummy nodes by edgesep" {
   b.set_bool("dummy", true)
   g.set_node("a", label=a)
   g.set_node("b", label=b)
-  let root : Map[String, String] = Map::new()
+  let root : Map[String, String] = Map([])
   root.set("a", "a")
   root.set("b", "b")
-  let align : Map[String, String] = Map::new()
+  let align : Map[String, String] = Map([])
   align.set("a", "a")
   align.set("b", "b")
   let xs = position_bk_horizontal_compaction(
@@ -404,10 +404,10 @@ test "position_bk horizontalCompaction aligns centers in same block" {
   g.set_graph(empty_attrs())
   g.set_node("a", label=position_bk_node(100.0, 0, 0))
   g.set_node("b", label=position_bk_node(200.0, 1, 0))
-  let root : Map[String, String] = Map::new()
+  let root : Map[String, String] = Map([])
   root.set("a", "a")
   root.set("b", "a")
-  let align : Map[String, String] = Map::new()
+  let align : Map[String, String] = Map([])
   align.set("a", "b")
   align.set("b", "a")
   let xs = position_bk_horizontal_compaction(
@@ -429,11 +429,11 @@ test "position_bk horizontalCompaction separates blocks with appropriate sep" {
   g.set_node("a", label=position_bk_node(100.0, 0, 0))
   g.set_node("b", label=position_bk_node(200.0, 1, 1))
   g.set_node("c", label=position_bk_node(50.0, 1, 0))
-  let root : Map[String, String] = Map::new()
+  let root : Map[String, String] = Map([])
   root.set("a", "a")
   root.set("b", "a")
   root.set("c", "c")
-  let align : Map[String, String] = Map::new()
+  let align : Map[String, String] = Map([])
   align.set("a", "b")
   align.set("b", "a")
   align.set("c", "c")
@@ -458,12 +458,12 @@ test "position_bk horizontalCompaction separates classes with appropriate sep" {
   g.set_node("b", label=position_bk_node(200.0, 0, 1))
   g.set_node("c", label=position_bk_node(50.0, 1, 0))
   g.set_node("d", label=position_bk_node(80.0, 1, 1))
-  let root : Map[String, String] = Map::new()
+  let root : Map[String, String] = Map([])
   root.set("a", "a")
   root.set("b", "b")
   root.set("c", "c")
   root.set("d", "b")
-  let align : Map[String, String] = Map::new()
+  let align : Map[String, String] = Map([])
   align.set("a", "a")
   align.set("b", "d")
   align.set("c", "c")
@@ -491,12 +491,12 @@ test "position_bk horizontalCompaction shifts classes by max sep #1" {
   g.set_node("b", label=position_bk_node(150.0, 0, 1))
   g.set_node("c", label=position_bk_node(60.0, 1, 0))
   g.set_node("d", label=position_bk_node(70.0, 1, 1))
-  let root : Map[String, String] = Map::new()
+  let root : Map[String, String] = Map([])
   root.set("a", "a")
   root.set("b", "b")
   root.set("c", "a")
   root.set("d", "b")
-  let align : Map[String, String] = Map::new()
+  let align : Map[String, String] = Map([])
   align.set("a", "c")
   align.set("b", "d")
   align.set("c", "a")
@@ -524,12 +524,12 @@ test "position_bk horizontalCompaction shifts classes by max sep #2" {
   g.set_node("b", label=position_bk_node(70.0, 0, 1))
   g.set_node("c", label=position_bk_node(60.0, 1, 0))
   g.set_node("d", label=position_bk_node(150.0, 1, 1))
-  let root : Map[String, String] = Map::new()
+  let root : Map[String, String] = Map([])
   root.set("a", "a")
   root.set("b", "b")
   root.set("c", "a")
   root.set("d", "b")
-  let align : Map[String, String] = Map::new()
+  let align : Map[String, String] = Map([])
   align.set("a", "c")
   align.set("b", "d")
   align.set("c", "a")
@@ -565,7 +565,7 @@ test "position_bk horizontalCompaction cascades class shift" {
   g.node("f").set_int("rank", 2)
   g.node("g").set_int("rank", 2)
   g.node("g").set_int("order", 1)
-  let root : Map[String, String] = Map::new()
+  let root : Map[String, String] = Map([])
   root.set("a", "a")
   root.set("b", "b")
   root.set("c", "c")
@@ -573,7 +573,7 @@ test "position_bk horizontalCompaction cascades class shift" {
   root.set("e", "b")
   root.set("f", "f")
   root.set("g", "d")
-  let align : Map[String, String] = Map::new()
+  let align : Map[String, String] = Map([])
   align.set("a", "a")
   align.set("b", "e")
   align.set("c", "c")
@@ -623,11 +623,11 @@ test "position_bk horizontalCompaction handles labelpos = l" {
   let c = position_bk_node(300.0, 0, 2)
   c.set_string("dummy", "edge")
   g.set_node("c", label=c)
-  let root : Map[String, String] = Map::new()
+  let root : Map[String, String] = Map([])
   root.set("a", "a")
   root.set("b", "b")
   root.set("c", "c")
-  let align : Map[String, String] = Map::new()
+  let align : Map[String, String] = Map([])
   align.set("a", "a")
   align.set("b", "b")
   align.set("c", "c")
@@ -664,11 +664,11 @@ test "position_bk horizontalCompaction handles labelpos = c" {
   let c = position_bk_node(300.0, 0, 2)
   c.set_string("dummy", "edge")
   g.set_node("c", label=c)
-  let root : Map[String, String] = Map::new()
+  let root : Map[String, String] = Map([])
   root.set("a", "a")
   root.set("b", "b")
   root.set("c", "c")
-  let align : Map[String, String] = Map::new()
+  let align : Map[String, String] = Map([])
   align.set("a", "a")
   align.set("b", "b")
   align.set("c", "c")
@@ -705,11 +705,11 @@ test "position_bk horizontalCompaction handles labelpos = r" {
   let c = position_bk_node(300.0, 0, 2)
   c.set_string("dummy", "edge")
   g.set_node("c", label=c)
-  let root : Map[String, String] = Map::new()
+  let root : Map[String, String] = Map([])
   root.set("a", "a")
   root.set("b", "b")
   root.set("c", "c")
-  let align : Map[String, String] = Map::new()
+  let align : Map[String, String] = Map([])
   align.set("a", "a")
   align.set("b", "b")
   align.set("c", "c")
@@ -732,51 +732,39 @@ test "position_bk horizontalCompaction handles labelpos = r" {
 
 ///|
 test "position_bk alignCoordinates aligns single node" {
-  let xss : Map[String, Map[String, Double]] = Map::new()
-  let ul : Map[String, Double] = Map::new()
+  let xss : Map[String, Map[String, Double]] = Map([])
+  let ul : Map[String, Double] = Map([])
   ul.set("a", 50.0)
-  let ur : Map[String, Double] = Map::new()
+  let ur : Map[String, Double] = Map([])
   ur.set("a", 100.0)
-  let dl : Map[String, Double] = Map::new()
+  let dl : Map[String, Double] = Map([])
   dl.set("a", 50.0)
-  let dr : Map[String, Double] = Map::new()
+  let dr : Map[String, Double] = Map([])
   dr.set("a", 200.0)
   xss.set("ul", ul)
   xss.set("ur", ur)
   xss.set("dl", dl)
   xss.set("dr", dr)
   position_bk_align_coordinates(xss, ul)
-  assert_eq(
-    xss.get_or_default("ul", Map::new()).get_or_default("a", -1.0),
-    50.0,
-  )
-  assert_eq(
-    xss.get_or_default("ur", Map::new()).get_or_default("a", -1.0),
-    50.0,
-  )
-  assert_eq(
-    xss.get_or_default("dl", Map::new()).get_or_default("a", -1.0),
-    50.0,
-  )
-  assert_eq(
-    xss.get_or_default("dr", Map::new()).get_or_default("a", -1.0),
-    50.0,
-  )
+  assert_eq(xss.get_or_default("ul", Map([])).get_or_default("a", -1.0), 50.0)
+  assert_eq(xss.get_or_default("ur", Map([])).get_or_default("a", -1.0), 50.0)
+  assert_eq(xss.get_or_default("dl", Map([])).get_or_default("a", -1.0), 50.0)
+  assert_eq(xss.get_or_default("dr", Map([])).get_or_default("a", -1.0), 50.0)
 }
 
 ///|
 test "position_bk alignCoordinates aligns multiple nodes" {
-  let xss : Map[String, Map[String, Double]] = Map::new()
-  let ul : Map[String, Double] = Map::new()
+  let xss : Map[String, Map[String, Double]] = Map([])
+  let ul : Map[String, Double] = Map([])
   ul.set("a", 50.0)
   ul.set("b", 1000.0)
-  let ur : Map[String, Double] = Map::new()
+  let ur : Map[String, Double] = Map([])
   ur.set("a", 100.0)
   ur.set("b", 900.0)
-  let dl : Map[String, Double] = Map::new()
+  let dl : Map[String, Double] = Map([])
   dl.set("a", 150.0)
   dl.set("b", 800.0)
-  let dr : Map[String, Double] = Map::new()
+  let dr : Map[String, Double] = Map([])
   dr.set("a", 200.0)
   dr.set("b", 700.0)
   xss.set("ul", ul)
@@ -784,38 +772,14 @@ test "position_bk alignCoordinates aligns multiple nodes" {
   xss.set("dl", dl)
   xss.set("dr", dr)
   position_bk_align_coordinates(xss, ul)
-  assert_eq(
-    xss.get_or_default("ul", Map::new()).get_or_default("a", -1.0),
-    50.0,
-  )
-  assert_eq(
-    xss.get_or_default("ul", Map::new()).get_or_default("b", -1.0),
-    1000.0,
-  )
-  assert_eq(
-    xss.get_or_default("ur", Map::new()).get_or_default("a", -1.0),
-    200.0,
-  )
-  assert_eq(
-    xss.get_or_default("ur", Map::new()).get_or_default("b", -1.0),
-    1000.0,
-  )
-  assert_eq(
-    xss.get_or_default("dl", Map::new()).get_or_default("a", -1.0),
-    50.0,
-  )
-  assert_eq(
-    xss.get_or_default("dl", Map::new()).get_or_default("b", -1.0),
-    700.0,
-  )
-  assert_eq(
-    xss.get_or_default("dr", Map::new()).get_or_default("a", -1.0),
-    500.0,
-  )
-  assert_eq(
-    xss.get_or_default("dr", Map::new()).get_or_default("b", -1.0),
-    1000.0,
-  )
+  assert_eq(xss.get_or_default("ul", Map([])).get_or_default("a", -1.0), 50.0)
+  assert_eq(xss.get_or_default("ul", Map([])).get_or_default("b", -1.0), 1000.0)
+  assert_eq(xss.get_or_default("ur", Map([])).get_or_default("a", -1.0), 200.0)
+  assert_eq(xss.get_or_default("ur", Map([])).get_or_default("b", -1.0), 1000.0)
+  assert_eq(xss.get_or_default("dl", Map([])).get_or_default("a", -1.0), 50.0)
+  assert_eq(xss.get_or_default("dl", Map([])).get_or_default("b", -1.0), 700.0)
+  assert_eq(xss.get_or_default("dr", Map([])).get_or_default("a", -1.0), 500.0)
+  assert_eq(xss.get_or_default("dr", Map([])).get_or_default("b", -1.0), 1000.0)
 }
 
 ///|
@@ -828,17 +792,17 @@ test "position_bk findSmallestWidthAlignment chooses smallest width" {
   b.set_float("width", 50.0)
   g.set_node("a", label=a)
   g.set_node("b", label=b)
-  let xss : Map[String, Map[String, Double]] = Map::new()
-  let ul : Map[String, Double] = Map::new()
+  let xss : Map[String, Map[String, Double]] = Map([])
+  let ul : Map[String, Double] = Map([])
   ul.set("a", 0.0)
   ul.set("b", 1000.0)
-  let ur : Map[String, Double] = Map::new()
+  let ur : Map[String, Double] = Map([])
   ur.set("a", -5.0)
   ur.set("b", 1000.0)
-  let dl : Map[String, Double] = Map::new()
+  let dl : Map[String, Double] = Map([])
   dl.set("a", 5.0)
   dl.set("b", 2000.0)
-  let dr : Map[String, Double] = Map::new()
+  let dr : Map[String, Double] = Map([])
   dr.set("a", 0.0)
   dr.set("b", 200.0)
   xss.set("ul", ul)
@@ -863,20 +827,20 @@ test "position_bk findSmallestWidthAlignment takes node width into account" {
   g.set_node("a", label=a)
   g.set_node("b", label=b)
   g.set_node("c", label=c)
-  let xss : Map[String, Map[String, Double]] = Map::new()
-  let ul : Map[String, Double] = Map::new()
+  let xss : Map[String, Map[String, Double]] = Map([])
+  let ul : Map[String, Double] = Map([])
   ul.set("a", 0.0)
   ul.set("b", 100.0)
   ul.set("c", 75.0)
-  let ur : Map[String, Double] = Map::new()
+  let ur : Map[String, Double] = Map([])
   ur.set("a", 0.0)
   ur.set("b", 100.0)
   ur.set("c", 80.0)
-  let dl : Map[String, Double] = Map::new()
+  let dl : Map[String, Double] = Map([])
   dl.set("a", 0.0)
   dl.set("b", 100.0)
   dl.set("c", 85.0)
-  let dr : Map[String, Double] = Map::new()
+  let dr : Map[String, Double] = Map([])
   dr.set("a", 0.0)
   dr.set("b", 100.0)
   dr.set("c", 90.0)
@@ -890,14 +854,14 @@ test "position_bk findSmallestWidthAlignment takes node width into account" {
 
 ///|
 test "position_bk balance single node median" {
-  let xss : Map[String, Map[String, Double]] = Map::new()
-  let ul : Map[String, Double] = Map::new()
+  let xss : Map[String, Map[String, Double]] = Map([])
+  let ul : Map[String, Double] = Map([])
   ul.set("a", 0.0)
-  let ur : Map[String, Double] = Map::new()
+  let ur : Map[String, Double] = Map([])
   ur.set("a", 100.0)
-  let dl : Map[String, Double] = Map::new()
+  let dl : Map[String, Double] = Map([])
   dl.set("a", 100.0)
-  let dr : Map[String, Double] = Map::new()
+  let dr : Map[String, Double] = Map([])
   dr.set("a", 200.0)
   xss.set("ul", ul)
   xss.set("ur", ur)
@@ -909,14 +873,14 @@ test "position_bk balance single node median" {
 
 ///|
 test "position_bk balance single node average of different medians" {
-  let xss : Map[String, Map[String, Double]] = Map::new()
-  let ul : Map[String, Double] = Map::new()
+  let xss : Map[String, Map[String, Double]] = Map([])
+  let ul : Map[String, Double] = Map([])
   ul.set("a", 0.0)
-  let ur : Map[String, Double] = Map::new()
+  let ur : Map[String, Double] = Map([])
   ur.set("a", 75.0)
-  let dl : Map[String, Double] = Map::new()
+  let dl : Map[String, Double] = Map([])
   dl.set("a", 125.0)
-  let dr : Map[String, Double] = Map::new()
+  let dr : Map[String, Double] = Map([])
   dr.set("a", 200.0)
   xss.set("ul", ul)
   xss.set("ur", ur)
@@ -928,17 +892,17 @@ test "position_bk balance single node average of different medians" {
 
 ///|
 test "position_bk balance multiple nodes" {
-  let xss : Map[String, Map[String, Double]] = Map::new()
-  let ul : Map[String, Double] = Map::new()
+  let xss : Map[String, Map[String, Double]] = Map([])
+  let ul : Map[String, Double] = Map([])
   ul.set("a", 0.0)
   ul.set("b", 50.0)
-  let ur : Map[String, Double] = Map::new()
+  let ur : Map[String, Double] = Map([])
   ur.set("a", 75.0)
   ur.set("b", 0.0)
-  let dl : Map[String, Double] = Map::new()
+  let dl : Map[String, Double] = Map([])
   dl.set("a", 125.0)
   dl.set("b", 60.0)
-  let dr : Map[String, Double] = Map::new()
+  let dr : Map[String, Double] = Map([])
   dr.set("a", 200.0)
   dr.set("b", 75.0)
   xss.set("ul", ul)

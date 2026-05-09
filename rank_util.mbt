@@ -1,6 +1,6 @@
 ///|
 pub fn rank_longest_path(g : Graph) -> Unit {
-  let visited = Set::new()
+  let visited = Set([])
   fn dfs(g : Graph, v : String, visited : Set[String]) -> Int {
     let label = g.node(v)
     if visited.contains(v) {
