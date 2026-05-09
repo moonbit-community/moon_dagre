@@ -135,7 +135,7 @@ fn parent_dummy_find_path(
 
 ///|
 fn parent_dummy_postorder(g : Graph) -> Map[String, ParentDummyNums] {
-  let result : Map[String, ParentDummyNums] = Map::new()
+  let result : Map[String, ParentDummyNums] = Map([])
   let counter : ParentDummyCounter = { lim: 0 }
   fn dfs(
     g : Graph,

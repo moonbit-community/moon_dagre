@@ -38,25 +38,25 @@ pub fn Graph::Graph(
   multigraph? : Bool = false,
   compound? : Bool = false,
 ) -> Graph {
-  let children = Map::new()
-  children.set(root_node, Set::new())
-  let node_index : Map[String, Int] = Map::new()
-  let node_seen : Set[String] = Set::new()
-  let edge_seen : Set[String] = Set::new()
-  let child_add_index : Map[String, Int] = Map::new()
+  let children = Map([])
+  children.set(root_node, Set([]))
+  let node_index : Map[String, Int] = Map([])
+  let node_seen : Set[String] = Set([])
+  let edge_seen : Set[String] = Set([])
+  let child_add_index : Map[String, Int] = Map([])
   {
     directed,
     multigraph,
     compound,
     graph_label: empty_attrs(),
-    nodes: Map::new(),
+    nodes: Map([]),
     node_order: [],
     node_index,
     node_seen,
-    edges: Map::new(),
+    edges: Map([]),
     edge_order: [],
     edge_seen,
-    parent_by_node: Map::new(),
+    parent_by_node: Map([]),
     children_by_node: children,
     child_seq: 0,
     child_add_index,
@@ -454,7 +454,7 @@ pub fn Graph::successors(self : Graph, v : String) -> Array[String] {
 
 ///|
 pub fn Graph::neighbors(self : Graph, v : String) -> Array[String] {
-  let seen = Set::new()
+  let seen = Set([])
   let out = []
   for e in self.node_edges(v) {
     let other = if e.v == v { e.w } else { e.v }
@@ -534,7 +534,7 @@ fn add_child(graph : Graph, parent : String, child : String) -> Unit {
       graph.child_add_index.set(child, graph.child_seq)
     }
   } else {
-    let children = Set::new()
+    let children = Set([])
     children.add(child)
     graph.children_by_node.set(parent, children)
     graph.child_seq = graph.child_seq + 1
@@ -583,7 +583,7 @@ fn touches_undirected(e : EdgeObj, v : String, other : String?) -> Bool {
 
 ///|
 fn unique_nodes(nodes : Array[String]) -> Array[String] {
-  let seen = Set::new()
+  let seen = Set([])
   let out = []
   for v in nodes {
     if !seen.contains(v) {

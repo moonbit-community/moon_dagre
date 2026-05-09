@@ -13,7 +13,7 @@ pub fn order_sort_subgraph(
     movable = movable.filter(w => w != bl && w != br)
   }
   let barycenters = order_barycenter(g, movable~)
-  let subgraphs : Map[String, OrderResult] = Map::new()
+  let subgraphs : Map[String, OrderResult] = Map([])
   for entry in barycenters {
     if !g.children(v=entry.v).is_empty() {
       let subgraph_result = order_sort_subgraph(g, entry.v, cg, bias_right~)

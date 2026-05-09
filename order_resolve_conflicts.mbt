@@ -15,7 +15,7 @@ pub fn order_resolve_conflicts(
   entries : Array[OrderBarycenterEntry],
   cg : Graph,
 ) -> Array[OrderEntry] {
-  let mapped : Map[String, Int] = Map::new()
+  let mapped : Map[String, Int] = Map([])
   let nodes : Array[ResolveEntry] = []
   for i = 0; i < entries.length(); i = i + 1 {
     let entry = entries[i]

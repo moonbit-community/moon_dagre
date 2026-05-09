@@ -239,7 +239,7 @@ fn layout_make_space_for_edge_labels(g : Graph) -> Unit {
 
 ///|
 fn layout_remove_self_edges(g : Graph) -> Map[String, Array[LayoutSelfEdge]] {
-  let out : Map[String, Array[LayoutSelfEdge]] = Map::new()
+  let out : Map[String, Array[LayoutSelfEdge]] = Map([])
   let edges = g.edges()
   for e in edges {
     if e.v == e.w {

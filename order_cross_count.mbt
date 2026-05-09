@@ -13,7 +13,7 @@ fn order_two_layer_cross_count(
   north_layer : Array[String],
   south_layer : Array[String],
 ) -> Double {
-  let south_pos : Map[String, Int] = Map::new()
+  let south_pos : Map[String, Int] = Map([])
   for i = 0; i < south_layer.length(); i = i + 1 {
     let v = south_layer[i]
     if !order_cross_is_layer_hole(v) {
