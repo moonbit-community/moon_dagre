@@ -243,7 +243,7 @@ test "nesting_graph_cleanup removes nesting graph edges" {
   g.set_edge("a", "b", label=nesting_edge_label(minlen=1))
   nesting_graph_run(g)
   nesting_graph_cleanup(g)
-  inspect(g.successors("a"), content="[\"b\"]")
+  debug_inspect(g.successors("a"), content="[\"b\"]")
 }
 
 ///|

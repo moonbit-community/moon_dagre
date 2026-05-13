@@ -7,7 +7,7 @@ test "acyclic_run keeps acyclic graph unchanged" {
   acyclic_run(g)
   let edges = acyclic_edges_to_strings(g.edges())
   edges.sort()
-  inspect(edges, content="[\"a->b\", \"a->c\", \"b->d\", \"c->d\"]")
+  debug_inspect(edges, content="[\"a->b\", \"a->c\", \"b->d\", \"c->d\"]")
 }
 
 ///|
@@ -15,7 +15,7 @@ test "acyclic_run breaks cycles" {
   let g = new_acyclic_graph()
   g.set_path(["a", "b", "c", "d", "a"])
   acyclic_run(g)
-  inspect(find_cycles(g), content="[]")
+  debug_inspect(find_cycles(g), content="[]")
 }
 
 ///|

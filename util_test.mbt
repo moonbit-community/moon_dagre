@@ -127,7 +127,7 @@ test "build_layer_matrix creates matrix from rank and order" {
   g.set_node("c", label=util_rank_order(1, 0))
   g.set_node("d", label=util_rank_order(1, 1))
   g.set_node("e", label=util_rank_order(2, 0))
-  inspect(
+  debug_inspect(
     build_layer_matrix(g),
     content="[[\"a\", \"b\"], [\"c\", \"d\"], [\"e\"]]",
   )
@@ -138,7 +138,7 @@ test "build_layer_matrix preserves sparse order indexes" {
   let g = Graph::new()
   g.set_node("a", label=util_rank_order(0, 0))
   g.set_node("c", label=util_rank_order(0, 2))
-  inspect(build_layer_matrix(g), content="[[\"a\", \"\", \"c\"]]")
+  debug_inspect(build_layer_matrix(g), content="[[\"a\", \"\", \"c\"]]")
 }
 
 ///|

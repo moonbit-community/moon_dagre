@@ -6,7 +6,7 @@ test "normalize_run keeps short edge" {
   g.set_node("b", label=normalize_node_rank(1))
   g.set_edge("a", "b", label=attrs_value(empty_attrs()))
   normalize_run(g)
-  inspect(edges_to_pairs(g.edges()), content="[\"a->b\"]")
+  debug_inspect(edges_to_pairs(g.edges()), content="[\"a->b\"]")
   assert_eq(g.node("a").get_int_or("rank", -1), 0)
   assert_eq(g.node("b").get_int_or("rank", -1), 1)
 }
@@ -23,7 +23,7 @@ test "normalize_run splits two-layer edge" {
   let d = a_succ[0]
   assert_eq(g.node(d).get_string_or("dummy", ""), "edge")
   assert_eq(g.node(d).get_int_or("rank", -1), 1)
-  inspect(g.successors(d), content="[\"b\"]")
+  debug_inspect(g.successors(d), content="[\"b\"]")
   let chains = g.graph().get_strings("dummyChains")
   assert_eq(chains is Some(_), true)
   if chains is Some(chains) {
@@ -74,7 +74,7 @@ test "normalize_undo restores edge and labels" {
   g.set_edge("a", "b", label=attrs_value(edge))
   normalize_run(g)
   normalize_undo(g)
-  inspect(edges_to_pairs(g.edges()), content="[\"a->b\"]")
+  debug_inspect(edges_to_pairs(g.edges()), content="[\"a->b\"]")
   let restored = normalize_edge_attrs(g.edge("a", "b"))
   assert_eq(restored.get_string_or("foo", ""), "bar")
 }

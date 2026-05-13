@@ -14,10 +14,10 @@ test "order_init_order assigns non-overlapping orders for each rank in tree" {
   assert_eq(layering[0], ["a"])
   let l1 = layering[1].copy()
   l1.sort()
-  inspect(l1, content="[\"b\", \"e\"]")
+  debug_inspect(l1, content="[\"b\", \"e\"]")
   let l2 = layering[2].copy()
   l2.sort()
-  inspect(l2, content="[\"c\", \"d\"]")
+  debug_inspect(l2, content="[\"c\", \"d\"]")
 }
 
 ///|
@@ -33,7 +33,7 @@ test "order_init_order assigns non-overlapping orders for each rank in DAG" {
   assert_eq(layering[0], ["a"])
   let l1 = layering[1].copy()
   l1.sort()
-  inspect(l1, content="[\"b\", \"c\"]")
+  debug_inspect(l1, content="[\"b\", \"c\"]")
   assert_eq(layering[2], ["d"])
 }
 
@@ -44,7 +44,7 @@ test "order_init_order does not assign order to subgraph nodes" {
   g.set_node("sg1", label=empty_attrs())
   g.set_parent("a", parent="sg1")
   let layering = order_init_order(g)
-  inspect(layering, content="[[\"a\"]]")
+  debug_inspect(layering, content="[[\"a\"]]")
 }
 
 ///|

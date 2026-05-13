@@ -7,7 +7,7 @@ test "dfs_fas_edge_ids returns empty for acyclic graph" {
     { id: 2, v: 1, w: 3 },
     { id: 3, v: 2, w: 3 },
   ])
-  inspect(int_list_to_array(dfs_fas_edge_ids(nodes, edges)), content="[]")
+  debug_inspect(int_list_to_array(dfs_fas_edge_ids(nodes, edges)), content="[]")
 }
 
 ///|
@@ -19,7 +19,10 @@ test "dfs_fas_edge_ids records stack back edge" {
     { id: 2, v: 2, w: 3 },
     { id: 3, v: 3, w: 0 },
   ])
-  inspect(int_list_to_array(dfs_fas_edge_ids(nodes, edges)), content="[3]")
+  debug_inspect(
+    int_list_to_array(dfs_fas_edge_ids(nodes, edges)),
+    content="[3]",
+  )
 }
 
 ///|

@@ -10,7 +10,7 @@ test "rank_feasible_tree handles trivial graph" {
     g.node("b").get_int_or("rank", -1),
     g.node("a").get_int_or("rank", -1) + 1,
   )
-  inspect(tree.neighbors("a"), content="[\"b\"]")
+  debug_inspect(tree.neighbors("a"), content="[\"b\"]")
 }
 
 ///|
@@ -37,12 +37,12 @@ test "rank_feasible_tree shortens slack by pulling up" {
   )
   let na = tree.neighbors("a")
   na.sort()
-  inspect(na, content="[\"b\", \"d\"]")
+  debug_inspect(na, content="[\"b\", \"d\"]")
   let nb = tree.neighbors("b")
   nb.sort()
-  inspect(nb, content="[\"a\", \"c\"]")
-  inspect(tree.neighbors("c"), content="[\"b\"]")
-  inspect(tree.neighbors("d"), content="[\"a\"]")
+  debug_inspect(nb, content="[\"a\", \"c\"]")
+  debug_inspect(tree.neighbors("c"), content="[\"b\"]")
+  debug_inspect(tree.neighbors("d"), content="[\"a\"]")
 }
 
 ///|
@@ -64,13 +64,13 @@ test "rank_feasible_tree shortens slack by pulling down" {
   )
   let na = tree.neighbors("a")
   na.sort()
-  inspect(na, content="[\"b\"]")
+  debug_inspect(na, content="[\"b\"]")
   let nb = tree.neighbors("b")
   nb.sort()
-  inspect(nb, content="[\"a\", \"c\"]")
+  debug_inspect(nb, content="[\"a\", \"c\"]")
   let nc = tree.neighbors("c")
   nc.sort()
-  inspect(nc, content="[\"b\"]")
+  debug_inspect(nc, content="[\"b\"]")
 }
 
 ///|
