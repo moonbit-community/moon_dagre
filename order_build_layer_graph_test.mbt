@@ -14,7 +14,7 @@ test "order_build_layer_graph places rootless movable nodes under root" {
   assert_eq(top, [root])
   let root_children = lg.children(v=root)
   root_children.sort()
-  inspect(root_children, content="[\"a\", \"b\"]")
+  debug_inspect(root_children, content="[\"a\", \"b\"]")
 }
 
 ///|
@@ -142,7 +142,7 @@ test "order_build_layer_graph preserves hierarchy for movable layer" {
   let root = lg.graph().get_string_or("root", "")
   let root_children = lg.children(v=root)
   root_children.sort()
-  inspect(root_children, content="[\"c\", \"sg\"]")
+  debug_inspect(root_children, content="[\"c\", \"sg\"]")
   assert_eq(lg.parent("a"), Some("sg"))
   assert_eq(lg.parent("b"), Some("sg"))
 }

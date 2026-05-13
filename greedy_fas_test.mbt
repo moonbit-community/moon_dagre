@@ -2,7 +2,7 @@
 // Upstream: dagre-reference/test/greedy-fas-test.js
 test "greedy_fas returns empty for empty graph" {
   let g = Graph::new()
-  inspect(edges_to_strings(greedy_fas(g)), content="[]")
+  debug_inspect(edges_to_strings(greedy_fas(g)), content="[]")
 }
 
 ///|
@@ -12,7 +12,7 @@ test "greedy_fas returns empty for acyclic graph" {
   g.set_edge("b", "c")
   g.set_edge("b", "d")
   g.set_edge("a", "e")
-  inspect(edges_to_strings(greedy_fas(g)), content="[]")
+  debug_inspect(edges_to_strings(greedy_fas(g)), content="[]")
 }
 
 ///|
@@ -30,12 +30,12 @@ test "greedy_fas works with edge weights" {
   g1.set_edge("n1", "n2", label=value_float(2.0))
   g1.set_edge("n2", "n1", label=value_float(1.0))
   let fas1 = greedy_fas(g1, weight_fn=edge_weight_fn(g1))
-  inspect(edges_to_strings(fas1), content="[\"n2->n1\"]")
+  debug_inspect(edges_to_strings(fas1), content="[\"n2->n1\"]")
   let g2 = Graph::new()
   g2.set_edge("n1", "n2", label=value_float(1.0))
   g2.set_edge("n2", "n1", label=value_float(2.0))
   let fas2 = greedy_fas(g2, weight_fn=edge_weight_fn(g2))
-  inspect(edges_to_strings(fas2), content="[\"n1->n2\"]")
+  debug_inspect(edges_to_strings(fas2), content="[\"n1->n2\"]")
 }
 
 ///|
@@ -47,7 +47,7 @@ test "greedy_fas works with multigraph" {
   let fas = greedy_fas(g, weight_fn=edge_weight_fn(g))
   let sorted = edges_to_strings(fas)
   sorted.sort()
-  inspect(sorted, content="[\"b->a#bar\", \"b->a#baz\"]")
+  debug_inspect(sorted, content="[\"b->a#bar\", \"b->a#baz\"]")
 }
 
 ///|

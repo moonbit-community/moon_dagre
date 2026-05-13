@@ -33,7 +33,10 @@ test "order_add_subgraph_constraints adds constraint for adjacent nodes with dif
   g.set_parent("a", parent="sg1")
   g.set_parent("b", parent="sg2")
   order_add_subgraph_constraints(g, cg, vs)
-  inspect(order_add_constraints_edge_strings(cg), content="[\"sg1->sg2\"]")
+  debug_inspect(
+    order_add_constraints_edge_strings(cg),
+    content="[\"sg1->sg2\"]",
+  )
 }
 
 ///|
@@ -53,7 +56,7 @@ test "order_add_subgraph_constraints works for multiple levels" {
   g.set_parent("g", parent="sg5")
   g.set_parent("sg5", parent="sg4")
   order_add_subgraph_constraints(g, cg, vs)
-  inspect(
+  debug_inspect(
     order_add_constraints_edge_strings(cg),
     content="[\"sg1->sg4\", \"sg2->sg3\"]",
   )
