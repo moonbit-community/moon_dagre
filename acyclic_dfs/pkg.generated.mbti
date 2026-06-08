@@ -1,5 +1,5 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "Milky2018/moon_dagre/acyclic_dfs"
+package "moonbit-community/moon_dagre/acyclic_dfs"
 
 // Values
 pub fn dfs_fas_edge_ids(DfsIntList, DfsEdgeList) -> DfsIntList

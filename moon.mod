@@ -1,0 +1,13 @@
+name = "moonbit-community/moon_dagre"
+
+version = "0.2.5"
+
+readme = "README.mbt.md"
+
+repository = "https://github.com/moonbit-community/moon_dagre"
+
+license = "Apache-2.0"
+
+keywords = [ "layout" ]
+
+description = "Dagre layout engine implemented in MoonBit"
