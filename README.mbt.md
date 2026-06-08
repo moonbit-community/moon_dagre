@@ -1,4 +1,4 @@
-# Milky2018/moon_dagre
+# moonbit-community/moon_dagre
 
 A MoonBit port of the dagre graph layout engine.
 
@@ -7,7 +7,7 @@ Repository: <https://github.com/moonbit-community/moon_dagre>
 ## Install
 
 ```bash
-moon add Milky2018/moon_dagre
+moon add moonbit-community/moon_dagre
 ```
 
 ## Basic Usage
@@ -15,7 +15,7 @@ moon add Milky2018/moon_dagre
 `moon.pkg`:
 ```json
 import {
-  "Milky2018/moon_dagre" @dagre,
+  "moonbit-community/moon_dagre" @dagre,
 }
 ```
 
