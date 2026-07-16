@@ -99,8 +99,13 @@ pub fn Graph::graph(self : Graph) -> Attrs {
 }
 
 ///|
+/// Sets the template used for edges without an explicit label.
+///
+/// The function is evaluated immediately. Each edge receives a clone of the
+/// resulting value, so labels remain independent without retaining the closure.
 pub fn Graph::set_default_edge_label(self : Graph, f : () -> Value) -> Unit {
-  self.default_edge_label_fn = f
+  let template = clone_value(f())
+  self.default_edge_label_fn = () => clone_value(template)
 }
 
 ///|
@@ -175,6 +180,9 @@ pub fn Graph::set_parent(self : Graph, v : String, parent? : String) -> Unit {
   if !self.compound {
     abort("Cannot set parent in a non-compound graph")
   }
+  if parent is Some(parent) && parent == v {
+    abort("Setting this parent would create a cycle")
+  }
   if !self.has_node(v) {
     self.set_node(v)
   }
@@ -185,6 +193,9 @@ pub fn Graph::set_parent(self : Graph, v : String, parent? : String) -> Unit {
     p
   } else {
     root_node
+  }
+  if graph_parent_reaches(self, target_parent, v) {
+    abort("Setting this parent would create a cycle")
   }
   if self.parent_by_node.get(v) is Some(current_parent) {
     remove_child(self, current_parent, v)
@@ -252,17 +263,31 @@ pub fn Graph::set_edge(
   }
   let normalized = normalize_edge(self, v, w, name)
   let edge_label = if label is Some(label) {
-    label
+    clone_value(label)
   } else {
     (self.default_edge_label_fn)()
   }
-  let record : EdgeRecord = { obj: normalized, label: clone_value(edge_label) }
+  let record : EdgeRecord = { obj: normalized, label: edge_label }
   let key = edge_key(normalized.v, normalized.w, normalized.name)
   if !self.edge_seen.contains(key) {
     self.edge_seen.add(key)
     self.edge_order.push(key)
   }
   self.edges.set(key, record)
+}
+
+///|
+fn graph_parent_reaches(graph : Graph, start : String, target : String) -> Bool {
+  let visited = Set([])
+  let mut current : String? = Some(start)
+  while current is Some(node) {
+    if node == target || visited.contains(node) {
+      return true
+    }
+    visited.add(node)
+    current = graph.parent_by_node.get(node)
+  }
+  false
 }
 
 ///|

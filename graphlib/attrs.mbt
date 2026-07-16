@@ -162,7 +162,66 @@ pub fn Attrs::get(self : Attrs, key : String) -> Attr? {
 
 ///|
 pub fn Attrs::set(self : Attrs, key : String, value : Attr) -> Unit {
+  if attr_references_attrs(value, self) {
+    abort("Cannot create a cyclic attribute value")
+  }
   self.map.set(key, value)
+}
+
+///|
+fn attr_references_attrs(value : Attr, target : Attrs) -> Bool {
+  match value {
+    Attr::Val(value) => value_references_attrs(value, target, [])
+    _ => false
+  }
+}
+
+///|
+fn value_references_attrs(
+  value : Value,
+  target : Attrs,
+  visited : Array[Attrs],
+) -> Bool {
+  match value {
+    Value::VAttrs(attrs) => attrs_references_attrs(attrs, target, visited)
+    _ => false
+  }
+}
+
+///|
+fn attrs_references_attrs(
+  attrs : Attrs,
+  target : Attrs,
+  visited : Array[Attrs],
+) -> Bool {
+  if physical_equal(attrs.map, target.map) {
+    return true
+  }
+  for seen in visited {
+    if physical_equal(attrs.map, seen.map) {
+      return false
+    }
+  }
+  visited.push(attrs)
+  for key in attrs.keys() {
+    if attrs.get(key) is Some(value) &&
+      attr_references_attrs_with_visited(value, target, visited) {
+      return true
+    }
+  }
+  false
+}
+
+///|
+fn attr_references_attrs_with_visited(
+  value : Attr,
+  target : Attrs,
+  visited : Array[Attrs],
+) -> Bool {
+  match value {
+    Attr::Val(value) => value_references_attrs(value, target, visited)
+    _ => false
+  }
 }
 
 ///|
