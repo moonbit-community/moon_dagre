@@ -183,9 +183,9 @@ fn bucket_remove(bucket : Array[String], v : String) -> Unit {
 ///|
 fn edge_label_weight(label : Value?) -> Double {
   match label {
-    Some(Value::VInt(v)) => v.to_double()
-    Some(Value::VFloat(v)) => v
-    Some(Value::VAttrs(attrs)) => attrs.get_float_or("weight", 1.0)
+    Some(VInt(v)) => v.to_double()
+    Some(VFloat(v)) => v
+    Some(VAttrs(attrs)) => attrs.get_float_or("weight", 1.0)
     _ => 0.0
   }
 }

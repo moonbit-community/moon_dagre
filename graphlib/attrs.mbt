@@ -63,50 +63,50 @@ pub fn clone_attrs(attrs : Attrs) -> Attrs {
 
 ///|
 pub fn attrs_value(attrs : Attrs) -> Value {
-  Value::VAttrs(attrs)
+  VAttrs(attrs)
 }
 
 ///|
 pub fn value_null() -> Value {
-  Value::VNull
+  VNull
 }
 
 ///|
 pub fn value_bool(v : Bool) -> Value {
-  Value::VBool(v)
+  VBool(v)
 }
 
 ///|
 pub fn value_int(v : Int) -> Value {
-  Value::VInt(v)
+  VInt(v)
 }
 
 ///|
 pub fn value_float(v : Double) -> Value {
-  Value::VFloat(v)
+  VFloat(v)
 }
 
 ///|
 pub fn value_string(v : String) -> Value {
-  Value::VString(v)
+  VString(v)
 }
 
 ///|
 pub fn clone_value(value : Value) -> Value {
   match value {
-    Value::VNull => Value::VNull
-    Value::VBool(v) => Value::VBool(v)
-    Value::VInt(v) => Value::VInt(v)
-    Value::VFloat(v) => Value::VFloat(v)
-    Value::VString(v) => Value::VString(v)
-    Value::VAttrs(attrs) => Value::VAttrs(clone_attrs(attrs))
+    VNull => VNull
+    VBool(v) => VBool(v)
+    VInt(v) => VInt(v)
+    VFloat(v) => VFloat(v)
+    VString(v) => VString(v)
+    VAttrs(attrs) => VAttrs(clone_attrs(attrs))
   }
 }
 
 ///|
 pub fn value_as_attrs(value : Value?) -> Attrs? {
   match value {
-    Some(Value::VAttrs(attrs)) => Some(attrs)
+    Some(VAttrs(attrs)) => Some(attrs)
     _ => None
   }
 }
@@ -114,8 +114,8 @@ pub fn value_as_attrs(value : Value?) -> Attrs? {
 ///|
 pub fn value_as_int(value : Value?) -> Int? {
   match value {
-    Some(Value::VInt(v)) => Some(v)
-    Some(Value::VFloat(v)) => Some(v.to_int())
+    Some(VInt(v)) => Some(v)
+    Some(VFloat(v)) => Some(v.to_int())
     _ => None
   }
 }
@@ -123,8 +123,8 @@ pub fn value_as_int(value : Value?) -> Int? {
 ///|
 pub fn value_as_float(value : Value?) -> Double? {
   match value {
-    Some(Value::VInt(v)) => Some(v.to_double())
-    Some(Value::VFloat(v)) => Some(v)
+    Some(VInt(v)) => Some(v.to_double())
+    Some(VFloat(v)) => Some(v)
     _ => None
   }
 }
@@ -132,7 +132,7 @@ pub fn value_as_float(value : Value?) -> Double? {
 ///|
 pub fn value_as_string(value : Value?) -> String? {
   match value {
-    Some(Value::VString(v)) => Some(v)
+    Some(VString(v)) => Some(v)
     _ => None
   }
 }
@@ -140,7 +140,7 @@ pub fn value_as_string(value : Value?) -> String? {
 ///|
 pub fn value_as_bool(value : Value?) -> Bool? {
   match value {
-    Some(Value::VBool(v)) => Some(v)
+    Some(VBool(v)) => Some(v)
     _ => None
   }
 }
@@ -171,7 +171,7 @@ pub fn Attrs::set(self : Attrs, key : String, value : Attr) -> Unit {
 ///|
 fn attr_references_attrs(value : Attr, target : Attrs) -> Bool {
   match value {
-    Attr::Val(value) => value_references_attrs(value, target, [])
+    Val(value) => value_references_attrs(value, target, [])
     _ => false
   }
 }
@@ -183,7 +183,7 @@ fn value_references_attrs(
   visited : Array[Attrs],
 ) -> Bool {
   match value {
-    Value::VAttrs(attrs) => attrs_references_attrs(attrs, target, visited)
+    VAttrs(attrs) => attrs_references_attrs(attrs, target, visited)
     _ => false
   }
 }
@@ -219,7 +219,7 @@ fn attr_references_attrs_with_visited(
   visited : Array[Attrs],
 ) -> Bool {
   match value {
-    Attr::Val(value) => value_references_attrs(value, target, visited)
+    Val(value) => value_references_attrs(value, target, visited)
     _ => false
   }
 }
@@ -236,32 +236,32 @@ pub fn Attrs::length(self : Attrs) -> Int {
 
 ///|
 pub fn Attrs::set_int(self : Attrs, key : String, value : Int) -> Unit {
-  self.set(key, Attr::Int(value))
+  self.set(key, Int(value))
 }
 
 ///|
 pub fn Attrs::set_float(self : Attrs, key : String, value : Double) -> Unit {
-  self.set(key, Attr::Float(value))
+  self.set(key, Float(value))
 }
 
 ///|
 pub fn Attrs::set_bool(self : Attrs, key : String, value : Bool) -> Unit {
-  self.set(key, Attr::Bool(value))
+  self.set(key, Bool(value))
 }
 
 ///|
 pub fn Attrs::set_string(self : Attrs, key : String, value : String) -> Unit {
-  self.set(key, Attr::String(value))
+  self.set(key, String(value))
 }
 
 ///|
 pub fn Attrs::set_point(self : Attrs, key : String, value : Point) -> Unit {
-  self.set(key, Attr::Point(value))
+  self.set(key, Point(value))
 }
 
 ///|
 pub fn Attrs::set_value(self : Attrs, key : String, value : Value) -> Unit {
-  self.set(key, Attr::Val(value))
+  self.set(key, Val(value))
 }
 
 ///|
@@ -270,12 +270,12 @@ pub fn Attrs::set_points(
   key : String,
   value : Array[Point],
 ) -> Unit {
-  self.set(key, Attr::Points(value))
+  self.set(key, Points(value))
 }
 
 ///|
 pub fn Attrs::set_edge(self : Attrs, key : String, value : EdgeObj) -> Unit {
-  self.set(key, Attr::Edge(value))
+  self.set(key, Edge(value))
 }
 
 ///|
@@ -284,7 +284,7 @@ pub fn Attrs::set_edges(
   key : String,
   value : Array[EdgeObj],
 ) -> Unit {
-  self.set(key, Attr::Edges(value))
+  self.set(key, Edges(value))
 }
 
 ///|
@@ -293,19 +293,19 @@ pub fn Attrs::set_strings(
   key : String,
   value : Array[String],
 ) -> Unit {
-  self.set(key, Attr::Strings(value))
+  self.set(key, Strings(value))
 }
 
 ///|
 pub fn Attrs::set_ints(self : Attrs, key : String, value : Array[Int]) -> Unit {
-  self.set(key, Attr::Ints(value))
+  self.set(key, Ints(value))
 }
 
 ///|
 pub fn Attrs::get_int(self : Attrs, key : String) -> Int? {
   match self.get(key) {
-    Some(Attr::Int(v)) => Some(v)
-    Some(Attr::Float(v)) => Some(v.to_int())
+    Some(Int(v)) => Some(v)
+    Some(Float(v)) => Some(v.to_int())
     _ => None
   }
 }
@@ -313,8 +313,8 @@ pub fn Attrs::get_int(self : Attrs, key : String) -> Int? {
 ///|
 pub fn Attrs::get_float(self : Attrs, key : String) -> Double? {
   match self.get(key) {
-    Some(Attr::Int(v)) => Some(v.to_double())
-    Some(Attr::Float(v)) => Some(v)
+    Some(Int(v)) => Some(v.to_double())
+    Some(Float(v)) => Some(v)
     _ => None
   }
 }
@@ -322,7 +322,7 @@ pub fn Attrs::get_float(self : Attrs, key : String) -> Double? {
 ///|
 pub fn Attrs::get_bool(self : Attrs, key : String) -> Bool? {
   match self.get(key) {
-    Some(Attr::Bool(v)) => Some(v)
+    Some(Bool(v)) => Some(v)
     _ => None
   }
 }
@@ -330,7 +330,7 @@ pub fn Attrs::get_bool(self : Attrs, key : String) -> Bool? {
 ///|
 pub fn Attrs::get_string(self : Attrs, key : String) -> String? {
   match self.get(key) {
-    Some(Attr::String(v)) => Some(v)
+    Some(String(v)) => Some(v)
     _ => None
   }
 }
@@ -338,7 +338,7 @@ pub fn Attrs::get_string(self : Attrs, key : String) -> String? {
 ///|
 pub fn Attrs::get_point(self : Attrs, key : String) -> Point? {
   match self.get(key) {
-    Some(Attr::Point(v)) => Some(v)
+    Some(Point(v)) => Some(v)
     _ => None
   }
 }
@@ -346,7 +346,7 @@ pub fn Attrs::get_point(self : Attrs, key : String) -> Point? {
 ///|
 pub fn Attrs::get_value(self : Attrs, key : String) -> Value? {
   match self.get(key) {
-    Some(Attr::Val(v)) => Some(v)
+    Some(Val(v)) => Some(v)
     _ => None
   }
 }
@@ -354,7 +354,7 @@ pub fn Attrs::get_value(self : Attrs, key : String) -> Value? {
 ///|
 pub fn Attrs::get_points(self : Attrs, key : String) -> Array[Point]? {
   match self.get(key) {
-    Some(Attr::Points(v)) => Some(v)
+    Some(Points(v)) => Some(v)
     _ => None
   }
 }
@@ -362,7 +362,7 @@ pub fn Attrs::get_points(self : Attrs, key : String) -> Array[Point]? {
 ///|
 pub fn Attrs::get_edge(self : Attrs, key : String) -> EdgeObj? {
   match self.get(key) {
-    Some(Attr::Edge(v)) => Some(v)
+    Some(Edge(v)) => Some(v)
     _ => None
   }
 }
@@ -370,7 +370,7 @@ pub fn Attrs::get_edge(self : Attrs, key : String) -> EdgeObj? {
 ///|
 pub fn Attrs::get_edges(self : Attrs, key : String) -> Array[EdgeObj]? {
   match self.get(key) {
-    Some(Attr::Edges(v)) => Some(v)
+    Some(Edges(v)) => Some(v)
     _ => None
   }
 }
@@ -378,7 +378,7 @@ pub fn Attrs::get_edges(self : Attrs, key : String) -> Array[EdgeObj]? {
 ///|
 pub fn Attrs::get_strings(self : Attrs, key : String) -> Array[String]? {
   match self.get(key) {
-    Some(Attr::Strings(v)) => Some(v)
+    Some(Strings(v)) => Some(v)
     _ => None
   }
 }
@@ -386,7 +386,7 @@ pub fn Attrs::get_strings(self : Attrs, key : String) -> Array[String]? {
 ///|
 pub fn Attrs::get_ints(self : Attrs, key : String) -> Array[Int]? {
   match self.get(key) {
-    Some(Attr::Ints(v)) => Some(v)
+    Some(Ints(v)) => Some(v)
     _ => None
   }
 }

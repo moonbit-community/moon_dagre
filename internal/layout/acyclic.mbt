@@ -23,9 +23,9 @@ fn acyclic_run(g : Graph) -> Unit {
 fn weight_fn(g : Graph) -> (EdgeObj) -> Double {
   (e : EdgeObj) => {
     match g.edge_obj(e) {
-      Some(Value::VAttrs(attrs)) => attrs.get_float_or("weight", 1.0)
-      Some(Value::VInt(v)) => v.to_double()
-      Some(Value::VFloat(v)) => v
+      Some(VAttrs(attrs)) => attrs.get_float_or("weight", 1.0)
+      Some(VInt(v)) => v.to_double()
+      Some(VFloat(v)) => v
       _ => 1.0
     }
   }
@@ -98,7 +98,7 @@ fn dfs_edge_ids_to_edge_objs(
 fn acyclic_undo(g : Graph) -> Unit {
   let edges = g.edges()
   for e in edges {
-    if g.edge_obj(e) is Some(Value::VAttrs(label)) {
+    if g.edge_obj(e) is Some(VAttrs(label)) {
       if label.get_bool_or("reversed", false) {
         g.remove_edge_obj(e)
         let forward_name = label.get_string("forwardName")
@@ -114,27 +114,27 @@ fn acyclic_undo(g : Graph) -> Unit {
 ///|
 fn as_attrs_label(value : Value) -> Attrs {
   match value {
-    Value::VAttrs(attrs) => clone_attrs(attrs)
-    Value::VInt(v) => {
+    VAttrs(attrs) => clone_attrs(attrs)
+    VInt(v) => {
       let attrs = empty_attrs()
       attrs.set_float("weight", v.to_double())
       attrs
     }
-    Value::VFloat(v) => {
+    VFloat(v) => {
       let attrs = empty_attrs()
       attrs.set_float("weight", v)
       attrs
     }
-    Value::VBool(v) => {
+    VBool(v) => {
       let attrs = empty_attrs()
       attrs.set_bool("value", v)
       attrs
     }
-    Value::VString(v) => {
+    VString(v) => {
       let attrs = empty_attrs()
       attrs.set_string("value", v)
       attrs
     }
-    Value::VNull => empty_attrs()
+    VNull => empty_attrs()
   }
 }

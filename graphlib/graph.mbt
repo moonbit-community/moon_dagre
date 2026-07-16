@@ -60,7 +60,7 @@ pub fn Graph::Graph(
     children_by_node: children,
     child_seq: 0,
     child_add_index,
-    default_edge_label_fn: () => Value::VNull,
+    default_edge_label_fn: () => VNull,
   }
 }
 
@@ -70,7 +70,7 @@ pub fn Graph::new(
   multigraph? : Bool = false,
   compound? : Bool = false,
 ) -> Graph {
-  Graph::Graph(directed~, multigraph~, compound~)
+  Graph(directed~, multigraph~, compound~)
 }
 
 ///|

@@ -29,7 +29,7 @@ test "dfs_fas_edge_ids records stack back edge" {
 fn int_list(values : Array[Int]) -> DfsIntList {
   let mut out = DfsIntList::NoDfsInts
   for value in values.rev_iter() {
-    out = DfsIntList::MoreDfsInt(value, out)
+    out = MoreDfsInt(value, out)
   }
   out
 }
@@ -38,7 +38,7 @@ fn int_list(values : Array[Int]) -> DfsIntList {
 fn edge_list(values : Array[DfsEdge]) -> DfsEdgeList {
   let mut out = DfsEdgeList::NoDfsEdges
   for value in values.rev_iter() {
-    out = DfsEdgeList::MoreDfsEdge(value, out)
+    out = MoreDfsEdge(value, out)
   }
   out
 }

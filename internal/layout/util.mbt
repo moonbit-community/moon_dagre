@@ -311,13 +311,13 @@ fn pick(source : Attrs, keys : Array[String]) -> Attrs {
 ///|
 fn attrs_from_edge_label(label : Value?) -> Attrs {
   match label {
-    Some(Value::VAttrs(attrs)) => clone_attrs(attrs)
-    Some(Value::VInt(v)) => {
+    Some(VAttrs(attrs)) => clone_attrs(attrs)
+    Some(VInt(v)) => {
       let attrs = empty_attrs()
       attrs.set_float("weight", v.to_double())
       attrs
     }
-    Some(Value::VFloat(v)) => {
+    Some(VFloat(v)) => {
       let attrs = empty_attrs()
       attrs.set_float("weight", v)
       attrs
