@@ -1,6 +1,6 @@
 name = "moonbit-community/moon_dagre"
 
-version = "0.2.6"
+version = "0.3.0"
 
 readme = "README.mbt.md"
 
