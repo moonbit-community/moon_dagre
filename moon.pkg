@@ -1,4 +1,4 @@
 import {
-  "moonbit-community/moon_dagre/acyclic_dfs",
-  "moonbitlang/core/int",
+  "moonbit-community/moon_dagre/graphlib",
+  "moonbit-community/moon_dagre/internal/layout",
 }

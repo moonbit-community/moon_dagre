@@ -1,0 +1,20 @@
+///|
+using @graphlib {
+  type Attrs,
+  type EdgeObj,
+  type Graph,
+  type Point,
+  type Value,
+  attrs_value,
+  clone_attrs,
+  clone_value,
+  edge_obj,
+  empty_attrs,
+  point,
+  postorder,
+  preorder,
+  value_as_attrs,
+  value_as_float,
+  value_as_int,
+  value_float,
+}

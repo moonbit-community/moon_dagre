@@ -1,0 +1,183 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "moonbit-community/moon_dagre/graphlib"
+
+import {
+  "moonbitlang/core/set",
+}
+
+// Values
+pub fn attrs_value(Attrs) -> Value
+
+pub fn clone_attrs(Attrs) -> Attrs
+
+pub fn clone_value(Value) -> Value
+
+pub fn components(Graph) -> Array[Array[String]]
+
+pub fn edge_obj(String, String, name? : String) -> EdgeObj
+
+pub fn empty_attrs() -> Attrs
+
+pub fn find_cycles(Graph) -> Array[Array[String]]
+
+pub fn point(Double, Double) -> Point
+
+pub fn postorder(Graph, Array[String]) -> Array[String]
+
+pub fn preorder(Graph, Array[String]) -> Array[String]
+
+pub fn value_as_attrs(Value?) -> Attrs?
+
+pub fn value_as_bool(Value?) -> Bool?
+
+pub fn value_as_float(Value?) -> Double?
+
+pub fn value_as_int(Value?) -> Int?
+
+pub fn value_as_string(Value?) -> String?
+
+pub fn value_bool(Bool) -> Value
+
+pub fn value_float(Double) -> Value
+
+pub fn value_int(Int) -> Value
+
+pub fn value_null() -> Value
+
+pub fn value_string(String) -> Value
+
+// Errors
+
+// Types and methods
+pub enum Attr {
+  Bool(Bool)
+  Int(Int)
+  Float(Double)
+  String(String)
+  Val(Value)
+  Point(Point)
+  Points(Array[Point])
+  Edge(EdgeObj)
+  Edges(Array[EdgeObj])
+  Strings(Array[String])
+  Ints(Array[Int])
+}
+
+pub struct Attrs {
+  map : Map[String, Attr]
+}
+pub fn Attrs::contains(Self, String) -> Bool
+pub fn Attrs::get(Self, String) -> Attr?
+pub fn Attrs::get_bool(Self, String) -> Bool?
+pub fn Attrs::get_bool_or(Self, String, Bool) -> Bool
+pub fn Attrs::get_edge(Self, String) -> EdgeObj?
+pub fn Attrs::get_edges(Self, String) -> Array[EdgeObj]?
+pub fn Attrs::get_float(Self, String) -> Double?
+pub fn Attrs::get_float_or(Self, String, Double) -> Double
+pub fn Attrs::get_int(Self, String) -> Int?
+pub fn Attrs::get_int_or(Self, String, Int) -> Int
+pub fn Attrs::get_ints(Self, String) -> Array[Int]?
+pub fn Attrs::get_point(Self, String) -> Point?
+pub fn Attrs::get_points(Self, String) -> Array[Point]?
+pub fn Attrs::get_string(Self, String) -> String?
+pub fn Attrs::get_string_or(Self, String, String) -> String
+pub fn Attrs::get_strings(Self, String) -> Array[String]?
+pub fn Attrs::get_value(Self, String) -> Value?
+pub fn Attrs::keys(Self) -> Array[String]
+pub fn Attrs::length(Self) -> Int
+pub fn Attrs::remove(Self, String) -> Unit
+pub fn Attrs::set(Self, String, Attr) -> Unit
+pub fn Attrs::set_bool(Self, String, Bool) -> Unit
+pub fn Attrs::set_edge(Self, String, EdgeObj) -> Unit
+pub fn Attrs::set_edges(Self, String, Array[EdgeObj]) -> Unit
+pub fn Attrs::set_float(Self, String, Double) -> Unit
+pub fn Attrs::set_int(Self, String, Int) -> Unit
+pub fn Attrs::set_ints(Self, String, Array[Int]) -> Unit
+pub fn Attrs::set_point(Self, String, Point) -> Unit
+pub fn Attrs::set_points(Self, String, Array[Point]) -> Unit
+pub fn Attrs::set_string(Self, String, String) -> Unit
+pub fn Attrs::set_strings(Self, String, Array[String]) -> Unit
+pub fn Attrs::set_value(Self, String, Value) -> Unit
+
+pub struct EdgeObj {
+  v : String
+  w : String
+  name : String?
+}
+
+type EdgeRecord
+
+pub struct Graph {
+  directed : Bool
+  multigraph : Bool
+  compound : Bool
+  mut graph_label : Attrs
+  nodes : Map[String, Attrs]
+  node_order : Array[String]
+  node_index : Map[String, Int]
+  node_seen : @set.Set[String]
+  edges : Map[String, EdgeRecord]
+  edge_order : Array[String]
+  edge_seen : @set.Set[String]
+  parent_by_node : Map[String, String]
+  children_by_node : Map[String, @set.Set[String]]
+  mut child_seq : Int
+  child_add_index : Map[String, Int]
+  mut default_edge_label_fn : () -> Value
+}
+pub fn Graph::Graph(directed? : Bool, multigraph? : Bool, compound? : Bool) -> Self
+pub fn Graph::children(Self, v? : String) -> Array[String]
+pub fn Graph::edge(Self, String, String, name? : String) -> Value?
+pub fn Graph::edge_count(Self) -> Int
+pub fn Graph::edge_obj(Self, EdgeObj) -> Value?
+pub fn Graph::edges(Self) -> Array[EdgeObj]
+pub fn Graph::graph(Self) -> Attrs
+pub fn Graph::has_edge(Self, String, String, name? : String) -> Bool
+pub fn Graph::has_node(Self, String) -> Bool
+pub fn Graph::in_edges(Self, String, u? : String) -> Array[EdgeObj]
+pub fn Graph::is_compound(Self) -> Bool
+pub fn Graph::is_directed(Self) -> Bool
+pub fn Graph::is_multigraph(Self) -> Bool
+pub fn Graph::neighbors(Self, String) -> Array[String]
+pub fn Graph::new(directed? : Bool, multigraph? : Bool, compound? : Bool) -> Self
+pub fn Graph::node(Self, String) -> Attrs
+pub fn Graph::node_count(Self) -> Int
+pub fn Graph::node_edges(Self, String, w? : String) -> Array[EdgeObj]
+pub fn Graph::node_opt(Self, String) -> Attrs?
+pub fn Graph::nodes(Self) -> Array[String]
+pub fn Graph::out_edges(Self, String, w? : String) -> Array[EdgeObj]
+pub fn Graph::parent(Self, String) -> String?
+pub fn Graph::predecessors(Self, String) -> Array[String]
+pub fn Graph::remove_edge(Self, String, String, name? : String) -> Unit
+pub fn Graph::remove_edge_obj(Self, EdgeObj) -> Unit
+pub fn Graph::remove_node(Self, String) -> Unit
+pub fn Graph::set_default_edge_label(Self, () -> Value) -> Unit
+pub fn Graph::set_edge(Self, String, String, label? : Value, name? : String) -> Unit
+pub fn Graph::set_edge_obj(Self, EdgeObj, label? : Value) -> Unit
+pub fn Graph::set_graph(Self, Attrs) -> Unit
+pub fn Graph::set_node(Self, String, label? : Attrs) -> Unit
+pub fn Graph::set_nodes(Self, Array[String], label? : Attrs) -> Unit
+pub fn Graph::set_parent(Self, String, parent? : String) -> Unit
+pub fn Graph::set_path(Self, Array[String], label? : Value) -> Unit
+pub fn Graph::sinks(Self) -> Array[String]
+pub fn Graph::sources(Self) -> Array[String]
+pub fn Graph::successors(Self, String) -> Array[String]
+
+pub struct Point {
+  x : Double
+  y : Double
+}
+
+pub enum Value {
+  VNull
+  VBool(Bool)
+  VInt(Int)
+  VFloat(Double)
+  VString(String)
+  VAttrs(Attrs)
+}
+
+// Type aliases
+
+// Traits
+
