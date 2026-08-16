@@ -14,6 +14,13 @@ pub(all) struct DfsEdge {
   v : Int
   w : Int
 } derive(Compare, Eq)
+pub fn DfsEdge::compare(Self, Self) -> Int
+pub fn DfsEdge::equal(Self, Self) -> Bool
+pub fn DfsEdge::not_equal(Self, Self) -> Bool
+pub fn DfsEdge::op_ge(Self, Self) -> Bool
+pub fn DfsEdge::op_gt(Self, Self) -> Bool
+pub fn DfsEdge::op_le(Self, Self) -> Bool
+pub fn DfsEdge::op_lt(Self, Self) -> Bool
 
 pub(all) enum DfsEdgeList {
   NoDfsEdges
@@ -24,6 +31,8 @@ pub(all) enum DfsIntList {
   NoDfsInts
   MoreDfsInt(Int, DfsIntList)
 } derive(Eq)
+pub fn DfsIntList::equal(Self, Self) -> Bool
+pub fn DfsIntList::not_equal(Self, Self) -> Bool
 
 pub(all) struct DfsRun {
   fas : DfsIntList
@@ -33,4 +42,3 @@ pub(all) struct DfsRun {
 // Type aliases
 
 // Traits
-
