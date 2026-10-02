@@ -104,7 +104,7 @@ fn build_state(g : Graph, weight_fn : (EdgeObj) -> Double) -> GreedyState {
   let entries : Map[String, GreedyEntry] = Map([])
   for v in g.nodes() {
     fas_graph.set_node(v)
-    entries.set(v, { v, in_w: 0.0, out_w: 0.0 })
+    entries.set(v, { v, in_w: 0.0, out_w: 0.0, })
   }
   let mut max_in = 0.0
   let mut max_out = 0.0

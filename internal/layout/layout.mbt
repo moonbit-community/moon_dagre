@@ -188,7 +188,7 @@ fn layout_remove_self_edges(g : Graph) -> Map[String, Array[LayoutSelfEdge]] {
       } else {
         attrs_value(empty_attrs())
       }
-      self_edges.push({ e, label })
+      self_edges.push({ e, label, })
       out.set(e.v, self_edges)
       g.remove_edge_obj(e)
     }

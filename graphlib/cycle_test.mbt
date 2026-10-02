@@ -44,7 +44,7 @@ test "panic Graph::set_parent rejects ancestor cycles" {
 ///|
 test "Graph::set_default_edge_label stores an independent template" {
   let graph = Graph::new()
-  let counter : DefaultLabelCounter = { value: 0 }
+  let counter : DefaultLabelCounter = { value: 0, }
   graph.set_default_edge_label(() => {
     counter.value = counter.value + 1
     let attrs = empty_attrs()

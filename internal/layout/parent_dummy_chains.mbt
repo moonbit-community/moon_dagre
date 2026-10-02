@@ -78,8 +78,8 @@ fn parent_dummy_find_path(
   v : String,
   w : String,
 ) -> ParentDummyPath {
-  let v_nums = postorder_nums.get_or_default(v, { low: 0, lim: 0 })
-  let w_nums = postorder_nums.get_or_default(w, { low: 0, lim: 0 })
+  let v_nums = postorder_nums.get_or_default(v, { low: 0, lim: 0, })
+  let w_nums = postorder_nums.get_or_default(w, { low: 0, lim: 0, })
   let low = parent_dummy_min(v_nums.low, w_nums.low)
   let lim = parent_dummy_max(v_nums.lim, w_nums.lim)
   let v_path : Array[String?] = []
@@ -130,13 +130,13 @@ fn parent_dummy_find_path(
     }
   }
   let path = v_path + reversed_w_path
-  { path, lca }
+  { path, lca, }
 }
 
 ///|
 fn parent_dummy_postorder(g : Graph) -> Map[String, ParentDummyNums] {
   let result : Map[String, ParentDummyNums] = Map([])
-  let counter : ParentDummyCounter = { lim: 0 }
+  let counter : ParentDummyCounter = { lim: 0, }
   fn dfs(
     g : Graph,
     result : Map[String, ParentDummyNums],
@@ -147,7 +147,7 @@ fn parent_dummy_postorder(g : Graph) -> Map[String, ParentDummyNums] {
     for child in g.children(v~) {
       dfs(g, result, counter, child)
     }
-    result.set(v, { low, lim: counter.lim })
+    result.set(v, { low, lim: counter.lim, })
     counter.lim = counter.lim + 1
   }
 

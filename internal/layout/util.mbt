@@ -4,7 +4,7 @@ priv struct Counter {
 }
 
 ///|
-let id_counter : Counter = { value: 0 }
+let id_counter : Counter = { value: 0, }
 
 ///|
 priv struct Partition[T] {
@@ -22,7 +22,7 @@ priv struct Rect {
 
 ///|
 fn rect(x : Double, y : Double, width : Double, height : Double) -> Rect {
-  { x, y, width, height }
+  { x, y, width, height, }
 }
 
 ///|
@@ -252,7 +252,7 @@ fn[T] partition(collection : Array[T], predicate : (T) -> Bool) -> Partition[T] 
       rhs.push(value)
     }
   }
-  { lhs, rhs }
+  { lhs, rhs, }
 }
 
 ///|

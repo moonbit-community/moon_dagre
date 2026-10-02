@@ -57,7 +57,7 @@ fn is_cycle_component(g : Graph, component : Array[String]) -> Bool {
 
 ///|
 fn tarjan_scc(g : Graph) -> Array[Array[String]] {
-  let index : TarjanIndex = { value: 0 }
+  let index : TarjanIndex = { value: 0, }
   let stack = []
   let on_stack = Set([])
   let indices = Map([])

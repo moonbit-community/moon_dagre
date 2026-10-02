@@ -267,7 +267,7 @@ pub fn Graph::set_edge(
   } else {
     (self.default_edge_label_fn)()
   }
-  let record : EdgeRecord = { obj: normalized, label: edge_label }
+  let record : EdgeRecord = { obj: normalized, label: edge_label, }
   let key = edge_key(normalized.v, normalized.w, normalized.name)
   if !self.edge_seen.contains(key) {
     self.edge_seen.add(key)

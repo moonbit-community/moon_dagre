@@ -2,10 +2,10 @@
 test "dfs_fas_edge_ids returns empty for acyclic graph" {
   let nodes = int_list([0, 1, 2, 3])
   let edges = edge_list([
-    { id: 0, v: 0, w: 1 },
-    { id: 1, v: 0, w: 2 },
-    { id: 2, v: 1, w: 3 },
-    { id: 3, v: 2, w: 3 },
+    { id: 0, v: 0, w: 1, },
+    { id: 1, v: 0, w: 2, },
+    { id: 2, v: 1, w: 3, },
+    { id: 3, v: 2, w: 3, },
   ])
   debug_inspect(int_list_to_array(dfs_fas_edge_ids(nodes, edges)), content="[]")
 }
@@ -14,10 +14,10 @@ test "dfs_fas_edge_ids returns empty for acyclic graph" {
 test "dfs_fas_edge_ids records stack back edge" {
   let nodes = int_list([0, 1, 2, 3])
   let edges = edge_list([
-    { id: 0, v: 0, w: 1 },
-    { id: 1, v: 1, w: 2 },
-    { id: 2, v: 2, w: 3 },
-    { id: 3, v: 3, w: 0 },
+    { id: 0, v: 0, w: 1, },
+    { id: 1, v: 1, w: 2, },
+    { id: 2, v: 2, w: 3, },
+    { id: 3, v: 3, w: 0, },
   ])
   debug_inspect(
     int_list_to_array(dfs_fas_edge_ids(nodes, edges)),
