@@ -15,4 +15,3 @@ pub fn run(@graphlib.Graph, debug_timing? : Bool) -> @graphlib.Graph
 // Type aliases
 
 // Traits
-
