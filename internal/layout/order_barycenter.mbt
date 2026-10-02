@@ -7,7 +7,7 @@ fn order_barycenter(
   for v in movable {
     let in_v = g.in_edges(v)
     if in_v.is_empty() {
-      out.push({ v, barycenter: None, weight: None })
+      out.push({ v, barycenter: None, weight: None, })
     } else {
       let mut sum = 0.0
       let mut weight = 0.0
@@ -18,7 +18,7 @@ fn order_barycenter(
         sum = sum + edge_weight * u_order
         weight = weight + edge_weight
       }
-      out.push({ v, barycenter: Some(sum / weight), weight: Some(weight) })
+      out.push({ v, barycenter: Some(sum / weight), weight: Some(weight), })
     }
   }
   out

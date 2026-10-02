@@ -12,7 +12,7 @@ fn order_bary_entry(
   barycenter? : Double? = None,
   weight? : Double? = None,
 ) -> OrderBarycenterEntry {
-  { v, barycenter, weight }
+  { v, barycenter, weight, }
 }
 
 ///|
@@ -22,5 +22,5 @@ fn order_entry(
   barycenter? : Double? = None,
   weight? : Double? = None,
 ) -> OrderEntry {
-  { vs, i, barycenter, weight }
+  { vs, i, barycenter, weight, }
 }

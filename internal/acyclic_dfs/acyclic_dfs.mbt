@@ -61,7 +61,7 @@ pub fn dfs_fas_run(
   })
   proof_assert dfs_edge_list_endpoints_in(edges, state.finished)
   proof_assert dfs_kept_edges_topological(edges, state.fas, state.finished)
-  { fas: state.fas, topo_order: state.finished }
+  { fas: state.fas, topo_order: state.finished, }
 }
 
 ///|

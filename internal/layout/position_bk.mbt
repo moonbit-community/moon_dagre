@@ -326,7 +326,7 @@ fn position_bk_vertical_alignment(
       }
     }
   }
-  { root, align }
+  { root, align, }
 }
 
 ///|

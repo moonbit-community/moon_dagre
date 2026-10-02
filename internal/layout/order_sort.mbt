@@ -26,9 +26,9 @@ fn order_sort(
     vs_index = order_consume_unsortable(vs, unsortable, vs_index)
   }
   if weight > 0.0 {
-    { vs, barycenter: Some(sum / weight), weight: Some(weight) }
+    { vs, barycenter: Some(sum / weight), weight: Some(weight), }
   } else {
-    { vs, barycenter: None, weight: None }
+    { vs, barycenter: None, weight: None, }
   }
 }
 

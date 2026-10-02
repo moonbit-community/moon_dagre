@@ -43,22 +43,22 @@ pub enum Value {
 
 ///|
 pub fn point(x : Double, y : Double) -> Point {
-  { x, y }
+  { x, y, }
 }
 
 ///|
 pub fn edge_obj(v : String, w : String, name? : String) -> EdgeObj {
-  { v, w, name }
+  { v, w, name, }
 }
 
 ///|
 pub fn empty_attrs() -> Attrs {
-  { map: Map([]) }
+  { map: Map([]), }
 }
 
 ///|
 pub fn clone_attrs(attrs : Attrs) -> Attrs {
-  { map: attrs.map.copy() }
+  { map: attrs.map.copy(), }
 }
 
 ///|

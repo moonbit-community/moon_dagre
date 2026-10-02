@@ -47,7 +47,7 @@ fn dfs_fas_core(g : Graph) -> Array[EdgeObj] {
     let e = graph_edges[i]
     if node_ids.get(e.v) is Some(v) {
       if node_ids.get(e.w) is Some(w) {
-        edges = dfs_edge_list_push_local(edges, { id: i, v, w })
+        edges = dfs_edge_list_push_local(edges, { id: i, v, w, })
       }
     }
   }
