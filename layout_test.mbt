@@ -1,32 +1,32 @@
 ///|
 // Upstream: dagre-reference/test/layout-test.js
 test "layout can position a single node" {
-  let g = Graph::new(multigraph=true, compound=true)
-  g.set_graph(empty_attrs())
-  let a = empty_attrs()
+  let g = @moon_dagre.Graph::new(multigraph=true, compound=true)
+  g.set_graph(@moon_dagre.empty_attrs())
+  let a = @moon_dagre.empty_attrs()
   a.set_float("width", 50.0)
   a.set_float("height", 100.0)
   g.set_node("a", label=a)
-  ignore(layout(g))
+  ignore(@moon_dagre.layout(g))
   assert_eq(g.node("a").get_float_or("x", -1.0), 25.0)
   assert_eq(g.node("a").get_float_or("y", -1.0), 50.0)
 }
 
 ///|
 test "layout can position two nodes on same rank and respects nodesep" {
-  let g = Graph::new(multigraph=true, compound=true)
-  let graph = empty_attrs()
+  let g = @moon_dagre.Graph::new(multigraph=true, compound=true)
+  let graph = @moon_dagre.empty_attrs()
   graph.set_float("nodesep", 200.0)
   g.set_graph(graph)
-  let a = empty_attrs()
+  let a = @moon_dagre.empty_attrs()
   a.set_float("width", 50.0)
   a.set_float("height", 100.0)
   g.set_node("a", label=a)
-  let b = empty_attrs()
+  let b = @moon_dagre.empty_attrs()
   b.set_float("width", 75.0)
   b.set_float("height", 200.0)
   g.set_node("b", label=b)
-  ignore(layout(g))
+  ignore(@moon_dagre.layout(g))
   let xa = g.node("a").get_float_or("x", -1.0)
   let xb = g.node("b").get_float_or("x", -1.0)
   assert_eq(xb, xa + 50.0 / 2.0 + 200.0 + 75.0 / 2.0)
@@ -34,27 +34,27 @@ test "layout can position two nodes on same rank and respects nodesep" {
 
 ///|
 test "layout can position two connected nodes and respects ranksep" {
-  let g = Graph::new(multigraph=true, compound=true)
-  let graph = empty_attrs()
+  let g = @moon_dagre.Graph::new(multigraph=true, compound=true)
+  let graph = @moon_dagre.empty_attrs()
   graph.set_float("ranksep", 300.0)
   g.set_graph(graph)
-  let a = empty_attrs()
+  let a = @moon_dagre.empty_attrs()
   a.set_float("width", 50.0)
   a.set_float("height", 100.0)
   g.set_node("a", label=a)
-  let b = empty_attrs()
+  let b = @moon_dagre.empty_attrs()
   b.set_float("width", 75.0)
   b.set_float("height", 200.0)
   g.set_node("b", label=b)
   g.set_edge("a", "b")
-  ignore(layout(g))
+  ignore(@moon_dagre.layout(g))
   let ya = g.node("a").get_float_or("y", -1.0)
   let yb = g.node("b").get_float_or("y", -1.0)
   assert_eq(yb, ya + 100.0 / 2.0 + 300.0 + 200.0 / 2.0)
-  let edge = if value_as_attrs(g.edge("a", "b")) is Some(edge) {
+  let edge = if @moon_dagre.value_as_attrs(g.edge("a", "b")) is Some(edge) {
     edge
   } else {
-    empty_attrs()
+    @moon_dagre.empty_attrs()
   }
   assert_eq(edge.get_float("x") is None, true)
   assert_eq(edge.get_float("y") is None, true)
@@ -62,28 +62,28 @@ test "layout can position two connected nodes and respects ranksep" {
 
 ///|
 test "layout can position edge label" {
-  let g = Graph::new(multigraph=true, compound=true)
-  let graph = empty_attrs()
+  let g = @moon_dagre.Graph::new(multigraph=true, compound=true)
+  let graph = @moon_dagre.empty_attrs()
   graph.set_float("ranksep", 300.0)
   g.set_graph(graph)
-  let a = empty_attrs()
+  let a = @moon_dagre.empty_attrs()
   a.set_float("width", 50.0)
   a.set_float("height", 100.0)
   g.set_node("a", label=a)
-  let b = empty_attrs()
+  let b = @moon_dagre.empty_attrs()
   b.set_float("width", 75.0)
   b.set_float("height", 200.0)
   g.set_node("b", label=b)
-  let edge = empty_attrs()
+  let edge = @moon_dagre.empty_attrs()
   edge.set_float("width", 60.0)
   edge.set_float("height", 70.0)
   edge.set_string("labelpos", "c")
-  g.set_edge("a", "b", label=attrs_value(edge))
-  ignore(layout(g))
-  let e = if value_as_attrs(g.edge("a", "b")) is Some(e) {
+  g.set_edge("a", "b", label=@moon_dagre.attrs_value(edge))
+  ignore(@moon_dagre.layout(g))
+  let e = if @moon_dagre.value_as_attrs(g.edge("a", "b")) is Some(e) {
     e
   } else {
-    empty_attrs()
+    @moon_dagre.empty_attrs()
   }
   assert_eq(e.get_float("x") is Some(_), true)
   assert_eq(e.get_float("y") is Some(_), true)
@@ -91,42 +91,42 @@ test "layout can position edge label" {
 
 ///|
 test "layout adds graph dimensions" {
-  let g = Graph::new(multigraph=true, compound=true)
-  g.set_graph(empty_attrs())
-  let a = empty_attrs()
+  let g = @moon_dagre.Graph::new(multigraph=true, compound=true)
+  g.set_graph(@moon_dagre.empty_attrs())
+  let a = @moon_dagre.empty_attrs()
   a.set_float("width", 100.0)
   a.set_float("height", 50.0)
   g.set_node("a", label=a)
-  ignore(layout(g))
+  ignore(@moon_dagre.layout(g))
   assert_eq(g.graph().get_float_or("width", 0.0), 100.0)
   assert_eq(g.graph().get_float_or("height", 0.0), 50.0)
 }
 
 ///|
 test "layout can position long edge with label" {
-  let g = Graph::new(multigraph=true, compound=true)
-  let graph = empty_attrs()
+  let g = @moon_dagre.Graph::new(multigraph=true, compound=true)
+  let graph = @moon_dagre.empty_attrs()
   graph.set_float("ranksep", 300.0)
   g.set_graph(graph)
-  let a = empty_attrs()
+  let a = @moon_dagre.empty_attrs()
   a.set_float("width", 50.0)
   a.set_float("height", 100.0)
   g.set_node("a", label=a)
-  let b = empty_attrs()
+  let b = @moon_dagre.empty_attrs()
   b.set_float("width", 75.0)
   b.set_float("height", 200.0)
   g.set_node("b", label=b)
-  let edge = empty_attrs()
+  let edge = @moon_dagre.empty_attrs()
   edge.set_float("width", 60.0)
   edge.set_float("height", 70.0)
   edge.set_int("minlen", 2)
   edge.set_string("labelpos", "c")
-  g.set_edge("a", "b", label=attrs_value(edge))
-  ignore(layout(g))
-  let e = if value_as_attrs(g.edge("a", "b")) is Some(e) {
+  g.set_edge("a", "b", label=@moon_dagre.attrs_value(edge))
+  ignore(@moon_dagre.layout(g))
+  let e = if @moon_dagre.value_as_attrs(g.edge("a", "b")) is Some(e) {
     e
   } else {
-    empty_attrs()
+    @moon_dagre.empty_attrs()
   }
   assert_eq(e.get_float_or("x", -1.0), 75.0 / 2.0)
   let ey = e.get_float_or("y", -1.0)
@@ -136,36 +136,36 @@ test "layout can position long edge with label" {
 
 ///|
 test "layout can handle short cycle" {
-  let g = Graph::new(multigraph=true, compound=true)
-  let graph = empty_attrs()
+  let g = @moon_dagre.Graph::new(multigraph=true, compound=true)
+  let graph = @moon_dagre.empty_attrs()
   graph.set_float("ranksep", 200.0)
   g.set_graph(graph)
-  let a = empty_attrs()
+  let a = @moon_dagre.empty_attrs()
   a.set_float("width", 100.0)
   a.set_float("height", 100.0)
-  let b = empty_attrs()
+  let b = @moon_dagre.empty_attrs()
   b.set_float("width", 100.0)
   b.set_float("height", 100.0)
   g.set_node("a", label=a)
   g.set_node("b", label=b)
-  let ab = empty_attrs()
+  let ab = @moon_dagre.empty_attrs()
   ab.set_float("weight", 2.0)
-  g.set_edge("a", "b", label=attrs_value(ab))
+  g.set_edge("a", "b", label=@moon_dagre.attrs_value(ab))
   g.set_edge("b", "a")
-  ignore(layout(g))
+  ignore(@moon_dagre.layout(g))
   assert_eq(g.node("a").get_float_or("x", -1.0), 50.0)
   assert_eq(g.node("a").get_float_or("y", -1.0), 50.0)
   assert_eq(g.node("b").get_float_or("x", -1.0), 50.0)
   assert_eq(g.node("b").get_float_or("y", -1.0), 350.0)
-  let e1 = if value_as_attrs(g.edge("a", "b")) is Some(e) {
+  let e1 = if @moon_dagre.value_as_attrs(g.edge("a", "b")) is Some(e) {
     e
   } else {
-    empty_attrs()
+    @moon_dagre.empty_attrs()
   }
-  let e2 = if value_as_attrs(g.edge("b", "a")) is Some(e) {
+  let e2 = if @moon_dagre.value_as_attrs(g.edge("b", "a")) is Some(e) {
     e
   } else {
-    empty_attrs()
+    @moon_dagre.empty_attrs()
   }
   if e1.get_points("points") is Some(p1) && e2.get_points("points") is Some(p2) {
     assert_eq(p1[1].y > p1[0].y, true)
@@ -177,21 +177,21 @@ test "layout can handle short cycle" {
 
 ///|
 test "layout adds rectangle intersects for edge" {
-  let g = Graph::new(multigraph=true, compound=true)
-  let graph = empty_attrs()
+  let g = @moon_dagre.Graph::new(multigraph=true, compound=true)
+  let graph = @moon_dagre.empty_attrs()
   graph.set_float("ranksep", 200.0)
   g.set_graph(graph)
-  let n = empty_attrs()
+  let n = @moon_dagre.empty_attrs()
   n.set_float("width", 100.0)
   n.set_float("height", 100.0)
-  g.set_node("a", label=clone_attrs(n))
-  g.set_node("b", label=clone_attrs(n))
+  g.set_node("a", label=@moon_dagre.clone_attrs(n))
+  g.set_node("b", label=@moon_dagre.clone_attrs(n))
   g.set_edge("a", "b")
-  ignore(layout(g))
-  let e = if value_as_attrs(g.edge("a", "b")) is Some(e) {
+  ignore(@moon_dagre.layout(g))
+  let e = if @moon_dagre.value_as_attrs(g.edge("a", "b")) is Some(e) {
     e
   } else {
-    empty_attrs()
+    @moon_dagre.empty_attrs()
   }
   if e.get_points("points") is Some(points) {
     assert_eq(points.length(), 3)
@@ -208,23 +208,23 @@ test "layout adds rectangle intersects for edge" {
 
 ///|
 test "layout adds rectangle intersects for edge spanning multiple ranks" {
-  let g = Graph::new(multigraph=true, compound=true)
-  let graph = empty_attrs()
+  let g = @moon_dagre.Graph::new(multigraph=true, compound=true)
+  let graph = @moon_dagre.empty_attrs()
   graph.set_float("ranksep", 200.0)
   g.set_graph(graph)
-  let n = empty_attrs()
+  let n = @moon_dagre.empty_attrs()
   n.set_float("width", 100.0)
   n.set_float("height", 100.0)
-  g.set_node("a", label=clone_attrs(n))
-  g.set_node("b", label=clone_attrs(n))
-  let edge = empty_attrs()
+  g.set_node("a", label=@moon_dagre.clone_attrs(n))
+  g.set_node("b", label=@moon_dagre.clone_attrs(n))
+  let edge = @moon_dagre.empty_attrs()
   edge.set_int("minlen", 2)
-  g.set_edge("a", "b", label=attrs_value(edge))
-  ignore(layout(g))
-  let e = if value_as_attrs(g.edge("a", "b")) is Some(e) {
+  g.set_edge("a", "b", label=@moon_dagre.attrs_value(edge))
+  ignore(@moon_dagre.layout(g))
+  let e = if @moon_dagre.value_as_attrs(g.edge("a", "b")) is Some(e) {
     e
   } else {
-    empty_attrs()
+    @moon_dagre.empty_attrs()
   }
   if e.get_points("points") is Some(points) {
     assert_eq(points.length(), 5)
@@ -241,38 +241,38 @@ test "layout adds rectangle intersects for edge spanning multiple ranks" {
 ///|
 test "layout supports long labels across rankdir variants" {
   for rankdir in ["TB", "BT", "LR", "RL"] {
-    let g = Graph::new(multigraph=true, compound=true)
-    let graph = empty_attrs()
+    let g = @moon_dagre.Graph::new(multigraph=true, compound=true)
+    let graph = @moon_dagre.empty_attrs()
     graph.set_float("nodesep", 10.0)
     graph.set_float("edgesep", 10.0)
     graph.set_string("rankdir", rankdir)
     g.set_graph(graph)
     for v in ["a", "b", "c", "d"] {
-      let node = empty_attrs()
+      let node = @moon_dagre.empty_attrs()
       node.set_float("width", 10.0)
       node.set_float("height", 10.0)
       g.set_node(v, label=node)
     }
-    let long = empty_attrs()
+    let long = @moon_dagre.empty_attrs()
     long.set_float("width", 2000.0)
     long.set_float("height", 10.0)
     long.set_string("labelpos", "c")
-    g.set_edge("a", "c", label=attrs_value(long))
-    let short = empty_attrs()
+    g.set_edge("a", "c", label=@moon_dagre.attrs_value(long))
+    let short = @moon_dagre.empty_attrs()
     short.set_float("width", 1.0)
     short.set_float("height", 1.0)
-    g.set_edge("b", "d", label=attrs_value(short))
-    ignore(layout(g))
+    g.set_edge("b", "d", label=@moon_dagre.attrs_value(short))
+    ignore(@moon_dagre.layout(g))
     if rankdir == "TB" || rankdir == "BT" {
-      let p1 = if value_as_attrs(g.edge("a", "c")) is Some(e) {
+      let p1 = if @moon_dagre.value_as_attrs(g.edge("a", "c")) is Some(e) {
         e
       } else {
-        empty_attrs()
+        @moon_dagre.empty_attrs()
       }
-      let p2 = if value_as_attrs(g.edge("b", "d")) is Some(e) {
+      let p2 = if @moon_dagre.value_as_attrs(g.edge("b", "d")) is Some(e) {
         e
       } else {
-        empty_attrs()
+        @moon_dagre.empty_attrs()
       }
       assert_eq(
         (p1.get_float_or("x", 0.0) - p2.get_float_or("x", 0.0)).abs() > 1000.0,
@@ -291,40 +291,40 @@ test "layout supports long labels across rankdir variants" {
 ///|
 test "layout applies labeloffset across rankdir variants" {
   for rankdir in ["TB", "BT", "LR", "RL"] {
-    let g = Graph::new(multigraph=true, compound=true)
-    let graph = empty_attrs()
+    let g = @moon_dagre.Graph::new(multigraph=true, compound=true)
+    let graph = @moon_dagre.empty_attrs()
     graph.set_float("nodesep", 10.0)
     graph.set_float("edgesep", 10.0)
     graph.set_string("rankdir", rankdir)
     g.set_graph(graph)
     for v in ["a", "b", "c", "d"] {
-      let node = empty_attrs()
+      let node = @moon_dagre.empty_attrs()
       node.set_float("width", 10.0)
       node.set_float("height", 10.0)
       g.set_node(v, label=node)
     }
-    let left = empty_attrs()
+    let left = @moon_dagre.empty_attrs()
     left.set_float("width", 10.0)
     left.set_float("height", 10.0)
     left.set_string("labelpos", "l")
     left.set_float("labeloffset", 1000.0)
-    g.set_edge("a", "b", label=attrs_value(left))
-    let right = empty_attrs()
+    g.set_edge("a", "b", label=@moon_dagre.attrs_value(left))
+    let right = @moon_dagre.empty_attrs()
     right.set_float("width", 10.0)
     right.set_float("height", 10.0)
     right.set_string("labelpos", "r")
     right.set_float("labeloffset", 1000.0)
-    g.set_edge("c", "d", label=attrs_value(right))
-    ignore(layout(g))
-    let ab = if value_as_attrs(g.edge("a", "b")) is Some(e) {
+    g.set_edge("c", "d", label=@moon_dagre.attrs_value(right))
+    ignore(@moon_dagre.layout(g))
+    let ab = if @moon_dagre.value_as_attrs(g.edge("a", "b")) is Some(e) {
       e
     } else {
-      empty_attrs()
+      @moon_dagre.empty_attrs()
     }
-    let cd = if value_as_attrs(g.edge("c", "d")) is Some(e) {
+    let cd = if @moon_dagre.value_as_attrs(g.edge("c", "d")) is Some(e) {
       e
     } else {
-      empty_attrs()
+      @moon_dagre.empty_attrs()
     }
     if rankdir == "TB" || rankdir == "BT" {
       if ab.get_points("points") is Some(ab_points) &&
@@ -356,25 +356,25 @@ test "layout applies labeloffset across rankdir variants" {
 ///|
 test "layout can position self loop in all rankdirs" {
   for rankdir in ["TB", "BT", "LR", "RL"] {
-    let g = Graph::new(multigraph=true, compound=true)
-    let graph = empty_attrs()
+    let g = @moon_dagre.Graph::new(multigraph=true, compound=true)
+    let graph = @moon_dagre.empty_attrs()
     graph.set_float("edgesep", 75.0)
     graph.set_string("rankdir", rankdir)
     g.set_graph(graph)
-    let node = empty_attrs()
+    let node = @moon_dagre.empty_attrs()
     node.set_float("width", 100.0)
     node.set_float("height", 100.0)
     g.set_node("a", label=node)
-    let edge = empty_attrs()
+    let edge = @moon_dagre.empty_attrs()
     edge.set_float("width", 50.0)
     edge.set_float("height", 50.0)
-    g.set_edge("a", "a", label=attrs_value(edge))
-    ignore(layout(g))
+    g.set_edge("a", "a", label=@moon_dagre.attrs_value(edge))
+    ignore(@moon_dagre.layout(g))
     let a = g.node("a")
-    let e = if value_as_attrs(g.edge("a", "a")) is Some(e) {
+    let e = if @moon_dagre.value_as_attrs(g.edge("a", "a")) is Some(e) {
       e
     } else {
-      empty_attrs()
+      @moon_dagre.empty_attrs()
     }
     if e.get_points("points") is Some(points) {
       assert_eq(points.length(), 7)
@@ -403,35 +403,43 @@ test "layout can position self loop in all rankdirs" {
 
 ///|
 test "layout supports subgraph smoke" {
-  let g = Graph::new(multigraph=true, compound=true)
-  g.set_graph(empty_attrs())
-  let a = empty_attrs()
+  let g = @moon_dagre.Graph::new(multigraph=true, compound=true)
+  g.set_graph(@moon_dagre.empty_attrs())
+  let a = @moon_dagre.empty_attrs()
   a.set_float("width", 50.0)
   a.set_float("height", 50.0)
   g.set_node("a", label=a)
   g.set_parent("a", parent="sg1")
-  ignore(layout(g))
+  ignore(@moon_dagre.layout(g))
   assert_eq(g.has_node("a"), true)
 }
 
 ///|
 test "layout minimizes subgraph height" {
-  let g = Graph::new(multigraph=true, compound=true)
-  g.set_graph(empty_attrs())
+  let g = @moon_dagre.Graph::new(multigraph=true, compound=true)
+  g.set_graph(@moon_dagre.empty_attrs())
   for v in ["a", "b", "c", "d", "x", "y"] {
-    let node = empty_attrs()
+    let node = @moon_dagre.empty_attrs()
     node.set_float("width", 50.0)
     node.set_float("height", 50.0)
     g.set_node(v, label=node)
   }
   g.set_path(["a", "b", "c", "d"])
-  let w = empty_attrs()
+  let w = @moon_dagre.empty_attrs()
   w.set_float("weight", 100.0)
-  g.set_edge("a", "x", label=attrs_value(clone_attrs(w)))
-  g.set_edge("y", "d", label=attrs_value(clone_attrs(w)))
+  g.set_edge(
+    "a",
+    "x",
+    label=@moon_dagre.attrs_value(@moon_dagre.clone_attrs(w)),
+  )
+  g.set_edge(
+    "y",
+    "d",
+    label=@moon_dagre.attrs_value(@moon_dagre.clone_attrs(w)),
+  )
   g.set_parent("x", parent="sg")
   g.set_parent("y", parent="sg")
-  ignore(layout(g))
+  ignore(@moon_dagre.layout(g))
   assert_eq(
     g.node("x").get_float_or("y", -1.0),
     g.node("y").get_float_or("y", -2.0),
@@ -440,18 +448,18 @@ test "layout minimizes subgraph height" {
 
 ///|
 test "layout minimizes separation not adjacent to subgraphs" {
-  let g = Graph::new(multigraph=true, compound=true)
-  g.set_graph(empty_attrs())
+  let g = @moon_dagre.Graph::new(multigraph=true, compound=true)
+  g.set_graph(@moon_dagre.empty_attrs())
   for v in ["a", "b", "c"] {
-    let node = empty_attrs()
+    let node = @moon_dagre.empty_attrs()
     node.set_float("width", 50.0)
     node.set_float("height", 50.0)
     g.set_node(v, label=node)
   }
   g.set_path(["a", "b", "c"])
-  g.set_node("sg", label=empty_attrs())
+  g.set_node("sg", label=@moon_dagre.empty_attrs())
   g.set_parent("c", parent="sg")
-  ignore(layout(g))
+  ignore(@moon_dagre.layout(g))
   assert_eq(
     g.node("b").get_float_or("y", 0.0) - g.node("a").get_float_or("y", 0.0),
     100.0,
@@ -460,17 +468,17 @@ test "layout minimizes separation not adjacent to subgraphs" {
 
 ///|
 test "layout supports subgraphs with different rankdirs" {
-  let g = Graph::new(multigraph=true, compound=true)
-  g.set_graph(empty_attrs())
-  let a = empty_attrs()
+  let g = @moon_dagre.Graph::new(multigraph=true, compound=true)
+  g.set_graph(@moon_dagre.empty_attrs())
+  let a = @moon_dagre.empty_attrs()
   a.set_float("width", 50.0)
   a.set_float("height", 50.0)
   g.set_node("a", label=a)
-  g.set_node("sg", label=empty_attrs())
+  g.set_node("sg", label=@moon_dagre.empty_attrs())
   g.set_parent("a", parent="sg")
   for rankdir in ["tb", "bt", "lr", "rl"] {
     g.graph().set_string("rankdir", rankdir)
-    ignore(layout(g))
+    ignore(@moon_dagre.layout(g))
     assert_eq(g.node("sg").get_float_or("width", 0.0) > 50.0, true)
     assert_eq(g.node("sg").get_float_or("height", 0.0) > 50.0, true)
     assert_eq(g.node("sg").get_float_or("x", 0.0) > 25.0, true)
@@ -481,37 +489,37 @@ test "layout supports subgraphs with different rankdirs" {
 ///|
 test "layout keeps all coordinates in bounding box across rankdirs" {
   for rankdir in ["TB", "BT", "LR", "RL"] {
-    let g1 = Graph::new(multigraph=true, compound=true)
-    let graph1 = empty_attrs()
+    let g1 = @moon_dagre.Graph::new(multigraph=true, compound=true)
+    let graph1 = @moon_dagre.empty_attrs()
     graph1.set_string("rankdir", rankdir)
     g1.set_graph(graph1)
-    let node = empty_attrs()
+    let node = @moon_dagre.empty_attrs()
     node.set_float("width", 100.0)
     node.set_float("height", 200.0)
     g1.set_node("a", label=node)
-    ignore(layout(g1))
+    ignore(@moon_dagre.layout(g1))
     assert_eq(g1.node("a").get_float_or("x", -1.0), 50.0)
     assert_eq(g1.node("a").get_float_or("y", -1.0), 100.0)
-    let g2 = Graph::new(multigraph=true, compound=true)
-    let graph2 = empty_attrs()
+    let g2 = @moon_dagre.Graph::new(multigraph=true, compound=true)
+    let graph2 = @moon_dagre.empty_attrs()
     graph2.set_string("rankdir", rankdir)
     g2.set_graph(graph2)
-    let n = empty_attrs()
+    let n = @moon_dagre.empty_attrs()
     n.set_float("width", 100.0)
     n.set_float("height", 100.0)
-    g2.set_node("a", label=clone_attrs(n))
-    g2.set_node("b", label=clone_attrs(n))
-    let e = empty_attrs()
+    g2.set_node("a", label=@moon_dagre.clone_attrs(n))
+    g2.set_node("b", label=@moon_dagre.clone_attrs(n))
+    let e = @moon_dagre.empty_attrs()
     e.set_float("width", 1000.0)
     e.set_float("height", 2000.0)
     e.set_string("labelpos", "l")
     e.set_float("labeloffset", 0.0)
-    g2.set_edge("a", "b", label=attrs_value(e))
-    ignore(layout(g2))
-    let edge = if value_as_attrs(g2.edge("a", "b")) is Some(edge) {
+    g2.set_edge("a", "b", label=@moon_dagre.attrs_value(e))
+    ignore(@moon_dagre.layout(g2))
+    let edge = if @moon_dagre.value_as_attrs(g2.edge("a", "b")) is Some(edge) {
       edge
     } else {
-      empty_attrs()
+      @moon_dagre.empty_attrs()
     }
     if rankdir == "TB" || rankdir == "BT" {
       assert_eq(edge.get_float_or("x", -1.0), 500.0)
@@ -523,8 +531,8 @@ test "layout keeps all coordinates in bounding box across rankdirs" {
 
 ///|
 test "layout handles edges between parent nodes in compound graph" {
-  let g = Graph::new(multigraph=true, compound=true)
-  let graph = empty_attrs()
+  let g = @moon_dagre.Graph::new(multigraph=true, compound=true)
+  let graph = @moon_dagre.empty_attrs()
   graph.set_float("nodesep", 60.0)
   graph.set_float("ranksep", 100.0)
   graph.set_float("edgesep", 20.0)
@@ -542,7 +550,7 @@ test "layout handles edges between parent nodes in compound graph" {
     let id = entry.0
     let w = entry.1
     let h = entry.2
-    let node = empty_attrs()
+    let node = @moon_dagre.empty_attrs()
     node.set_float("width", w)
     node.set_float("height", h)
     g.set_node(id, label=node)
@@ -568,7 +576,7 @@ test "layout handles edges between parent nodes in compound graph" {
     let w = entry.1
     let h = entry.2
     let parent = entry.3
-    let node = empty_attrs()
+    let node = @moon_dagre.empty_attrs()
     node.set_float("width", w)
     node.set_float("height", h)
     g.set_node(id, label=node)
@@ -579,13 +587,13 @@ test "layout handles edges between parent nodes in compound graph" {
     let v = entry.0
     let w = entry.1
     let name = entry.2
-    let e = empty_attrs()
+    let e = @moon_dagre.empty_attrs()
     e.set_float("weight", 1.0)
     e.set_string("labelpos", "c")
-    g.set_edge(v, w, label=attrs_value(e), name~)
+    g.set_edge(v, w, label=@moon_dagre.attrs_value(e), name~)
   }
 
-  ignore(layout(g))
+  ignore(@moon_dagre.layout(g))
   assert_eq(g.node("p0").get_float("x") is Some(_), true)
   assert_eq(g.node("p1").get_float("x") is Some(_), true)
   assert_eq(g.node("p2").get_float("x") is Some(_), true)
@@ -593,8 +601,8 @@ test "layout handles edges between parent nodes in compound graph" {
 
 ///|
 test "layout handles issue #1 exact compound graph input" {
-  let g = Graph::new(multigraph=true, compound=true)
-  let graph = empty_attrs()
+  let g = @moon_dagre.Graph::new(multigraph=true, compound=true)
+  let graph = @moon_dagre.empty_attrs()
   graph.set_float("nodesep", 60.0)
   graph.set_float("ranksep", 100.0)
   graph.set_float("edgesep", 20.0)
@@ -622,7 +630,7 @@ test "layout handles issue #1 exact compound graph input" {
       ("14", 65.0, 66.0),
       ("15", 74.0, 66.0),
     ] {
-    let node = empty_attrs()
+    let node = @moon_dagre.empty_attrs()
     node.set_float("width", entry.1)
     node.set_float("height", entry.2)
     g.set_node(entry.0, label=node)
@@ -653,13 +661,18 @@ test "layout handles issue #1 exact compound graph input" {
       ("0", "11", "(users.id <-> comments.user_id)[2]"),
       ("5", "11", "(posts.id <-> comments.post_id)[1]"),
     ] {
-    let attrs = empty_attrs()
+    let attrs = @moon_dagre.empty_attrs()
     attrs.set_float("weight", 1.0)
     attrs.set_string("labelpos", "c")
-    g.set_edge(edge.0, edge.1, label=attrs_value(attrs), name=edge.2)
+    g.set_edge(
+      edge.0,
+      edge.1,
+      label=@moon_dagre.attrs_value(attrs),
+      name=edge.2,
+    )
   }
 
-  ignore(layout(g))
+  ignore(@moon_dagre.layout(g))
   assert_eq(g.node("0").get_float("x") is Some(_), true)
   assert_eq(g.node("5").get_float("x") is Some(_), true)
   assert_eq(g.node("11").get_float("x") is Some(_), true)
@@ -667,19 +680,19 @@ test "layout handles issue #1 exact compound graph input" {
 
 ///|
 test "layout treats attributes with case-insensitivity" {
-  let g = Graph::new(multigraph=true, compound=true)
-  let graph = empty_attrs()
+  let g = @moon_dagre.Graph::new(multigraph=true, compound=true)
+  let graph = @moon_dagre.empty_attrs()
   graph.set_float("nodeSep", 200.0)
   g.set_graph(graph)
-  let a = empty_attrs()
+  let a = @moon_dagre.empty_attrs()
   a.set_float("width", 50.0)
   a.set_float("height", 100.0)
-  let b = empty_attrs()
+  let b = @moon_dagre.empty_attrs()
   b.set_float("width", 75.0)
   b.set_float("height", 200.0)
   g.set_node("a", label=a)
   g.set_node("b", label=b)
-  ignore(layout(g))
+  ignore(@moon_dagre.layout(g))
   let xa = g.node("a").get_float_or("x", -1.0)
   let xb = g.node("b").get_float_or("x", -1.0)
   assert_eq(xb, xa + 50.0 / 2.0 + 200.0 + 75.0 / 2.0)

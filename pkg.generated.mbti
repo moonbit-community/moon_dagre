@@ -62,4 +62,3 @@ pub using @graphlib {type Point}
 pub using @graphlib {type Value}
 
 // Traits
-
