@@ -33,7 +33,7 @@ fn weight_fn(g : Graph) -> (EdgeObj) -> Double {
 
 ///|
 fn dfs_fas_core(g : Graph) -> Array[EdgeObj] {
-  let node_ids : Map[String, Int] = Map([])
+  let node_ids : Map[String, Int32] = Map([])
   let mut nodes = @acyclic_dfs.DfsIntList::NoDfsInts
   let graph_nodes = g.nodes()
   for i in 0..<graph_nodes.length() {
@@ -58,7 +58,7 @@ fn dfs_fas_core(g : Graph) -> Array[EdgeObj] {
 ///|
 fn dfs_int_list_push_local(
   xs : @acyclic_dfs.DfsIntList,
-  x : Int,
+  x : Int32,
 ) -> @acyclic_dfs.DfsIntList {
   match xs {
     NoDfsInts => MoreDfsInt(x, NoDfsInts)

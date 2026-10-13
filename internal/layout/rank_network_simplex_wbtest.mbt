@@ -484,7 +484,7 @@ fn rank_ns_run(g : Graph) -> Unit {
 }
 
 ///|
-fn rank_ns_edge(weight? : Int = 1, minlen? : Int = 1) -> Value {
+fn rank_ns_edge(weight~ : Int32 = 1, minlen~ : Int32 = 1) -> Value {
   let attrs = empty_attrs()
   attrs.set_int("weight", weight)
   attrs.set_int("minlen", minlen)
@@ -492,21 +492,21 @@ fn rank_ns_edge(weight? : Int = 1, minlen? : Int = 1) -> Value {
 }
 
 ///|
-fn rank_ns_cutvalue(value : Int) -> Value {
+fn rank_ns_cutvalue(value : Int32) -> Value {
   let attrs = empty_attrs()
   attrs.set_int("cutvalue", value)
   attrs_value(attrs)
 }
 
 ///|
-fn rank_ns_rank(rank : Int) -> Attrs {
+fn rank_ns_rank(rank : Int32) -> Attrs {
   let attrs = empty_attrs()
   attrs.set_int("rank", rank)
   attrs
 }
 
 ///|
-fn rank_ns_tree_cutvalue(t : Graph, v : String, w : String) -> Int {
+fn rank_ns_tree_cutvalue(t : Graph, v : String, w : String) -> Int32 {
   if value_as_attrs(t.edge(v, w)) is Some(attrs) {
     attrs.get_int_or("cutvalue", 0)
   } else {

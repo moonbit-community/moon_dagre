@@ -62,8 +62,8 @@ fn position_fixture() -> Graph {
 fn position_node(
   width : Double,
   height : Double,
-  rank : Int,
-  order : Int,
+  rank : Int32,
+  order : Int32,
 ) -> Attrs {
   let attrs = empty_attrs()
   attrs.set_float("width", width)

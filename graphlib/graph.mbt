@@ -18,7 +18,7 @@ pub struct Graph {
   mut graph_label : Attrs
   nodes : Map[String, Attrs]
   node_order : Array[String]
-  node_index : Map[String, Int]
+  node_index : Map[String, Int32]
   node_seen : Set[String]
   edges : Map[String, EdgeRecord]
   edge_order : Array[String]
@@ -27,23 +27,23 @@ pub struct Graph {
   children_by_node : Map[String, Set[String]]
   // Tracks child insertion time (via set_node/set_parent) so Graph::children can
   // preserve upstream graphlib's child enumeration order.
-  mut child_seq : Int
-  child_add_index : Map[String, Int]
+  mut child_seq : Int32
+  child_add_index : Map[String, Int32]
   mut default_edge_label_fn : () -> Value
 }
 
 ///|
 pub fn Graph::Graph(
-  directed? : Bool = true,
-  multigraph? : Bool = false,
-  compound? : Bool = false,
+  directed~ : Bool = true,
+  multigraph~ : Bool = false,
+  compound~ : Bool = false,
 ) -> Graph {
   let children = Map([])
   children.set(root_node, Set([]))
-  let node_index : Map[String, Int] = Map([])
+  let node_index : Map[String, Int32] = Map([])
   let node_seen : Set[String] = Set([])
   let edge_seen : Set[String] = Set([])
-  let child_add_index : Map[String, Int] = Map([])
+  let child_add_index : Map[String, Int32] = Map([])
   {
     directed,
     multigraph,
@@ -66,9 +66,9 @@ pub fn Graph::Graph(
 
 ///|
 pub fn Graph::new(
-  directed? : Bool = true,
-  multigraph? : Bool = false,
-  compound? : Bool = false,
+  directed~ : Bool = true,
+  multigraph~ : Bool = false,
+  compound~ : Bool = false,
 ) -> Graph {
   Graph(directed~, multigraph~, compound~)
 }
@@ -171,7 +171,7 @@ pub fn Graph::nodes(self : Graph) -> Array[String] {
 }
 
 ///|
-pub fn Graph::node_count(self : Graph) -> Int {
+pub fn Graph::node_count(self : Graph) -> Int32 {
   self.nodes.length()
 }
 
@@ -360,7 +360,7 @@ pub fn Graph::edges(self : Graph) -> Array[EdgeObj] {
 }
 
 ///|
-pub fn Graph::edge_count(self : Graph) -> Int {
+pub fn Graph::edge_count(self : Graph) -> Int32 {
   self.edges.length()
 }
 

@@ -1,6 +1,6 @@
 ///|
 priv struct Counter {
-  mut value : Int
+  mut value : Int32
 }
 
 ///|
@@ -130,7 +130,7 @@ fn build_layer_matrix(g : Graph) -> Array[Array[String]] {
 }
 
 ///|
-fn ensure_index(arr : Array[String], idx : Int) -> Unit {
+fn ensure_index(arr : Array[String], idx : Int32) -> Unit {
   if arr.length() <= idx {
     let mut i = arr.length()
     while i <= idx {
@@ -192,8 +192,8 @@ fn remove_empty_ranks(g : Graph) -> Unit {
 fn add_border_node(
   g : Graph,
   prefix : String,
-  rank? : Int,
-  order? : Int,
+  rank? : Int32,
+  order? : Int32,
 ) -> String {
   let node = empty_attrs()
   node.set_float("width", 0.0)
@@ -206,7 +206,7 @@ fn add_border_node(
 }
 
 ///|
-fn apply_with_chunking_min(values : Array[Int]) -> Int {
+fn apply_with_chunking_min(values : Array[Int32]) -> Int32 {
   if values.is_empty() {
     @int.MAX_VALUE
   } else {
@@ -221,7 +221,7 @@ fn apply_with_chunking_min(values : Array[Int]) -> Int {
 }
 
 ///|
-fn apply_with_chunking_max(values : Array[Int]) -> Int {
+fn apply_with_chunking_max(values : Array[Int32]) -> Int32 {
   if values.is_empty() {
     @int.MIN_VALUE
   } else {
@@ -236,7 +236,7 @@ fn apply_with_chunking_max(values : Array[Int]) -> Int {
 }
 
 ///|
-fn max_rank(g : Graph) -> Int {
+fn max_rank(g : Graph) -> Int32 {
   let ranks = g.nodes().map(v => g.node(v).get_int_or("rank", @int.MIN_VALUE))
   apply_with_chunking_max(ranks)
 }
@@ -274,7 +274,7 @@ fn unique_id(prefix : String) -> String {
 }
 
 ///|
-fn range(start : Int, limit? : Int, step? : Int) -> Array[Int] {
+fn range(start : Int32, limit? : Int32, step? : Int32) -> Array[Int32] {
   let mut s = start
   let mut l = limit
   let step = if step is Some(step) { step } else { 1 }
@@ -282,7 +282,7 @@ fn range(start : Int, limit? : Int, step? : Int) -> Array[Int] {
     l = Some(start)
     s = 0
   }
-  let out : Array[Int] = []
+  let out : Array[Int32] = []
   if l is Some(limit) {
     if step > 0 {
       for i = s; i < limit; i = i + step {
@@ -327,7 +327,7 @@ fn attrs_from_edge_label(label : Value?) -> Attrs {
 }
 
 ///|
-fn int_max(a : Int, b : Int) -> Int {
+fn int_max(a : Int32, b : Int32) -> Int32 {
   if a > b {
     a
   } else {

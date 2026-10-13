@@ -1035,7 +1035,7 @@ fn position_bk_crossing_fixture() -> Graph {
 }
 
 ///|
-fn position_bk_node(width : Double, rank : Int, order : Int) -> Attrs {
+fn position_bk_node(width : Double, rank : Int32, order : Int32) -> Attrs {
   let attrs = empty_attrs()
   attrs.set_float("width", width)
   attrs.set_float("height", 10.0)

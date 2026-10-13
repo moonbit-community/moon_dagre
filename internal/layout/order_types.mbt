@@ -8,7 +8,7 @@ priv struct OrderBarycenterEntry {
 ///|
 priv struct OrderEntry {
   mut vs : Array[String]
-  i : Int
+  i : Int32
   barycenter : Double?
   weight : Double?
 }

@@ -62,7 +62,7 @@ fn order_order_graph() -> Graph {
 }
 
 ///|
-fn order_order_rank(rank : Int) -> Attrs {
+fn order_order_rank(rank : Int32) -> Attrs {
   let attrs = empty_attrs()
   attrs.set_int("rank", rank)
   attrs

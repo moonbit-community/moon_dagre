@@ -1,6 +1,6 @@
 ///|
 priv struct TarjanIndex {
-  mut value : Int
+  mut value : Int32
 }
 
 ///|
@@ -78,8 +78,8 @@ fn strongconnect(
   index : TarjanIndex,
   stack : Array[String],
   on_stack : Set[String],
-  indices : Map[String, Int],
-  lowlinks : Map[String, Int],
+  indices : Map[String, Int32],
+  lowlinks : Map[String, Int32],
   result : Array[Array[String]],
 ) -> Unit {
   indices.set(v, index.value)
@@ -175,7 +175,7 @@ fn postorder_dfs(
 }
 
 ///|
-fn min_int(a : Int, b : Int) -> Int {
+fn min_int(a : Int32, b : Int32) -> Int32 {
   if a < b {
     a
   } else {

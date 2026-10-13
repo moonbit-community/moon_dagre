@@ -214,7 +214,7 @@ test "range builds array with negative step" {
 }
 
 ///|
-fn util_edge_label(weight? : Int = 1, minlen? : Int = 1) -> Value {
+fn util_edge_label(weight~ : Int32 = 1, minlen~ : Int32 = 1) -> Value {
   let attrs = empty_attrs()
   attrs.set_int("weight", weight)
   attrs.set_int("minlen", minlen)
@@ -231,14 +231,14 @@ fn util_edge_attrs(value : Value?) -> Attrs {
 }
 
 ///|
-fn util_rank(rank : Int) -> Attrs {
+fn util_rank(rank : Int32) -> Attrs {
   let attrs = empty_attrs()
   attrs.set_int("rank", rank)
   attrs
 }
 
 ///|
-fn util_rank_order(rank : Int, order : Int) -> Attrs {
+fn util_rank_order(rank : Int32, order : Int32) -> Attrs {
   let attrs = empty_attrs()
   attrs.set_int("rank", rank)
   attrs.set_int("order", order)

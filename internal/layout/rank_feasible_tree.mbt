@@ -24,7 +24,7 @@ fn rank_feasible_tree(g : Graph) -> Graph {
 }
 
 ///|
-fn tight_tree(t : Graph, g : Graph) -> Int {
+fn tight_tree(t : Graph, g : Graph) -> Int32 {
   fn dfs(v : String, t : Graph, g : Graph) -> Unit {
     for e in g.node_edges(v) {
       let w = if v == e.v { e.w } else { e.v }
@@ -59,7 +59,7 @@ fn find_min_slack_edge(t : Graph, g : Graph) -> EdgeObj? {
 }
 
 ///|
-fn shift_ranks(t : Graph, g : Graph, delta : Int) -> Unit {
+fn shift_ranks(t : Graph, g : Graph, delta : Int32) -> Unit {
   for v in t.nodes() {
     let node = g.node(v)
     node.set_int("rank", node.get_int_or("rank", 0) + delta)

@@ -3,7 +3,7 @@ fn order_sort_subgraph(
   g : Graph,
   v : String,
   cg : Graph,
-  bias_right? : Bool = false,
+  bias_right~ : Bool = false,
 ) -> OrderResult {
   let mut movable = g.children(v~)
   let node = if g.node_opt(v) is Some(node) { node } else { empty_attrs() }

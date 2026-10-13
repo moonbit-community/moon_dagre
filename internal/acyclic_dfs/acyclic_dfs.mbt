@@ -1,9 +1,15 @@
 ///|
 pub(all) struct DfsEdge {
-  id : Int
-  v : Int
-  w : Int
+  id : Int32
+  v : Int32
+  w : Int32
 } derive(Compare, Eq)
+
+///|
+pub extend DfsEdge with Compare::{op_lt, op_le, op_ge, compare, op_gt}
+
+///|
+pub extend DfsEdge with Eq::{not_equal, equal}
 
 ///|
 pub(all) enum DfsEdgeList {
@@ -14,8 +20,11 @@ pub(all) enum DfsEdgeList {
 ///|
 pub(all) enum DfsIntList {
   NoDfsInts
-  MoreDfsInt(Int, DfsIntList)
+  MoreDfsInt(Int32, DfsIntList)
 } derive(Eq)
+
+///|
+pub extend DfsIntList with Eq::{not_equal, equal}
 
 ///|
 priv struct DfsState {
@@ -118,7 +127,7 @@ fn dfs_all(
 
 ///|
 fn dfs_visit(
-  v : Int,
+  v : Int32,
   nodes : DfsIntList,
   edges : DfsEdgeList,
   state : DfsState,
@@ -234,7 +243,7 @@ fn dfs_visit(
 
 ///|
 fn dfs_visit_out_edges(
-  v : Int,
+  v : Int32,
   nodes : DfsIntList,
   all_edges : DfsEdgeList,
   remaining_edges : DfsEdgeList,
@@ -388,7 +397,7 @@ fn dfs_visit_out_edges(
 ///|
 fn dfs_int_list_contains(
   xs : DfsIntList,
-  x : Int,
+  x : Int32,
 ) -> Bool where {
   proof_decrease: xs,
   proof_ensure: result => result == dfs_int_list_mem(xs, x),

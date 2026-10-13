@@ -278,9 +278,9 @@ fn nesting_graph_fixture() -> Graph {
 
 ///|
 fn nesting_edge_label(
-  minlen? : Int = 1,
-  weight? : Int = 1,
-  nesting_edge? : Bool = false,
+  minlen~ : Int32 = 1,
+  weight~ : Int32 = 1,
+  nesting_edge~ : Bool = false,
 ) -> Value {
   let attrs = empty_attrs()
   attrs.set_int("minlen", minlen)

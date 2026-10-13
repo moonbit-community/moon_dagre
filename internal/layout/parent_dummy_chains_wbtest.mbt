@@ -153,7 +153,7 @@ fn pdc_graph() -> Graph {
 }
 
 ///|
-fn pdc_range(min_rank : Int, max_rank : Int) -> Attrs {
+fn pdc_range(min_rank : Int32, max_rank : Int32) -> Attrs {
   let attrs = empty_attrs()
   attrs.set_int("minRank", min_rank)
   attrs.set_int("maxRank", max_rank)
@@ -161,7 +161,7 @@ fn pdc_range(min_rank : Int, max_rank : Int) -> Attrs {
 }
 
 ///|
-fn pdc_dummy(rank? : Int, edge_v? : String, edge_w? : String) -> Attrs {
+fn pdc_dummy(rank? : Int32, edge_v? : String, edge_w? : String) -> Attrs {
   let attrs = empty_attrs()
   if rank is Some(rank) {
     attrs.set_int("rank", rank)

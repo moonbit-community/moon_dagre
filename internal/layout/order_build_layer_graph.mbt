@@ -1,7 +1,7 @@
 ///|
 fn order_build_layer_graph(
   g : Graph,
-  rank : Int,
+  rank : Int32,
   relationship : String,
 ) -> Graph {
   let root = order_create_root_node(g)

@@ -37,7 +37,7 @@ fn add_bs_border_node(
   prefix : String,
   sg : String,
   sg_node : Attrs,
-  rank : Int,
+  rank : Int32,
 ) -> Unit {
   let label = empty_attrs()
   label.set_float("width", 0.0)
@@ -56,7 +56,7 @@ fn add_bs_border_node(
 }
 
 ///|
-fn add_bs_border_at(node : Attrs, prop : String, rank : Int) -> String? {
+fn add_bs_border_at(node : Attrs, prop : String, rank : Int32) -> String? {
   if node.get_strings(prop) is Some(border_nodes) {
     if rank >= 0 && rank < border_nodes.length() {
       let value = border_nodes[rank]
@@ -77,7 +77,7 @@ fn add_bs_border_at(node : Attrs, prop : String, rank : Int) -> String? {
 fn add_bs_set_border_at(
   node : Attrs,
   prop : String,
-  rank : Int,
+  rank : Int32,
   value : String,
 ) -> Unit {
   let border_nodes = if node.get_strings(prop) is Some(border_nodes) {
@@ -91,7 +91,7 @@ fn add_bs_set_border_at(
 }
 
 ///|
-fn add_bs_ensure_index(values : Array[String], idx : Int) -> Unit {
+fn add_bs_ensure_index(values : Array[String], idx : Int32) -> Unit {
   while values.length() <= idx {
     values.push("")
   }

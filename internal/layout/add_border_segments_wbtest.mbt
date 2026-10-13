@@ -110,7 +110,7 @@ fn add_bs_graph() -> Graph {
 }
 
 ///|
-fn add_bs_range(min_rank : Int, max_rank : Int) -> Attrs {
+fn add_bs_range(min_rank : Int32, max_rank : Int32) -> Attrs {
   let attrs = empty_attrs()
   attrs.set_int("minRank", min_rank)
   attrs.set_int("maxRank", max_rank)
@@ -118,7 +118,7 @@ fn add_bs_range(min_rank : Int, max_rank : Int) -> Attrs {
 }
 
 ///|
-fn add_bs_test_border_at(node : Attrs, prop : String, rank : Int) -> String? {
+fn add_bs_test_border_at(node : Attrs, prop : String, rank : Int32) -> String? {
   if node.get_strings(prop) is Some(border_nodes) {
     if rank >= 0 && rank < border_nodes.length() {
       let value = border_nodes[rank]
@@ -140,7 +140,7 @@ fn add_bs_assert_border_node(
   g : Graph,
   v : String,
   border_type : String,
-  rank : Int,
+  rank : Int32,
   parent : String,
 ) -> Unit raise {
   let node = g.node(v)

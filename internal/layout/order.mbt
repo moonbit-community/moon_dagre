@@ -40,7 +40,7 @@ fn order_run(g : Graph) -> Unit {
 ///|
 fn order_build_layer_graphs(
   g : Graph,
-  ranks : Array[Int],
+  ranks : Array[Int32],
   relationship : String,
 ) -> Array[Graph] {
   let out : Array[Graph] = []

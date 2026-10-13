@@ -1,10 +1,10 @@
 ///|
 priv struct ResolveEntry {
-  mut indegree : Int
-  in_entries : Array[Int]
-  out_entries : Array[Int]
+  mut indegree : Int32
+  in_entries : Array[Int32]
+  out_entries : Array[Int32]
   mut vs : Array[String]
-  mut i : Int
+  mut i : Int32
   mut barycenter : Double?
   mut weight : Double?
   mut merged : Bool
@@ -15,7 +15,7 @@ fn order_resolve_conflicts(
   entries : Array[OrderBarycenterEntry],
   cg : Graph,
 ) -> Array[OrderEntry] {
-  let mapped : Map[String, Int] = Map([])
+  let mapped : Map[String, Int32] = Map([])
   let nodes : Array[ResolveEntry] = []
   for i = 0; i < entries.length(); i = i + 1 {
     let entry = entries[i]
@@ -37,13 +37,13 @@ fn order_resolve_conflicts(
       nodes[v_idx].out_entries.push(w_idx)
     }
   }
-  let source_set : Array[Int] = []
+  let source_set : Array[Int32] = []
   for i = 0; i < nodes.length(); i = i + 1 {
     if nodes[i].indegree == 0 {
       source_set.push(i)
     }
   }
-  let visited_order : Array[Int] = []
+  let visited_order : Array[Int32] = []
   while !source_set.is_empty() {
     let v_idx = source_set.pop().unwrap()
     visited_order.push(v_idx)
@@ -102,8 +102,8 @@ fn order_should_merge(u_entry : ResolveEntry, v_entry : ResolveEntry) -> Bool {
 ///|
 fn order_merge_entries(
   nodes : Array[ResolveEntry],
-  target_idx : Int,
-  source_idx : Int,
+  target_idx : Int32,
+  source_idx : Int32,
 ) -> Unit {
   let target = nodes[target_idx]
   let source = nodes[source_idx]

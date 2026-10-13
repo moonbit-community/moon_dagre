@@ -136,7 +136,7 @@ fn new_norm_graph() -> Graph {
 }
 
 ///|
-fn normalize_node_rank(rank : Int) -> Attrs {
+fn normalize_node_rank(rank : Int32) -> Attrs {
   let attrs = empty_attrs()
   attrs.set_int("rank", rank)
   attrs
@@ -166,7 +166,7 @@ fn edge_name(e : EdgeObj) -> String {
 }
 
 ///|
-fn str_cmp(a : String, b : String) -> Int {
+fn str_cmp(a : String, b : String) -> Int32 {
   if a < b {
     -1
   } else if a > b {
