@@ -14,7 +14,7 @@ pub struct EdgeObj {
 ///|
 pub enum Attr {
   Bool(Bool)
-  Int(Int)
+  Int(Int32)
   Float(Double)
   String(String)
   Val(Value)
@@ -23,7 +23,7 @@ pub enum Attr {
   Edge(EdgeObj)
   Edges(Array[EdgeObj])
   Strings(Array[String])
-  Ints(Array[Int])
+  Ints(Array[Int32])
 }
 
 ///|
@@ -35,7 +35,7 @@ pub struct Attrs {
 pub enum Value {
   VNull
   VBool(Bool)
-  VInt(Int)
+  VInt(Int32)
   VFloat(Double)
   VString(String)
   VAttrs(Attrs)
@@ -77,7 +77,7 @@ pub fn value_bool(v : Bool) -> Value {
 }
 
 ///|
-pub fn value_int(v : Int) -> Value {
+pub fn value_int(v : Int32) -> Value {
   VInt(v)
 }
 
@@ -112,7 +112,7 @@ pub fn value_as_attrs(value : Value?) -> Attrs? {
 }
 
 ///|
-pub fn value_as_int(value : Value?) -> Int? {
+pub fn value_as_int(value : Value?) -> Int32? {
   match value {
     Some(VInt(v)) => Some(v)
     Some(VFloat(v)) => Some(v.to_int())
@@ -230,12 +230,12 @@ pub fn Attrs::keys(self : Attrs) -> Array[String] {
 }
 
 ///|
-pub fn Attrs::length(self : Attrs) -> Int {
+pub fn Attrs::length(self : Attrs) -> Int32 {
   self.map.length()
 }
 
 ///|
-pub fn Attrs::set_int(self : Attrs, key : String, value : Int) -> Unit {
+pub fn Attrs::set_int(self : Attrs, key : String, value : Int32) -> Unit {
   self.set(key, Int(value))
 }
 
@@ -297,12 +297,16 @@ pub fn Attrs::set_strings(
 }
 
 ///|
-pub fn Attrs::set_ints(self : Attrs, key : String, value : Array[Int]) -> Unit {
+pub fn Attrs::set_ints(
+  self : Attrs,
+  key : String,
+  value : Array[Int32],
+) -> Unit {
   self.set(key, Ints(value))
 }
 
 ///|
-pub fn Attrs::get_int(self : Attrs, key : String) -> Int? {
+pub fn Attrs::get_int(self : Attrs, key : String) -> Int32? {
   match self.get(key) {
     Some(Int(v)) => Some(v)
     Some(Float(v)) => Some(v.to_int())
@@ -384,7 +388,7 @@ pub fn Attrs::get_strings(self : Attrs, key : String) -> Array[String]? {
 }
 
 ///|
-pub fn Attrs::get_ints(self : Attrs, key : String) -> Array[Int]? {
+pub fn Attrs::get_ints(self : Attrs, key : String) -> Array[Int32]? {
   match self.get(key) {
     Some(Ints(v)) => Some(v)
     _ => None
@@ -392,7 +396,7 @@ pub fn Attrs::get_ints(self : Attrs, key : String) -> Array[Int]? {
 }
 
 ///|
-pub fn Attrs::get_int_or(self : Attrs, key : String, fallback : Int) -> Int {
+pub fn Attrs::get_int_or(self : Attrs, key : String, fallback : Int32) -> Int32 {
   if self.get_int(key) is Some(v) {
     v
   } else {

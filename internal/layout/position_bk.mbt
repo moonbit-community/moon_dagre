@@ -133,7 +133,7 @@ fn position_bk_find_type2_conflicts(
     let north = layering[i - 1]
     let south = layering[i]
     let mut prev_north_pos = -1
-    let mut next_north_pos : Int? = None
+    let mut next_north_pos : Int32? = None
     let mut south_pos = 0
     for south_lookahead = 0
         south_lookahead < south.length()
@@ -184,10 +184,10 @@ fn position_bk_scan_type2_conflicts(
   g : Graph,
   conflicts : Map[String, Set[String]],
   south : Array[String],
-  south_pos : Int,
-  south_end : Int,
-  prev_north_border : Int?,
-  next_north_border : Int?,
+  south_pos : Int32,
+  south_end : Int32,
+  prev_north_border : Int32?,
+  next_north_border : Int32?,
 ) -> Unit {
   for i = south_pos; i < south_end; i = i + 1 {
     let v = south[i]
@@ -286,7 +286,7 @@ fn position_bk_vertical_alignment(
   ignore(g)
   let root : Map[String, String] = Map([])
   let align : Map[String, String] = Map([])
-  let pos : Map[String, Int] = Map([])
+  let pos : Map[String, Int32] = Map([])
   for layer in layering {
     for order = 0; order < layer.length(); order = order + 1 {
       let v = layer[order]
@@ -335,7 +335,7 @@ fn position_bk_horizontal_compaction(
   layering : Array[Array[String]],
   root : Map[String, String],
   align : Map[String, String],
-  reverse_sep? : Bool = false,
+  reverse_sep~ : Bool = false,
 ) -> Map[String, Double] {
   let xs : Map[String, Double] = Map([])
   let block_g = position_bk_build_block_graph(g, layering, root, reverse_sep)
@@ -661,7 +661,7 @@ fn position_bk_reverse_each_layer(
 }
 
 ///|
-fn position_bk_compare_double(a : Double, b : Double) -> Int {
+fn position_bk_compare_double(a : Double, b : Double) -> Int32 {
   if a < b {
     -1
   } else if a > b {

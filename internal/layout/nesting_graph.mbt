@@ -26,10 +26,10 @@ fn nesting_graph_run(g : Graph) -> Unit {
 fn nesting_dfs(
   g : Graph,
   root : String,
-  node_sep : Int,
+  node_sep : Int32,
   weight : Double,
-  height : Int,
-  depths : Map[String, Int],
+  height : Int32,
+  depths : Map[String, Int32],
   v : String,
 ) -> Unit {
   let children = g.children(v~)
@@ -82,13 +82,13 @@ fn nesting_dfs(
 }
 
 ///|
-fn nesting_tree_depths(g : Graph) -> Map[String, Int] {
-  let depths : Map[String, Int] = Map([])
+fn nesting_tree_depths(g : Graph) -> Map[String, Int32] {
+  let depths : Map[String, Int32] = Map([])
   fn dfs(
     g : Graph,
-    depths : Map[String, Int],
+    depths : Map[String, Int32],
     v : String,
-    depth : Int,
+    depth : Int32,
   ) -> Unit {
     let children = g.children(v~)
     if !children.is_empty() {
@@ -116,7 +116,7 @@ fn nesting_sum_weights(g : Graph) -> Double {
 }
 
 ///|
-fn nesting_depth_values(depths : Map[String, Int]) -> Array[Int] {
+fn nesting_depth_values(depths : Map[String, Int32]) -> Array[Int32] {
   let values = []
   depths.each((_, depth) => values.push(depth))
   values
@@ -158,8 +158,8 @@ fn nesting_edge_attrs(label : Value?) -> Attrs {
 ///|
 fn nesting_weight_minlen(
   weight : Double,
-  minlen : Int,
-  nesting_edge? : Bool = false,
+  minlen : Int32,
+  nesting_edge~ : Bool = false,
 ) -> Value {
   let attrs = empty_attrs()
   attrs.set_float("weight", weight)

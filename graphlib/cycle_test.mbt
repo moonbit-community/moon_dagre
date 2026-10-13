@@ -1,6 +1,6 @@
 ///|
 priv struct DefaultLabelCounter {
-  mut value : Int
+  mut value : Int32
 }
 
 ///|

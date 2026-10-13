@@ -26,14 +26,14 @@ pub using @graphlib {
 
 ///|
 pub fn new_graph(
-  directed? : Bool = true,
-  multigraph? : Bool = false,
-  compound? : Bool = false,
+  directed~ : Bool = true,
+  multigraph~ : Bool = false,
+  compound~ : Bool = false,
 ) -> Graph {
   Graph::new(directed~, multigraph~, compound~)
 }
 
 ///|
-pub fn layout(g : Graph, debug_timing? : Bool = false) -> Graph {
+pub fn layout(g : Graph, debug_timing~ : Bool = false) -> Graph {
   @layout.run(g, debug_timing~)
 }

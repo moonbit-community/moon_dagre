@@ -5,7 +5,7 @@ priv struct LayoutSelfEdge {
 }
 
 ///|
-pub fn run(g : Graph, debug_timing? : Bool = false) -> Graph {
+pub fn run(g : Graph, debug_timing~ : Bool = false) -> Graph {
   if debug_timing {
     time("layout", () => {
       let layout_graph = time("  buildLayoutGraph", () => {

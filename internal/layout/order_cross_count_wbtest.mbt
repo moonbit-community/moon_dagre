@@ -65,7 +65,7 @@ fn order_cross_graph() -> Graph {
 }
 
 ///|
-fn order_cross_test_weight(weight : Int) -> Value {
+fn order_cross_test_weight(weight : Int32) -> Value {
   let attrs = empty_attrs()
   attrs.set_int("weight", weight)
   attrs_value(attrs)

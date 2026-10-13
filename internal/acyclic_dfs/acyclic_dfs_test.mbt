@@ -29,7 +29,7 @@ test "dfs_fas_edge_ids records stack back edge" {
 }
 
 ///|
-fn int_list(values : Array[Int]) -> @acyclic_dfs.DfsIntList {
+fn int_list(values : Array[Int32]) -> @acyclic_dfs.DfsIntList {
   let mut out = @acyclic_dfs.DfsIntList::NoDfsInts
   for value in values.rev_iter() {
     out = MoreDfsInt(value, out)
@@ -47,7 +47,7 @@ fn edge_list(values : Array[@acyclic_dfs.DfsEdge]) -> @acyclic_dfs.DfsEdgeList {
 }
 
 ///|
-fn int_list_to_array(values : @acyclic_dfs.DfsIntList) -> Array[Int] {
+fn int_list_to_array(values : @acyclic_dfs.DfsIntList) -> Array[Int32] {
   match values {
     NoDfsInts => []
     MoreDfsInt(value, rest) => {

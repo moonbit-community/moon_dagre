@@ -13,19 +13,19 @@ fn order_two_layer_cross_count(
   north_layer : Array[String],
   south_layer : Array[String],
 ) -> Double {
-  let south_pos : Map[String, Int] = Map([])
+  let south_pos : Map[String, Int32] = Map([])
   for i = 0; i < south_layer.length(); i = i + 1 {
     let v = south_layer[i]
     if !order_cross_is_layer_hole(v) {
       south_pos.set(v, i)
     }
   }
-  let south_entries : Array[(Int, Double)] = []
+  let south_entries : Array[(Int32, Double)] = []
   for v in north_layer {
     if order_cross_is_layer_hole(v) {
       continue
     }
-    let entries : Array[(Int, Double)] = []
+    let entries : Array[(Int32, Double)] = []
     for e in g.out_edges(v) {
       if south_pos.get(e.w) is Some(pos) {
         entries.push((pos, order_cross_weight(g.edge_obj(e))))
