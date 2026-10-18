@@ -4,7 +4,9 @@ pub(all) struct DfsEdge {
   v : Int
   w : Int
 } derive(Compare, Eq)
-
+///|
+pub extend DfsEdge with Compare::{op_lt, op_le, op_ge, compare, op_gt}
+pub extend DfsEdge with Eq::{not_equal, equal}
 ///|
 pub(all) enum DfsEdgeList {
   NoDfsEdges
@@ -16,7 +18,8 @@ pub(all) enum DfsIntList {
   NoDfsInts
   MoreDfsInt(Int, DfsIntList)
 } derive(Eq)
-
+///|
+pub extend DfsIntList with Eq::{not_equal, equal}
 ///|
 priv struct DfsState {
   visited : DfsIntList
