@@ -1,7 +1,7 @@
 ///|
 fn rank_longest_path(g : Graph) -> Unit {
   let visited = Set([])
-  fn dfs(g : Graph, v : String, visited : Set[String]) -> Int {
+  fn dfs(g : Graph, v : String, visited : Set[String]) -> Int32 {
     let label = g.node(v)
     if visited.contains(v) {
       label.get_int_or("rank", 0)
@@ -30,14 +30,14 @@ fn rank_longest_path(g : Graph) -> Unit {
 }
 
 ///|
-fn rank_slack(g : Graph, e : EdgeObj) -> Int {
+fn rank_slack(g : Graph, e : EdgeObj) -> Int32 {
   let wrank = g.node(e.w).get_int_or("rank", 0)
   let vrank = g.node(e.v).get_int_or("rank", 0)
   wrank - vrank - edge_minlen(g.edge_obj(e))
 }
 
 ///|
-fn edge_minlen(label : Value?) -> Int {
+fn edge_minlen(label : Value?) -> Int32 {
   if value_as_attrs(label) is Some(attrs) {
     attrs.get_int_or("minlen", 1)
   } else {

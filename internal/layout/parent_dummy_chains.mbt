@@ -1,7 +1,7 @@
 ///|
 priv struct ParentDummyNums {
-  low : Int
-  lim : Int
+  low : Int32
+  lim : Int32
 }
 
 ///|
@@ -12,7 +12,7 @@ priv struct ParentDummyPath {
 
 ///|
 priv struct ParentDummyCounter {
-  mut lim : Int
+  mut lim : Int32
 }
 
 ///|
@@ -158,7 +158,7 @@ fn parent_dummy_postorder(g : Graph) -> Map[String, ParentDummyNums] {
 }
 
 ///|
-fn parent_dummy_min_rank(g : Graph, node : String?) -> Int {
+fn parent_dummy_min_rank(g : Graph, node : String?) -> Int32 {
   if node is Some(node) {
     g.node(node).get_int_or("minRank", parent_dummy_inf)
   } else {
@@ -167,7 +167,7 @@ fn parent_dummy_min_rank(g : Graph, node : String?) -> Int {
 }
 
 ///|
-fn parent_dummy_max_rank(g : Graph, node : String?) -> Int {
+fn parent_dummy_max_rank(g : Graph, node : String?) -> Int32 {
   if node is Some(node) {
     g.node(node).get_int_or("maxRank", parent_dummy_inf)
   } else {
@@ -176,7 +176,7 @@ fn parent_dummy_max_rank(g : Graph, node : String?) -> Int {
 }
 
 ///|
-fn parent_dummy_min(a : Int, b : Int) -> Int {
+fn parent_dummy_min(a : Int32, b : Int32) -> Int32 {
   if a < b {
     a
   } else {
@@ -185,7 +185,7 @@ fn parent_dummy_min(a : Int, b : Int) -> Int {
 }
 
 ///|
-fn parent_dummy_max(a : Int, b : Int) -> Int {
+fn parent_dummy_max(a : Int32, b : Int32) -> Int32 {
   if a > b {
     a
   } else {

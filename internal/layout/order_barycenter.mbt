@@ -1,7 +1,7 @@
 ///|
 fn order_barycenter(
   g : Graph,
-  movable? : Array[String] = [],
+  movable~ : Array[String] = [],
 ) -> Array[OrderBarycenterEntry] {
   let out = []
   for v in movable {

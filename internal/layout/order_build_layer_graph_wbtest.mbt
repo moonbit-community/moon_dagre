@@ -153,14 +153,14 @@ fn order_build_layer_fixture() -> Graph {
 }
 
 ///|
-fn order_build_rank(rank : Int) -> Attrs {
+fn order_build_rank(rank : Int32) -> Attrs {
   let attrs = empty_attrs()
   attrs.set_int("rank", rank)
   attrs
 }
 
 ///|
-fn order_build_edge_weight(weight : Int) -> Value {
+fn order_build_edge_weight(weight : Int32) -> Value {
   let attrs = empty_attrs()
   attrs.set_int("weight", weight)
   attrs_value(attrs)

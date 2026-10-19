@@ -10,8 +10,8 @@ priv struct GreedyState {
   graph : Graph
   entries : Map[String, GreedyEntry]
   buckets : Array[Array[String]]
-  bucket_of : Map[String, Int]
-  zero_idx : Int
+  bucket_of : Map[String, Int32]
+  zero_idx : Int32
 }
 
 ///|
@@ -128,7 +128,7 @@ fn build_state(g : Graph, weight_fn : (EdgeObj) -> Double) -> GreedyState {
   }
   let bucket_len = max_out.to_int() + max_in.to_int() + 3
   let buckets = range(bucket_len).map(_ => [])
-  let bucket_of : Map[String, Int] = Map([])
+  let bucket_of : Map[String, Int32] = Map([])
   let state : GreedyState = {
     graph: fas_graph,
     entries,
@@ -164,7 +164,7 @@ fn assign_bucket(state : GreedyState, v : String) -> Unit {
 }
 
 ///|
-fn bucket_dequeue(state : GreedyState, idx : Int) -> String? {
+fn bucket_dequeue(state : GreedyState, idx : Int32) -> String? {
   if state.buckets[idx].pop() is Some(v) {
     state.bucket_of.remove(v)
     Some(v)

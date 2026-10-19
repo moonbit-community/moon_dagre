@@ -53,7 +53,7 @@ fn rank_network_simplex_calc_cut_value(
   t : Graph,
   g : Graph,
   child : String,
-) -> Int {
+) -> Int32 {
   let child_label = t.node(child)
   if child_label.get_string("parent") is Some(parent) {
     let mut child_is_tail = true
@@ -110,10 +110,10 @@ fn rank_network_simplex_init_low_lim_values(
 fn rank_network_simplex_dfs_assign_low_lim(
   tree : Graph,
   visited : Set[String],
-  next_lim : Int,
+  next_lim : Int32,
   v : String,
   parent? : String,
-) -> Int {
+) -> Int32 {
   let low = next_lim
   let label = tree.node(v)
   visited.add(v)
@@ -273,7 +273,7 @@ fn rank_network_simplex_tree_edge_attrs(label : Value?) -> Attrs {
 }
 
 ///|
-fn rank_network_simplex_tree_edge_cutvalue(label : Value?) -> Int {
+fn rank_network_simplex_tree_edge_cutvalue(label : Value?) -> Int32 {
   if value_as_attrs(label) is Some(attrs) {
     if attrs.get_int("cutvalue") is Some(cutvalue) {
       cutvalue
@@ -292,7 +292,7 @@ fn rank_network_simplex_tree_edge_cutvalue(label : Value?) -> Int {
 }
 
 ///|
-fn rank_network_simplex_edge_minlen(label : Value?) -> Int {
+fn rank_network_simplex_edge_minlen(label : Value?) -> Int32 {
   if value_as_attrs(label) is Some(attrs) {
     if attrs.get_int("minlen") is Some(minlen) {
       minlen
@@ -307,7 +307,7 @@ fn rank_network_simplex_edge_minlen(label : Value?) -> Int {
 }
 
 ///|
-fn rank_network_simplex_edge_weight(label : Value?) -> Int {
+fn rank_network_simplex_edge_weight(label : Value?) -> Int32 {
   if value_as_attrs(label) is Some(attrs) {
     if attrs.get_int("weight") is Some(weight) {
       weight

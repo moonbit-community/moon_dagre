@@ -28,7 +28,7 @@ fn order_init_order(g : Graph) -> Array[Array[String]] {
 
   // JS uses a stable sort when ordering by rank only. Preserve the original
   // `simple_nodes` order as a tiebreaker to match upstream behavior.
-  let index_by_node : Map[String, Int] = Map([])
+  let index_by_node : Map[String, Int32] = Map([])
   for i = 0; i < simple_nodes.length(); i = i + 1 {
     index_by_node.set(simple_nodes[i], i)
   }

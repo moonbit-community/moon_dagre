@@ -54,7 +54,7 @@ fn new_acyclic_graph() -> Graph {
 }
 
 ///|
-fn edge_label(minlen? : Int = 1, weight? : Int = 1) -> Attrs {
+fn edge_label(minlen~ : Int32 = 1, weight~ : Int32 = 1) -> Attrs {
   let attrs = empty_attrs()
   attrs.set_int("minlen", minlen)
   attrs.set_int("weight", weight)
