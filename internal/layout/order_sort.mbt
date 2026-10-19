@@ -1,7 +1,7 @@
 ///|
 fn order_sort(
   entries : Array[OrderEntry],
-  bias_right? : Bool = false,
+  bias_right~ : Bool = false,
 ) -> OrderResult {
   let parts = partition(entries, entry => entry.barycenter is Some(_))
   let sortable = parts.lhs
@@ -36,8 +36,8 @@ fn order_sort(
 fn order_consume_unsortable(
   vs : Array[String],
   unsortable : Array[OrderEntry],
-  index : Int,
-) -> Int {
+  index : Int32,
+) -> Int32 {
   let mut out_index = index
   while !unsortable.is_empty() {
     let last = unsortable[unsortable.length() - 1]
@@ -55,7 +55,7 @@ fn order_consume_unsortable(
 }
 
 ///|
-fn order_compare_with_bias(bias : Bool) -> (OrderEntry, OrderEntry) -> Int {
+fn order_compare_with_bias(bias : Bool) -> (OrderEntry, OrderEntry) -> Int32 {
   (entry_v : OrderEntry, entry_w : OrderEntry) => {
     match (entry_v.barycenter, entry_w.barycenter) {
       (Some(v), Some(w)) =>

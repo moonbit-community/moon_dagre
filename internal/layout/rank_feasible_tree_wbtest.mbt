@@ -74,14 +74,14 @@ test "rank_feasible_tree shortens slack by pulling down" {
 }
 
 ///|
-fn rank_ft_node_rank(rank : Int) -> Attrs {
+fn rank_ft_node_rank(rank : Int32) -> Attrs {
   let attrs = empty_attrs()
   attrs.set_int("rank", rank)
   attrs
 }
 
 ///|
-fn rank_ft_edge_minlen(minlen : Int) -> Value {
+fn rank_ft_edge_minlen(minlen : Int32) -> Value {
   let attrs = empty_attrs()
   attrs.set_int("minlen", minlen)
   attrs_value(attrs)

@@ -126,7 +126,7 @@ test "order_resolve_conflicts keeps merged zero-weight entries sortable" {
 fn order_resolve_conflicts_sort_by_first_vs(
   a : OrderEntry,
   b : OrderEntry,
-) -> Int {
+) -> Int32 {
   order_resolve_conflicts_str_cmp(a.vs[0], b.vs[0])
 }
 
@@ -134,7 +134,7 @@ fn order_resolve_conflicts_sort_by_first_vs(
 fn order_resolve_conflicts_assert_entry(
   entry : OrderEntry,
   vs : Array[String],
-  i : Int,
+  i : Int32,
   barycenter : Double?,
   weight : Double?,
 ) -> Unit raise {
@@ -162,7 +162,7 @@ fn order_resolve_conflicts_assert_opt_double(
 }
 
 ///|
-fn order_resolve_conflicts_str_cmp(a : String, b : String) -> Int {
+fn order_resolve_conflicts_str_cmp(a : String, b : String) -> Int32 {
   if a < b {
     -1
   } else if a > b {
