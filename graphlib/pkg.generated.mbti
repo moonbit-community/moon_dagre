@@ -32,7 +32,7 @@ pub fn value_as_bool(Value?) -> Bool?
 
 pub fn value_as_float(Value?) -> Double?
 
-pub fn value_as_int(Value?) -> Int?
+pub fn value_as_int(Value?) -> Int32?
 
 pub fn value_as_string(Value?) -> String?
 
@@ -40,7 +40,7 @@ pub fn value_bool(Bool) -> Value
 
 pub fn value_float(Double) -> Value
 
-pub fn value_int(Int) -> Value
+pub fn value_int(Int32) -> Value
 
 pub fn value_null() -> Value
 
@@ -51,7 +51,7 @@ pub fn value_string(String) -> Value
 // Types and methods
 pub enum Attr {
   Bool(Bool)
-  Int(Int)
+  Int(Int32)
   Float(Double)
   String(String)
   Val(Value)
@@ -60,7 +60,7 @@ pub enum Attr {
   Edge(EdgeObj)
   Edges(Array[EdgeObj])
   Strings(Array[String])
-  Ints(Array[Int])
+  Ints(Array[Int32])
 }
 
 pub struct Attrs {
@@ -74,9 +74,9 @@ pub fn Attrs::get_edge(Self, String) -> EdgeObj?
 pub fn Attrs::get_edges(Self, String) -> Array[EdgeObj]?
 pub fn Attrs::get_float(Self, String) -> Double?
 pub fn Attrs::get_float_or(Self, String, Double) -> Double
-pub fn Attrs::get_int(Self, String) -> Int?
-pub fn Attrs::get_int_or(Self, String, Int) -> Int
-pub fn Attrs::get_ints(Self, String) -> Array[Int]?
+pub fn Attrs::get_int(Self, String) -> Int32?
+pub fn Attrs::get_int_or(Self, String, Int32) -> Int32
+pub fn Attrs::get_ints(Self, String) -> Array[Int32]?
 pub fn Attrs::get_point(Self, String) -> Point?
 pub fn Attrs::get_points(Self, String) -> Array[Point]?
 pub fn Attrs::get_string(Self, String) -> String?
@@ -84,15 +84,15 @@ pub fn Attrs::get_string_or(Self, String, String) -> String
 pub fn Attrs::get_strings(Self, String) -> Array[String]?
 pub fn Attrs::get_value(Self, String) -> Value?
 pub fn Attrs::keys(Self) -> Array[String]
-pub fn Attrs::length(Self) -> Int
+pub fn Attrs::length(Self) -> Int32
 pub fn Attrs::remove(Self, String) -> Unit
 pub fn Attrs::set(Self, String, Attr) -> Unit
 pub fn Attrs::set_bool(Self, String, Bool) -> Unit
 pub fn Attrs::set_edge(Self, String, EdgeObj) -> Unit
 pub fn Attrs::set_edges(Self, String, Array[EdgeObj]) -> Unit
 pub fn Attrs::set_float(Self, String, Double) -> Unit
-pub fn Attrs::set_int(Self, String, Int) -> Unit
-pub fn Attrs::set_ints(Self, String, Array[Int]) -> Unit
+pub fn Attrs::set_int(Self, String, Int32) -> Unit
+pub fn Attrs::set_ints(Self, String, Array[Int32]) -> Unit
 pub fn Attrs::set_point(Self, String, Point) -> Unit
 pub fn Attrs::set_points(Self, String, Array[Point]) -> Unit
 pub fn Attrs::set_string(Self, String, String) -> Unit
@@ -114,21 +114,21 @@ pub struct Graph {
   mut graph_label : Attrs
   nodes : Map[String, Attrs]
   node_order : Array[String]
-  node_index : Map[String, Int]
+  node_index : Map[String, Int32]
   node_seen : @set.Set[String]
   edges : Map[String, EdgeRecord]
   edge_order : Array[String]
   edge_seen : @set.Set[String]
   parent_by_node : Map[String, String]
   children_by_node : Map[String, @set.Set[String]]
-  mut child_seq : Int
-  child_add_index : Map[String, Int]
+  mut child_seq : Int32
+  child_add_index : Map[String, Int32]
   mut default_edge_label_fn : () -> Value
 }
 pub fn Graph::Graph(directed? : Bool, multigraph? : Bool, compound? : Bool) -> Self
 pub fn Graph::children(Self, v? : String) -> Array[String]
 pub fn Graph::edge(Self, String, String, name? : String) -> Value?
-pub fn Graph::edge_count(Self) -> Int
+pub fn Graph::edge_count(Self) -> Int32
 pub fn Graph::edge_obj(Self, EdgeObj) -> Value?
 pub fn Graph::edges(Self) -> Array[EdgeObj]
 pub fn Graph::graph(Self) -> Attrs
@@ -141,7 +141,7 @@ pub fn Graph::is_multigraph(Self) -> Bool
 pub fn Graph::neighbors(Self, String) -> Array[String]
 pub fn Graph::new(directed? : Bool, multigraph? : Bool, compound? : Bool) -> Self
 pub fn Graph::node(Self, String) -> Attrs
-pub fn Graph::node_count(Self) -> Int
+pub fn Graph::node_count(Self) -> Int32
 pub fn Graph::node_edges(Self, String, w? : String) -> Array[EdgeObj]
 pub fn Graph::node_opt(Self, String) -> Attrs?
 pub fn Graph::nodes(Self) -> Array[String]
@@ -171,7 +171,7 @@ pub struct Point {
 pub enum Value {
   VNull
   VBool(Bool)
-  VInt(Int)
+  VInt(Int32)
   VFloat(Double)
   VString(String)
   VAttrs(Attrs)

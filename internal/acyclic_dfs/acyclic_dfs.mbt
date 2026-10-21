@@ -6,9 +6,13 @@ pub(all) struct DfsEdge {
 } derive(Compare, Eq)
 
 ///|
+#deprecated
+#doc(hidden)
 pub extend DfsEdge with Compare::{op_lt, op_le, op_ge, compare, op_gt}
 
 ///|
+#deprecated
+#doc(hidden)
 pub extend DfsEdge with Eq::{not_equal, equal}
 
 ///|
@@ -24,6 +28,8 @@ pub(all) enum DfsIntList {
 } derive(Eq)
 
 ///|
+#deprecated
+#doc(hidden)
 pub extend DfsIntList with Eq::{not_equal, equal}
 
 ///|

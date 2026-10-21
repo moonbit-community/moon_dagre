@@ -28,7 +28,7 @@ pub fn value_as_bool(@graphlib.Value?) -> Bool?
 
 pub fn value_as_float(@graphlib.Value?) -> Double?
 
-pub fn value_as_int(@graphlib.Value?) -> Int?
+pub fn value_as_int(@graphlib.Value?) -> Int32?
 
 pub fn value_as_string(@graphlib.Value?) -> String?
 
@@ -36,7 +36,7 @@ pub fn value_bool(Bool) -> @graphlib.Value
 
 pub fn value_float(Double) -> @graphlib.Value
 
-pub fn value_int(Int) -> @graphlib.Value
+pub fn value_int(Int32) -> @graphlib.Value
 
 pub fn value_null() -> @graphlib.Value
 
