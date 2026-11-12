@@ -1,9 +1,10 @@
 ///|
+#derive(Compare, Eq)
 pub(all) struct DfsEdge {
   id : Int32
   v : Int32
   w : Int32
-} derive(Compare, Eq)
+}
 
 ///|
 #deprecated
@@ -22,10 +23,11 @@ pub(all) enum DfsEdgeList {
 }
 
 ///|
+#derive(Eq)
 pub(all) enum DfsIntList {
   NoDfsInts
   MoreDfsInt(Int32, DfsIntList)
-} derive(Eq)
+}
 
 ///|
 #deprecated
